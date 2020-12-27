@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="blocks/head :: head"/>
+<body>
+<script type="text/javascript" th:src="@{/js/report_test.js}" defer></script>
+<header th:insert="blocks/header :: header"/>
+
+<div class="jumbotron pt-4">
+    <div class="container">
+        <table class="table table-striped" id="datatable">
+            <thead>
+            <tr>
+                <!--                <th><spring:message code="meal.dateTime"/></th>-->
+                <!--                <th><spring:message code="meal.description"/></th>-->
+                <!--                <th><spring:message code="meal.calories"/></th>-->
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<footer th:insert="blocks/footer :: footer"/>
+
+<button type="button" th:onclick="demo()">тест работы js</button>
+</body>
+</html>
