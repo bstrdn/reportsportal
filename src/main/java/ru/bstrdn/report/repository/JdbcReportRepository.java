@@ -1,25 +1,26 @@
 package ru.bstrdn.report.repository;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.bstrdn.report.model.Report_1;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-@Slf4j
-@AllArgsConstructor
 //@Transactional(readOnly = true)
 public class JdbcReportRepository {
 
     private static final RowMapper<Report_1> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Report_1.class);
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(JdbcReportRepository.class);
 
     private final JdbcTemplate jdbcTemplate;
+
+    public JdbcReportRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
 //    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -55,15 +56,14 @@ public class JdbcReportRepository {
     }
 
     public List<Report_1> queryReport_1(String fromDate, String toDate) {
-        log.debug("start test");
+        log.debug("start report 1");
         return jdbcTemplate.query("""
                 SELECT
                 cl.fullname,
                 s.fixdate,
                 s.workdate,
-                doc.fullname
+                doc.fullname docFullname
                 --s.clvisit  --Проверка статуса отметки о посещении
-                               \s
                 FROM schedule s
                 INNER JOIN clients cl ON s.pcode = cl.pcode
                 LEFT JOIN doctor doc ON s.dcode = doc.dcode

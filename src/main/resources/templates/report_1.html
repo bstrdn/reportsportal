@@ -1,30 +1,56 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:spring="http://www.w3.org/1999/XSL/Transform">
 <head>
     <div th:replace="blocks/head :: head"/>
 <body>
 <script type="text/javascript" th:src="@{/js/report_test.js}" defer></script>
 <header th:insert="blocks/header :: header"/>
+<!--<div class="jumbotron pt-4">-->
+<div class="container">
 
-<div class="jumbotron pt-4">
-    <div class="container">
-        <table class="table table-striped" id="datatable">
-            <thead>
-            <tr>
-                <!--                <th><spring:message code="meal.dateTime"/></th>-->
-                <!--                <th><spring:message code="meal.description"/></th>-->
-                <!--                <th><spring:message code="meal.calories"/></th>-->
-                <th>1</th>
-                <th>2</th>
-                <th>3</th>
-            </tr>
-            </thead>
-        </table>
-    </div>
+    <form id="filter">
+        <label for="startDate">Start date:</label>
+        <input type="date" id="startDate" name="startDate">
+        <!--               min="2018-01-01" max="2018-12-31">-->
+
+        <label for="endDate">&nbsp;&nbsp;&nbsp;&nbsp;End date:</label>
+        <input type="date" id="endDate" name="endDate">
+
+
+        &nbsp;&nbsp;&nbsp;&nbsp;ФИО Регистратора
+        <select th:field="${fioRegistratora}">
+            <option value=""> Все</option>
+            <option th:each="fio : ${fioRegistratora}"
+                    th:value="${fio}"
+                    th:utext="${fio}"/>
+        </select>
+        &nbsp;&nbsp;&nbsp;&nbsp; Отделение
+        <select th:field="${fioRegistratora}">
+            <option value=""> Все</option>
+            <option th:each="fio : ${fioRegistratora}"
+                    th:value="${fio}"
+                    th:utext="${fio}"/>
+        </select> &nbsp;&nbsp;&nbsp;&nbsp;
+<!--        <button class="b1" type="button" onclick="ctx.updateTable()">Фильтр</button>-->
+        <a href="#" onclick="ctx.updateTable()" class="knopka" tabindex="0">Фильтрация</a>
+    </form>
+
+    <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <th>ФИО Пациента</th>
+            <th>День обращения</th>
+            <th>Записан на дату</th>
+            <th>Записан к доктору</th>
+        </tr>
+        </thead>
+    </table>
+    <!--    </div>-->
 </div>
 
 <footer th:insert="blocks/footer :: footer"/>
 
-<button type="button" th:onclick="demo()">тест работы js</button>
+<!--<button type="button" th:onclick="demo()">тест работы js</button>-->
 </body>
 </html>

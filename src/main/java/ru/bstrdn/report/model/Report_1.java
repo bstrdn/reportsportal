@@ -8,11 +8,11 @@ import java.time.LocalDate;
 public class Report_1 {
     String fullname;
     //День обращения /сделать Date
-//    LocalDate fixdate;
+    LocalDate fixdate;
 //    //Записан на дату /сделать Date
-//    LocalDate workdate;
+    LocalDate workdate;
 //    //Записан к доктору /сделать отдельный класс
-//    String docFullname;
+    String docFullname;
 //    //Проверка статуса отметки о посещении /not used
 //    static boolean clvisit;
 }
