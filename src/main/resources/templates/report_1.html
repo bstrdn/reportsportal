@@ -1,38 +1,45 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org" xmlns:spring="http://www.w3.org/1999/XSL/Transform">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="blocks/head :: head"/>
 <body>
 <script type="text/javascript" th:src="@{/js/report_test.js}" defer></script>
 <header th:insert="blocks/header :: header"/>
+<script type="text/javascript" th:src="@{/js/util.js}" defer></script>
 <!--<div class="jumbotron pt-4">-->
+
 <div class="container">
 
     <form id="filter">
-        <label for="startDate">Start date:</label>
+        <label for="startDate">Начало периода:</label>
         <input type="date" id="startDate" name="startDate">
         <!--               min="2018-01-01" max="2018-12-31">-->
 
-        <label for="endDate">&nbsp;&nbsp;&nbsp;&nbsp;End date:</label>
+        <label for="endDate">&nbsp;&nbsp;&nbsp;&nbsp;Конец периода:</label>
         <input type="date" id="endDate" name="endDate">
 
 
         &nbsp;&nbsp;&nbsp;&nbsp;ФИО Регистратора
-        <select th:field="${fioRegistratora}">
+        <select name="design_tag_type_2" th:field="${allRegistrar}">
             <option value=""> Все</option>
-            <option th:each="fio : ${fioRegistratora}"
+            <option th:each="fio : ${allRegistrar}"
+                    th:id="${fio}"
                     th:value="${fio}"
-                    th:utext="${fio}"/>
+                    th:utext="${fio}">
+
+            </option>
         </select>
         &nbsp;&nbsp;&nbsp;&nbsp; Отделение
-        <select th:field="${fioRegistratora}">
+        <select th:field="${allDepartment}">
             <option value=""> Все</option>
-            <option th:each="fio : ${fioRegistratora}"
-                    th:value="${fio}"
-                    th:utext="${fio}"/>
+            <option th:each="dep : ${allDepartment}"
+                    th:value="${dep}"
+                    th:utext="${dep}">
+
+            </option>
         </select> &nbsp;&nbsp;&nbsp;&nbsp;
-<!--        <button class="b1" type="button" onclick="ctx.updateTable()">Фильтр</button>-->
+        <!--        <button class="b1" type="button" onclick="ctx.updateTable()">Фильтр</button>-->
         <a href="#" onclick="ctx.updateTable()" class="knopka" tabindex="0">Фильтрация</a>
     </form>
 

@@ -2,12 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <header th:insert="blocks/header :: header"/>
+<script type="text/javascript" th:src="@{/js/util.js}" defer></script>
+
+<br>
+<br>
+
+<input type="button" onclick="showMessage('текст 2222')" value="Считать кролей!"/>
+
+<br>
+<br>
 
 
 
 
 
-<p th:text="'Hello' + ${title}"/>
+<!--<p th:text="'Hello' + ${title}"/>-->
 
 <footer th:insert="blocks/footer :: footer"/>
 </body>

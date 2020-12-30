@@ -27,10 +27,6 @@ public class ReportRestController {
     public List<Report_1> report_1 (
             @RequestParam @Nullable String startDate,
             @RequestParam @Nullable String endDate,
-//            @RequestParam @Nullable Integer limit,
-//            @RequestParam @Nullable Integer page,
-//            @RequestParam @Nullable String name,
-//            @RequestParam @Nullable String sity,
             Model model) {
         if (startDate == null) {
             startDate = "2020-12-01";

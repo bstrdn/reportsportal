@@ -1,18 +1,23 @@
 package ru.bstrdn.report.web;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import ru.bstrdn.report.repository.JdbcReportRepository;
 
-import java.util.List;
-
+@Data
+@AllArgsConstructor
 @Controller
 public class MainController {
+JdbcReportRepository report;
 
     @GetMapping("/")
     public String home (Model model) {
-        model.addAttribute("title", "Главная страница");
-        model.addAttribute("fioRegistratora", List.of("Иванов", "Petrov", "Андреищев"));
+        model.addAttribute("allRegistrar", report.getAllRegistrar());
+        model.addAttribute("allDepartment", report.getAllDepartment());
+//        model.addAttribute("fioRegistratora", List.of("Иванов", "Petrov", "Андреищев"));
         return "report_1";
     }
 
@@ -20,5 +25,13 @@ public class MainController {
     public String login() {
         return "login";
     }
+
+
+    @GetMapping("/home")
+    public String home() {
+        return "home";
+    }
+
+
 
 }

@@ -15,4 +15,5 @@ public class Report_1 {
     String docFullname;
 //    //Проверка статуса отметки о посещении /not used
 //    static boolean clvisit;
+
 }
