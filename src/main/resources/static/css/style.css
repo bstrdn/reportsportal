@@ -37,6 +37,14 @@
     line-height: 20px;
     color: #777;
 }
+.navbar-brand-kastom_center {
+    float: right;
+    height: 50px;
+    padding: 15px 15px;
+    font-size: 18px;
+    line-height: 20px;
+    color: #777;
+}
 
 
 a.knopka {

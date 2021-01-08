@@ -6,11 +6,9 @@
 <body>
 <script type="text/javascript" th:src="@{/js/report_test.js}" defer></script>
 <header th:insert="blocks/header :: header"/>
-<script type="text/javascript" th:src="@{/js/util.js}" defer></script>
 <!--<div class="jumbotron pt-4">-->
 
 <div class="container">
-
     <form id="filter">
         <label for="startDate">Начало периода:</label>
         <input type="date" id="startDate" name="startDate">
@@ -19,26 +17,30 @@
         <label for="endDate">&nbsp;&nbsp;&nbsp;&nbsp;Конец периода:</label>
         <input type="date" id="endDate" name="endDate">
 
+        &nbsp;&nbsp;&nbsp;&nbsp;<input name="radiorep" type="radio" value="1" checked> Все пациенты
+        <input name="radiorep" type="radio" value="2"> Пришли на прием
+        <input name="radiorep" type="radio" value="3"> Не пришли на прием
 
-        &nbsp;&nbsp;&nbsp;&nbsp;ФИО Регистратора
-        <select name="design_tag_type_2" th:field="${allRegistrar}">
-            <option value=""> Все</option>
+        <br>ФИО Регистратора
+        <select name="allRegistrar">
+            <option value="0"> Все</option>
             <option th:each="fio : ${allRegistrar}"
-                    th:id="${fio}"
                     th:value="${fio}"
-                    th:utext="${fio}">
-
-            </option>
+                    th:utext="${fio}"/>
+            <!--                    th:id="${fio}"-->
         </select>
-        &nbsp;&nbsp;&nbsp;&nbsp; Отделение
-        <select th:field="${allDepartment}">
-            <option value=""> Все</option>
-            <option th:each="dep : ${allDepartment}"
-                    th:value="${dep}"
-                    th:utext="${dep}">
+
+        </select>
+        &nbsp;&nbsp;&nbsp;&nbsp;Отделение
+        <select th:field="${allDepartmentWithId}" id="allDepartmentWithId" name="allDepartmentWithId">
+            <option value="0"> Все</option>
+            <option th:each="dep : ${allDepartmentWithId}"
+                    th:value="${dep.get('DEPNUM')}"
+                    th:utext="${dep.get('DEPNAME')}">
 
             </option>
         </select> &nbsp;&nbsp;&nbsp;&nbsp;
+
         <!--        <button class="b1" type="button" onclick="ctx.updateTable()">Фильтр</button>-->
         <a href="#" onclick="ctx.updateTable()" class="knopka" tabindex="0">Фильтрация</a>
     </form>
@@ -59,5 +61,7 @@
 <footer th:insert="blocks/footer :: footer"/>
 
 <!--<button type="button" th:onclick="demo()">тест работы js</button>-->
+<script type="text/javascript" th:src="@{/js/util.js}" defer></script>
+
 </body>
 </html>

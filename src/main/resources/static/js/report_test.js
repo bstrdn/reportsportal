@@ -4,12 +4,13 @@ var day = date.getDate(),
     year = date.getFullYear(),
     month = (month < 10 ? "0" : "") + month;
 day = (day < 10 ? "0" : "") + day;
-var today = year + "-" + month + "-" + day;
+var today = year + "-" + month + "-01";
 document.getElementById('endDate').value = today;
-var lastMonth = year + "-" + (month - 1) + "-" + day;
+var lastMonth = (month == 1 ? year-1 : year) + "-" + (month == 1 ? 12 : month-1) + "-01";
 document.getElementById('startDate').value = lastMonth;
 
 
+// console.log(lastMonth);
 //
 // function updateTableByData(data) {
 //     ctx.datatableApi.clear().rows.add(data).draw();
@@ -163,11 +164,17 @@ function demo() {
 
 }
 
-
+function getRadio() {
+    var allradio = document.getElementsByName('radiorep');
+    for (var i = 0; i < allradio.length; i++) {
+        if (allradio[i].checked) {
+            return allradio[i].value;
+        }
+    }
+}
 
 
 //РАБОЧАЯ С ТОПДЖАВА
-//
 var ctx = {
     ajaxUrl: "rest/report1",
     updateTable: function () {
@@ -176,7 +183,8 @@ var ctx = {
             url: "rest/report1",
             data: {
                 startDate: $('#startDate').val(),
-                endDate: $('#endDate').val()
+                endDate: $('#endDate').val(),
+                radio: getRadio()
             },
         }).done(updateTableByData);
     }
@@ -196,7 +204,7 @@ function makeEditable(datatableOpts) {
                 retrieve: true,
                 destroy: true,
                 "iDisplayLength": 20,
-                "aLengthMenu": [[ 10, 20, 50, 100 ,-1],[10,20,50,100,"Все"]],
+                "aLengthMenu": [[10, 20, 50, 100, -1], [10, 20, 50, 100, "Все"]],
                 "dom": '<"dt-buttons"Bfli>rtp',
                 "paging": true,
                 "autoWidth": true,
@@ -212,7 +220,7 @@ function makeEditable(datatableOpts) {
                     "processing": "Подождите...",
                     "search": "Поиск:",
                     "lengthMenu": "Показать _MENU_ записей",
-                    "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+                    "info": "Пациенты с _START_ по _END_ из _TOTAL_ пациентов",
                     "infoEmpty": "Записи с 0 до 0 из 0 записей",
                     "infoFiltered": "(отфильтровано из _MAX_ записей)",
                     "infoPostFix": "",

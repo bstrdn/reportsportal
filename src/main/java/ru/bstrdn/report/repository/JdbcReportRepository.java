@@ -1,6 +1,5 @@
 package ru.bstrdn.report.repository;
 
-import com.sun.xml.bind.v2.TODO;
 import org.slf4j.Logger;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,9 +7,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.bstrdn.report.model.Report_1;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 //@Transactional(readOnly = true)
@@ -59,23 +58,11 @@ public class JdbcReportRepository {
 //    }
 
     //ПЕРВИЧНЫЕ ПАЦИЕНТЫ (ВСЕ) не уникальные пациенты
-    public List<Report_1> queryReport_1(String fromDate, String toDate) {
+    public List<Report_1> queryReport_1(String fromDate, String toDate, String radio) {
         log.debug("start report 1");
+        StringBuilder stringBuilder = new StringBuilder();
 
-
-        //TODO сделать сборку запроса в зависимости от radiant
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("SELECT\n" +
-//                "                cl.fullname,\n" +
-//                "                s.fixdate,\n" +
-//                "                s.workdate,\n" +
-//                "                doc.fullname docFullname");
-//        if(true) {
-//            sb.append("                --AND  (s.clvisit IS NULL OR s.clvisit != 1)   --Отрабатывает с галкой \"НЕ пришли на прием\"\n")
-//        }
-
-
-        return jdbcTemplate.query("""
+        stringBuilder.append("""
                 SELECT
                 cl.fullname,
                 s.fixdate,
@@ -85,12 +72,24 @@ public class JdbcReportRepository {
                 INNER JOIN clients cl ON s.pcode = cl.pcode
                 LEFT JOIN doctor doc ON s.dcode = doc.dcode
                 WHERE s.status = 1 --Статус назначения "Первичный"
-                AND s.fixdate BETWEEN ? AND ?
-                --первая точка - все пациенты
-                --AND s.clvisit = 1   --Вторая точка - Отрабатывает с галкой "пришли на прием"
-                --AND  (s.clvisit IS NULL OR s.clvisit != 1)   --Третья точка - Отрабатывает с галкой "НЕ пришли на прием"
-                ORDER BY s.workdate DESC;
-                """, ROW_MAPPER, fromDate, toDate);
+                AND s.fixdate BETWEEN ? AND ? 
+                """);
+
+        //пришли на прием
+        if (radio.equals("2")) {
+            stringBuilder.append("""
+                    AND s.clvisit = 1 
+                    """);
+        }
+
+        //НЕ пришли на прием
+        if (radio.equals("3")) {
+            stringBuilder.append("""
+                    AND  (s.clvisit IS NULL OR s.clvisit != 1) 
+                    """);
+        }
+
+        return jdbcTemplate.query(stringBuilder.append("ORDER BY s.workdate DESC;").toString(), ROW_MAPPER, fromDate, toDate);
     }
 
 
@@ -110,12 +109,16 @@ public class JdbcReportRepository {
                 WHERE depnum NOT IN (10001542)
                 ORDER BY depname
                 """, String.class);
-
-//TODO depnum - в value; depname - в список
-//        SELECT depnum, depname
-//        FROM departments
-//        WHERE depnum NOT IN (10001542)
-//        ORDER BY depname
     }
 
+    public List<Map<String, Object>> getAllDepartmentWithId() {
+        List<Map<String, Object>> map;
+        map = jdbcTemplate.queryForList("""
+                            SELECT depnum, depname
+                            FROM departments
+                            WHERE depnum NOT IN (10001542)
+                            ORDER BY depname
+                    """);
+        return map;
+}
 }
