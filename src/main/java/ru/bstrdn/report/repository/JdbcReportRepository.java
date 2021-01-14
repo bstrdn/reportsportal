@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.bstrdn.report.model.Report_1;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,27 +57,42 @@ public class JdbcReportRepository {
 //    }
 
     //ПЕРВИЧНЫЕ ПАЦИЕНТЫ (ВСЕ) не уникальные пациенты
-    public List<Report_1> queryReport_1(String fromDate, String toDate, String radio) {
+    public List<Report_1> queryReport_1(String fromDate, String toDate, String radio, Integer department, Integer registrar) {
         log.debug("start report 1");
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("""
                 SELECT
                 cl.fullname,
-                s.fixdate,
-                s.workdate,
+                SUBSTRING (s.createdate FROM 1 FOR 10) fixdate,
+                SUBSTRING (s.workdate FROM 1 FOR 10) workdate,
                 doc.fullname docFullname
                 FROM schedule s
-                INNER JOIN clients cl ON s.pcode = cl.pcode
+                JOIN clients cl ON s.pcode = cl.pcode
+                LEFT JOIN doctor reg ON s.uid = reg.dcode
                 LEFT JOIN doctor doc ON s.dcode = doc.dcode
                 WHERE s.status = 1 --Статус назначения "Первичный"
-                AND s.fixdate BETWEEN ? AND ? 
+                AND doc.fullname IS NOT NULL
+                AND doc.depnum != 10001020
+                AND s.createdate BETWEEN ? AND ? 
+
                 """);
+
+        //фильтр по отделению
+        if (department > 0) {
+            stringBuilder.append(String.format(" AND doc.depnum = %d", department));
+        }
+
+        //фильтр по ФИО регистратора
+        if (registrar > 0) {
+            log.debug("id " + registrar);
+            stringBuilder.append(String.format(" AND reg.dcode = %d", registrar));
+        }
 
         //пришли на прием
         if (radio.equals("2")) {
             stringBuilder.append("""
-                    AND s.clvisit = 1 
+                     AND s.clvisit = 1 
                     """);
         }
 
@@ -89,7 +103,7 @@ public class JdbcReportRepository {
                     """);
         }
 
-        return jdbcTemplate.query(stringBuilder.append("ORDER BY s.workdate DESC;").toString(), ROW_MAPPER, fromDate, toDate);
+        return jdbcTemplate.query(stringBuilder.append("ORDER BY cl.fullname DESC;").toString(), ROW_MAPPER, fromDate, toDate);
     }
 
 
@@ -102,11 +116,24 @@ public class JdbcReportRepository {
                 """, String.class);
     }
 
+
+    public List<Map<String, Object>> getAllRegistrarWithId() {
+        List<Map<String, Object>> map;
+        map = jdbcTemplate.queryForList("""
+                        SELECT dcode, dname
+                        FROM doctor
+                        WHERE stdtype = 1
+                        order by dname
+                """);
+        return map;
+    }
+
     public List<String> getAllDepartment() {
         return jdbcTemplate.queryForList("""
                 SELECT depname
                 FROM departments
                 WHERE depnum NOT IN (10001542)
+                AND depnum != 10001020
                 ORDER BY depname
                 """, String.class);
     }
@@ -114,11 +141,12 @@ public class JdbcReportRepository {
     public List<Map<String, Object>> getAllDepartmentWithId() {
         List<Map<String, Object>> map;
         map = jdbcTemplate.queryForList("""
-                            SELECT depnum, depname
-                            FROM departments
-                            WHERE depnum NOT IN (10001542)
-                            ORDER BY depname
-                    """);
+                        SELECT depnum, depname
+                        FROM departments
+                        WHERE depnum NOT IN (10001542)
+                        AND depnum != 10001020
+                        ORDER BY depname
+                """);
         return map;
-}
+    }
 }

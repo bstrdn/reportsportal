@@ -1,58 +1,57 @@
 <div th:fragment="head" xmlns:th="http://www.w3.org/1999/xhtml">
     <meta charset="UTF-8">
     <title th:text="${reportName}"></title>
-<!--            <link rel="stylesheet" href="resources/css/style.css">-->
-<!--            <link rel="stylesheet" href="webjars/bootstrap/4.5.3/css/bootstrap.min.css">-->
-<!--            <link rel="stylesheet" href="webjars/noty/3.1.4/demo/font-awesome/css/font-awesome.min.css">-->
-<!--            <link rel="stylesheet" href="webjars/datatables/1.10.21/css/dataTables.bootstrap4.min.css">-->
-<!--            <link rel="stylesheet" href="webjars/noty/3.1.4/lib/noty.css"/>-->
-<!--            <link rel="shortcut icon" href="resources/images/icon-meal.png">-->
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 
 
-    <!--        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css">-->
-    <!--        <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css">-->
-
-    <!--        &lt;!&ndash;        <%&#45;&#45;http://stackoverflow.com/a/24070373/548473&#45;&#45;%>&ndash;&gt;-->
-            <script type="text/javascript" src="webjars/jquery/3.5.1/jquery.min.js" defer></script>
-
-<!--            <script type="text/javascript" src="webjars/bootstrap/4.5.3/js/bootstrap.min.js" defer></script>-->
-<!--            <script type="text/javascript" src="webjars/bootstrap/4.5.3/js/bootstrap.min.js" defer></script>-->
-<!--            <script type="text/javascript" src="webjars/datatables/1.10.21/js/jquery.dataTables.min.js" defer></script>-->
-<!--            <script type="text/javascript" src="webjars/datatables/1.10.21/js/dataTables.bootstrap4.min.js" defer></script>-->
-<!--            <script type="text/javascript" src="webjars/noty/3.1.4/lib/noty.min.js" defer></script>-->
-
-
+    <script type="text/javascript" src="webjars/jquery/3.5.1/jquery.min.js" defer></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js" defer></script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js" defer></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" defer></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js" defer></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js" defer></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js" defer></script>
+
+
+    <!--    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js" defer></script>-->
+
+
+    <!---->
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js" defer></script>
+    <script type="text/javascript" th:src="@{/lib/buttons.print.js}" defer></script>
+    <script type="text/javascript" th:src="@{/lib/buttons.colVis.js}" defer></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js" defer></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js" defer></script>
+
+<!--    <script type="text/javascript" src="lib/buttons.print.js}" defer></script>-->
+
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js" defer></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.bootstrap.min.js" defer></script>
+
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js" defer></script>
     <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js" defer></script>
     <script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.1.2/js/dataTables.fixedHeader.min.js" defer></script>
 
-
-<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css">-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css"/>
+</div>
 
 
-<!--    date-->
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css">-->
 <!--    <link rel="stylesheet" href="webjars/datetimepicker/2.5.20-1/jquery.datetimepicker.css">-->
-
 <!--    <script type="text/javascript" src="webjars/datetimepicker/2.5.20-1/build/jquery.datetimepicker.full.min.js" defer></script>-->
 <!--    <script type="text/javascript" src="https://momentjs.com/downloads/moment-with-locales.js" defer></script>-->
-
-
-
-
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-
-</div>
+<!--    <link rel="stylesheet" href="resources/css/style.css">-->
+<!--    <link rel="stylesheet" href="webjars/bootstrap/4.5.3/css/bootstrap.min.css">-->
+<!--    <link rel="stylesheet" href="webjars/noty/3.1.4/demo/font-awesome/css/font-awesome.min.css">-->
+<!--    <link rel="stylesheet" href="webjars/datatables/1.10.21/css/dataTables.bootstrap4.min.css">-->
+<!--    <link rel="stylesheet" href="webjars/noty/3.1.4/lib/noty.css"/>-->
+<!--    <link rel="shortcut icon" href="resources/images/icon-meal.png">-->
+<!--    <script type="text/javascript" src="webjars/bootstrap/4.5.3/js/bootstrap.min.js" defer></script>-->
+<!--    <script type="text/javascript" src="webjars/bootstrap/4.5.3/js/bootstrap.min.js" defer></script>-->
+<!--    <script type="text/javascript" src="webjars/datatables/1.10.21/js/jquery.dataTables.min.js" defer></script>-->
+<!--    <script type="text/javascript" src="webjars/datatables/1.10.21/js/dataTables.bootstrap4.min.js" defer></script>-->
+<!--    <script type="text/javascript" src="webjars/noty/3.1.4/lib/noty.min.js" defer></script>-->
+<!--    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css">-->
+<!--    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css">-->
+<!--    &lt;!&ndash;        <%&#45;&#45;http://stackoverflow.com/a/24070373/548473&#45;&#45;%>&ndash;&gt;-->

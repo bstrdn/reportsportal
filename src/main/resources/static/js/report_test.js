@@ -184,7 +184,9 @@ var ctx = {
             data: {
                 startDate: $('#startDate').val(),
                 endDate: $('#endDate').val(),
-                radio: getRadio()
+                radio: getRadio(),
+                department: $('#allDepartmentWithId').val(),
+                registrar: $('#allRegistrarWithId').val()
             },
         }).done(updateTableByData);
     }
@@ -220,7 +222,8 @@ function makeEditable(datatableOpts) {
                     "processing": "Подождите...",
                     "search": "Поиск:",
                     "lengthMenu": "Показать _MENU_ записей",
-                    "info": "Пациенты с _START_ по _END_ из _TOTAL_ пациентов",
+                    "info": "Всего _TOTAL_ пациентов",
+                    // "info": "Пациенты с _START_ по _END_ из _TOTAL_ пациентов",
                     "infoEmpty": "Записи с 0 до 0 из 0 записей",
                     "infoFiltered": "(отфильтровано из _MAX_ записей)",
                     "infoPostFix": "",

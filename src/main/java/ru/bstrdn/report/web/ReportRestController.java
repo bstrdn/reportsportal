@@ -30,6 +30,8 @@ public class ReportRestController {
             @RequestParam @Nullable String startDate,
             @RequestParam @Nullable String endDate,
             @RequestParam (defaultValue = "1") String radio,
+            @RequestParam (defaultValue = "0") Integer department,
+            @RequestParam (defaultValue = "0") Integer registrar,
             Model model) {
         if (startDate == null) {
             startDate = LocalDate.now().minusMonths(1)
@@ -40,10 +42,11 @@ public class ReportRestController {
                     .with(TemporalAdjusters.firstDayOfMonth()).toString();
         }
 
+        log.debug(department.toString());
         log.debug(radio);
 //        System.out.println(rep.queryReport_1(LocalDate.parse("2018-02-26"), LocalDate.now()));
         //"2018-02-26 08:43:48", "2020-02-26 08:43:48");
-        return rep.queryReport_1(startDate + " 00:00:00", endDate + " 23:59:59", radio);
+        return rep.queryReport_1(startDate + " 00:00:00", endDate + " 23:59:59", radio, department, registrar);
     }
 
 //    @GetMapping("/filter")

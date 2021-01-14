@@ -15,7 +15,8 @@ JdbcReportRepository report;
 
     @GetMapping("/")
     public String home (Model model) {
-        model.addAttribute("allRegistrar", report.getAllRegistrar());
+//        model.addAttribute("allRegistrar", report.getAllRegistrar());
+        model.addAttribute("allRegistrarWithId", report.getAllRegistrarWithId());
 //        model.addAttribute("allDepartment", report.getAllDepartment());
         model.addAttribute("allDepartmentWithId", report.getAllDepartmentWithId());
 //        List<Map<String, Object>> maptest = report.departments();

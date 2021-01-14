@@ -5,47 +5,90 @@
     <div th:replace="blocks/head :: head"/>
 <body>
 <script type="text/javascript" th:src="@{/js/report_test.js}" defer></script>
+<script type="text/javascript" th:src="@{/lib/buttons.print.js}" defer></script>
+
 <header th:insert="blocks/header :: header"/>
 <!--<div class="jumbotron pt-4">-->
 
 <div class="container">
-    <form id="filter">
-        <label for="startDate">Начало периода:</label>
-        <input type="date" id="startDate" name="startDate">
-        <!--               min="2018-01-01" max="2018-12-31">-->
 
-        <label for="endDate">&nbsp;&nbsp;&nbsp;&nbsp;Конец периода:</label>
-        <input type="date" id="endDate" name="endDate">
+    <div class="container_filter">
 
-        &nbsp;&nbsp;&nbsp;&nbsp;<input name="radiorep" type="radio" value="1" checked> Все пациенты
-        <input name="radiorep" type="radio" value="2"> Пришли на прием
-        <input name="radiorep" type="radio" value="3"> Не пришли на прием
+        <div class="filter_block_1">
 
-        <br>ФИО Регистратора
-        <select name="allRegistrar">
-            <option value="0"> Все</option>
-            <option th:each="fio : ${allRegistrar}"
-                    th:value="${fio}"
-                    th:utext="${fio}"/>
-            <!--                    th:id="${fio}"-->
-        </select>
+            <div class="filter_group">
+                <label for="startDate">Начало периода:</label>
+                <input type="date" id="startDate" name="startDate">
+                <br><br>
+                <label for="endDate">Конец периода:&nbsp&nbsp</label>
+                <input type="date" id="endDate" name="endDate">
+            </div>
 
-        </select>
-        &nbsp;&nbsp;&nbsp;&nbsp;Отделение
-        <select th:field="${allDepartmentWithId}" id="allDepartmentWithId" name="allDepartmentWithId">
-            <option value="0"> Все</option>
-            <option th:each="dep : ${allDepartmentWithId}"
-                    th:value="${dep.get('DEPNUM')}"
-                    th:utext="${dep.get('DEPNAME')}">
+            <div class="filter_group">
+                <label for="allDepartmentWithId">Отделение:</label>
+                <select th:field="${allDepartmentWithId}" id="allDepartmentWithId" name="allDepartmentWithId">
+                    <option value="0"> Все</option>
+                    <option th:each="dep : ${allDepartmentWithId}"
+                            th:value="${dep.get('DEPNUM')}"
+                            th:utext="${dep.get('DEPNAME')}">
+                    </option>
+                </select>
+                <br><br>
+                <label for="allRegistrarWithId">ФИО Регистратора:&nbsp&nbsp</label>
+                <select name="allRegistrar" id="allRegistrarWithId">
+                    <option value="0"> Все</option>
+                    <option th:each="registrar : ${allRegistrarWithId}"
+                            th:value="${registrar.get('DCODE')}"
+                            th:utext="${registrar.get('DNAME')}"/>
+                </select>
+            </div>
 
-            </option>
-        </select> &nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="filter_select">
+                <input name="radiorep" type="radio" value="1" checked> Все пациенты
+                <br>
+                <input name="radiorep" type="radio" value="2"> Пришли на прием
+                <br>
+                <input name="radiorep" type="radio" value="3"> Не пришли на прием
+                <br>
+                <input name="radiorep" type="radio" value="4"> Продолжили лечение
+            </div>
 
-        <!--        <button class="b1" type="button" onclick="ctx.updateTable()">Фильтр</button>-->
-        <a href="#" onclick="ctx.updateTable()" class="knopka" tabindex="0">Фильтрация</a>
-    </form>
+            <div class="filter_select_button">
+            <a href="#" onclick="ctx.updateTable()" class="knopka">Сформировать</a>
+            </div>
+        </div>
 
-    <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+<!--        <div class="filter_block_2">-->
+
+<!--            <div class="filter_group">-->
+<!--                1-->
+<!--            </div>-->
+
+<!--            <div class="filter_group">-->
+<!--                2-->
+<!--            </div>-->
+
+<!--        </div>-->
+
+
+    </div>
+
+
+    <!--    <form id="filter">-->
+
+
+
+
+
+
+
+    </select>
+
+
+    <!--        <button class="b1" type="button" onclick="ctx.updateTable()">Фильтр</button>-->
+    <!--    </form>-->
+
+    <table id="datatable" class="table table-striped table-bordered">
         <thead>
         <tr>
             <th>ФИО Пациента</th>

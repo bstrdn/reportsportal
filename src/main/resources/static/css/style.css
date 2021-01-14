@@ -29,6 +29,8 @@
     /*font-size: 9pt; !* Размер шрифта в пунктах *!*/
 }
 
+
+
 .navbar-brand-kastom_1 {
     float: right;
     height: 50px;
@@ -48,16 +50,52 @@
 
 
 a.knopka {
-    float: right;
+    /*float: right;*/
     color: #fff; /* цвет текста */
     text-decoration: none; /* убирать подчёркивание у ссылок */
     user-select: none; /* убирать выделение текста */
     background: #337ab7; /* фон кнопки */
-    padding: .2em .2em; /* отступ от текста */
+    padding: 1.4em 1.4em; /* отступ от текста */
     outline: none; /* убирать контур в Mozilla */
 }
 a.knopka:hover { background: #3683c6; } /* при наведении курсора мышки */
 a.knopka:active { background: #24567c; } /* при нажатии */
+
+
+
+.filter_block_1, .filter_block_2 {
+    /*position: relative;*/
+    width: 100%;
+    display: block;
+    /*margin: 0 auto;*/
+    /*padding: 0;*/
+    text-align: left;
+    /*overflow: hidden;*/
+}
+
+.filter_group {
+    /*vertical-align: ;*/
+    width: calc(35% - 24px);
+    display: inline-block;
+    /*margin: 10px;*/
+    /*padding: 20px 10px;*/
+}
+.filter_select {
+    vertical-align: top;
+    width: calc(20% - 24px);
+    display: inline-block;
+}
+.filter_select_button {
+    margin: 35px 0 0 35px;
+    vertical-align: top;
+    width: calc(10% - 24px);
+    display: inline-block;
+}
+
+
+
+
+
 
 /*from topjava*/
 /*tr[data-mealExcess="false"] {*/
