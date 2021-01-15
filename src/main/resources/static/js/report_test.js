@@ -252,7 +252,8 @@ $(function () {
             {"data": "fullname"},
             {"data": "fixdate"},
             {"data": "workdate"},
-            {"data": "docFullname"}
+            {"data": "docFullname"},
+            {"data": "phone1"}
         ],
         "order": [
             [
