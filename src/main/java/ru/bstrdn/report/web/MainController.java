@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.bstrdn.report.repository.JdbcReportRepository;
 
 @Data
@@ -15,13 +16,8 @@ JdbcReportRepository report;
 
     @GetMapping("/")
     public String home (Model model) {
-//        model.addAttribute("allRegistrar", report.getAllRegistrar());
         model.addAttribute("allRegistrarWithId", report.getAllRegistrarWithId());
-//        model.addAttribute("allDepartment", report.getAllDepartment());
         model.addAttribute("allDepartmentWithId", report.getAllDepartmentWithId());
-//        List<Map<String, Object>> maptest = report.departments();
-//        model.addAttribute("allDepartment2", report.departments());
-//        model.addAttribute("fioRegistratora", List.of("Иванов", "Petrov", "Андреищев"));
         model.addAttribute("reportName", "Первичные пациенты");
         return "report_1";
     }
@@ -37,6 +33,13 @@ JdbcReportRepository report;
         return "home";
     }
 
+    @GetMapping("/user")
+    public String user() {
+        return ("<h1>Welcome User</h1>");
+    }
 
-
+    @GetMapping("/admin")
+    public String admin() {
+        return ("<h1>Welcome Admin</h1>");
+    }
 }
