@@ -5,7 +5,7 @@ import lombok.Data;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 import ru.bstrdn.report.repository.JdbcReportRepository;
 
 @Data
@@ -23,10 +23,10 @@ JdbcReportRepository report;
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
+        model.addAttribute("allUsers", report.getAllUsers());
         return "login";
     }
-
 
     @GetMapping("/home")
     public String home() {
@@ -34,12 +34,14 @@ JdbcReportRepository report;
     }
 
     @GetMapping("/user")
+    @ResponseBody
     public String user() {
-        return ("<h1>Welcome User</h1>");
+        return "<h1>Welcome User</h1>";
     }
 
     @GetMapping("/admin")
+    @ResponseBody
     public String admin() {
-        return ("<h1>Welcome Admin</h1>");
+        return "<h1>Welcome Admin</h1>";
     }
 }

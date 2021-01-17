@@ -1,24 +1,42 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
 <head>
-    <title tiles:fragment="title">Messages : Create</title>
+    <title tiles:fragment="title">Авторизация</title>
+    <style>
+        body {
+            max-width: 400px; /* ограничение максимальной ширины  */
+            margin: 200px auto;
+
+        }
+    </style>
 </head>
 <body>
 <div tiles:fragment="content">
     <form name="f" th:action="@{/login}" method="post">
         <fieldset>
-            <legend>Please Login</legend>
+            <br>
+            <legend>Пожалуйста войдите</legend>
             <div th:if="${param.error}" class="alert alert-error">
-                Invalid username and password.
+                Не правильный пароль
             </div>
             <div th:if="${param.logout}" class="alert alert-success">
-                You have been logged out.
+                Вы успешно вышли.
             </div>
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username"/>
-            <label for="password">Password</label>
+            <br>
+            <label for="username">Имя&nbsp&nbsp&nbsp&nbsp&nbsp</label>
+            <select id="username" name="username">
+                <option value="0"> Выберите</option>
+                <option th:each="User : ${allUsers}"
+                        th:value="${User}"
+                        th:utext="${User}">
+                </option>
+            </select>
+            <br>
+            <br>
+            <label for="password">Пароль</label>
             <input type="password" id="password" name="password"/>
+            <br><br>
             <div class="form-actions">
-                <button type="submit" class="btn">Log in</button>
+                <button type="submit" class="btn">Вход</button>
             </div>
         </fieldset>
     </form>

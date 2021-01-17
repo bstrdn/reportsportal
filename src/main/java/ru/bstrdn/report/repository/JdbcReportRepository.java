@@ -88,21 +88,12 @@ public class JdbcReportRepository {
                     """);
         }
 
-
         List<Report_1> report_1 = jdbcTemplate.query(stringBuilder.append("ORDER BY cl.fullname DESC;").toString(), ROW_MAPPER, fromDate, toDate);
         report_1.forEach(r -> r.setDocFullname(r.getDocFullname().replaceAll(FIO_PATTERN, "$1$2. $3.")));
         return report_1;
     }
 
-//    public List<String> getAllRegistrar() {
-//        return jdbcTemplate.queryForList("""
-//                SELECT dname
-//                FROM doctor
-//                WHERE stdtype = 1
-//                order by dname
-//                """, String.class);
-//    }
-
+    //регистраторы
     public List<Map<String, Object>> getAllRegistrarWithId() {
         List<Map<String, Object>> map;
         map = jdbcTemplate.queryForList("""
@@ -114,16 +105,7 @@ public class JdbcReportRepository {
         return map;
     }
 
-//    public List<String> getAllDepartment() {
-//        return jdbcTemplate.queryForList("""
-//                SELECT depname
-//                FROM departments
-//                WHERE depnum NOT IN (10001542)
-//                AND depnum != 10001020
-//                ORDER BY depname
-//                """, String.class);
-//    }
-
+    //департамент
     public List<Map<String, Object>> getAllDepartmentWithId() {
         List<Map<String, Object>> map;
         map = jdbcTemplate.queryForList("""
@@ -133,5 +115,16 @@ public class JdbcReportRepository {
                 ORDER BY depname
                 """);
         return map;
+    }
+
+    //список юзеров для входа в систему
+    public List<String> getAllUsers(){
+        return jdbcTemplate.queryForList("""
+                SELECT
+                doc.dname                                
+                FROM doctor  doc
+                WHERE doc.doctcode IS NOT NULL
+                ORDER BY doc.dname
+                """, String.class);
     }
 }
