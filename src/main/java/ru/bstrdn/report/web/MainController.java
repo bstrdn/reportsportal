@@ -14,11 +14,21 @@ import ru.bstrdn.report.repository.JdbcReportRepository;
 public class MainController {
 JdbcReportRepository report;
 
-    @GetMapping("/")
+    @GetMapping("/report_1")
     public String home (Model model) {
         model.addAttribute("allRegistrarWithId", report.getAllRegistrarWithId());
         model.addAttribute("allDepartmentWithId", report.getAllDepartmentWithId());
-        model.addAttribute("reportName", "Первичные пациенты");
+        model.addAttribute("reportNameRu", "Первичные пациенты");
+        model.addAttribute("reportName", "report1");
+        return "report_1";
+    }
+
+    @GetMapping("/report_2")
+    public String report_2 (Model model) {
+        model.addAttribute("allRegistrarWithId", report.getAllRegistrarWithId());
+        model.addAttribute("allDepartmentWithId", report.getAllDepartmentWithId());
+        model.addAttribute("reportNameRu", "Второй отчет");
+        model.addAttribute("reportName", "report2");
         return "report_1";
     }
 
@@ -28,7 +38,7 @@ JdbcReportRepository report;
         return "login";
     }
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String home() {
         return "home";
     }

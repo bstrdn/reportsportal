@@ -1,14 +1,24 @@
-var date = new Date();
-var day = date.getDate(),
-    month = date.getMonth() + 1,
-    year = date.getFullYear(),
-    month = (month < 10 ? "0" : "") + month;
-day = (day < 10 ? "0" : "") + day;
-var today = year + "-" + month + "-01";
-document.getElementById('endDate').value = today;
-var lastMonth = (month == 1 ? year - 1 : year) + "-" + (month == 1 ? 12 : month - 1) + "-01";
-document.getElementById('startDate').value = lastMonth;
+var reportName = $('#reportName').val()
+var resturl = 'rest/' + reportName;
+// var resturl = 'rest/report1';
 
+var date = new Date();
+var day = date.getDate();
+    month = date.getMonth() + 1;
+    year = date.getFullYear();
+    year = (month == 1 ? year - 1 : year);
+    startmonth = (month == 1 ? 12 : month - 1);
+    month = (startmonth < 10 ? "0" : "") + startmonth;
+// day = (day < 10 ? "0" : "") + day;
+var enddate = year + "-" + month + "-" + daysInMonth(month, year);
+document.getElementById('endDate').value = enddate;
+var startdate = year + "-" + month + "-01";
+document.getElementById('startDate').value = startdate;
+
+
+function daysInMonth (month, year) {
+    return new Date(year, month, 0).getDate();
+}
 //
 // function demo() {
 //     table
@@ -30,12 +40,13 @@ function getRadio() {
 
 //РАБОЧАЯ С ТОПДЖАВА
 var ctx = {
-    ajaxUrl: "rest/report1",
+    ajaxUrl: resturl,
     updateTable: function () {
         $.ajax({
             type: "GET",
-            url: "rest/report1",
+            url: resturl,
             data: {
+                reportName: reportName,
                 startDate: $('#startDate').val(),
                 endDate: $('#endDate').val(),
                 radio: getRadio(),
@@ -53,7 +64,7 @@ function makeEditable(datatableOpts) {
         $.extend(true, datatableOpts,
             {
                 "ajax": {
-                    "url": "rest/report1",
+                    "url": resturl,
                     "dataSrc": ""
                 },
                 stateSave: true,
@@ -118,8 +129,18 @@ $(function () {
     makeEditable({
         "columns": [
             {"data": "fullname"},
-            {"data": "fixdate"},
-            {"data": "workdate"},
+            {
+                "data": "fixdate",
+                "render": function (date, type, row) {
+                        return moment(date).format("DD.MM.YYYY");
+                }
+            },
+            {
+                "data": "workdate",
+                "render": function (date, type, row) {
+                    return moment(date).format("DD.MM.YYYY");
+                }
+            },
             {"data": "docFullname"},
             {"data": "phone1"}
         ],
@@ -130,7 +151,7 @@ $(function () {
             ]
         ]
     });
-
+    $('#datatable_info').css('font-weight', 'bold');
 });
 
 
@@ -139,8 +160,10 @@ function updateTableByData(data) {
 }
 
 
-function clearFilter() {
-    $("#filter")[0].reset();
-    $.get(mealAjaxUrl, updateTableByData);
-}
+// function clearFilter() {
+//     $("#filter")[0].reset();
+//     $.get(mealAjaxUrl, updateTableByData);
+// }
+
+
 

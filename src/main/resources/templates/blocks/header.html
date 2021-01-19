@@ -1,13 +1,24 @@
-<div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
+<div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
             <a href="/" class="navbar-brand"> Портал отчетов</a>
-            <span class="navbar-brand" th:text="${reportName}"></span>
-            <a href="/logout" class="navbar-brand-kastom_1">Выход</a>
+
+<!--            <span th:class="'base '+${condition ? 'condition-true' : 'condition-false'}"></span>-->
+
+            <a href="/report_1" th:class="${reportName=='report1' ? 'navbar-brand mb-0 h1' : 'navbar-brand'}"> П.П. по дате обращения</a>
+            <a href="/report_2" th:class="${reportName=='report2' ? 'navbar-brand mb-0' : 'navbar-brand'}"> П.П. по дате записи в расписание</a>
+
+<!--     <a href="/report_1" class="navbar-brand"> П.П. по дате обращения</a>-->
+<!--            <a href="/report_2" class="navbar-brand"> П.П. по дате записи в расписание</a>-->
+<!--            <span class="navbar-brand" th:text="${reportNameRu}"></span>-->
+
+            <a href="/logout" class="navbar-brand-custom_1">Выход</a>
+            <div class="navbar-brand-custom_1" sec:authorize="isAuthenticated()">
+                <span sec:authentication="name"></span>
+            </div>
         </div>
-    </nav>
     <!--    <nav class="navbar navbar-dark bg-dark py-0">-->
     <!--        <div class="container">-->
 

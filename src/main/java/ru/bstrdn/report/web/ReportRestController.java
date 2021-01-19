@@ -29,31 +29,41 @@ public class ReportRestController {
     public List<Report_1> report_1 (
             @RequestParam @Nullable String startDate,
             @RequestParam @Nullable String endDate,
+            @RequestParam (defaultValue = "report1") String reportName,
             @RequestParam (defaultValue = "1") String radio,
             @RequestParam (defaultValue = "0") Integer department,
             @RequestParam (defaultValue = "0") Integer registrar,
             Model model) {
         if (startDate == null) {
-            startDate = LocalDate.now().minusMonths(1)
-                    .with(TemporalAdjusters.firstDayOfMonth()).toString();
+            startDate = WebUtil.getStartDate();
         }
         if (endDate == null) {
-            endDate = LocalDate.now()
-                    .with(TemporalAdjusters.firstDayOfMonth()).toString();
+            endDate = WebUtil.getEndDate();
         }
 
-        log.debug(department.toString());
-        log.debug(radio);
-//        System.out.println(rep.queryReport_1(LocalDate.parse("2018-02-26"), LocalDate.now()));
-        //"2018-02-26 08:43:48", "2020-02-26 08:43:48");
         return rep.queryReport_1(startDate + " 00:00:00", endDate + " 23:59:59", radio, department, registrar);
     }
 
-//    @GetMapping("/filter")
-//    public List<Report_1> getBetween(
-//            @RequestParam @Nullable LocalDate startDate,
-//            @RequestParam @Nullable LocalDate endDate) {
-//        return rep.getBetween(startDate, endDate);
-//    }
+
+    @GetMapping("/report2")
+    public List<Report_1> report_2 (
+            @RequestParam @Nullable String startDate,
+            @RequestParam @Nullable String endDate,
+            @RequestParam (defaultValue = "report2") String reportName,
+            @RequestParam (defaultValue = "1") String radio,
+            @RequestParam (defaultValue = "0") Integer department,
+            @RequestParam (defaultValue = "0") Integer registrar,
+            Model model) {
+
+        if (startDate == null) {
+            startDate = WebUtil.getStartDate();
+        }
+        if (endDate == null) {
+            endDate = WebUtil.getEndDate();
+        }
+
+            return rep.queryReport_2(startDate + " 00:00:00", endDate + " 23:59:59", radio, department, registrar);
+    }
+
 
 }

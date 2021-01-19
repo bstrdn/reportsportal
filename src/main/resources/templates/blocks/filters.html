@@ -1,0 +1,98 @@
+<div th:fragment="filter_1" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="container_filter">
+
+        <div class="filter_block_1">
+
+            <div class="filter_group">
+                <label for="startDate">Начало обращения:</label>
+                <input type="date" id="startDate" name="startDate">
+                <br><br>
+                <label for="endDate">Конец обращения:&nbsp&nbsp</label>
+                <input type="date" id="endDate" name="endDate">
+            </div>
+
+            <div class="filter_group">
+                <label for="allDepartmentWithId">Отделение:</label>
+                <select th:field="${allDepartmentWithId}" id="allDepartmentWithId" name="allDepartmentWithId">
+                    <option value="0"> Все</option>
+                    <option th:each="dep : ${allDepartmentWithId}"
+                            th:value="${dep.get('DEPNUM')}"
+                            th:utext="${dep.get('DEPNAME')}">
+                    </option>
+                </select>
+                <br><br>
+                <label for="allRegistrarWithId">ФИО Регистратора:&nbsp&nbsp</label>
+                <select name="allRegistrar" id="allRegistrarWithId">
+                    <option value="0"> Все</option>
+                    <option th:each="registrar : ${allRegistrarWithId}"
+                            th:value="${registrar.get('DCODE')}"
+                            th:utext="${registrar.get('DNAME')}"/>
+                </select>
+            </div>
+
+            <div class="filter_select">
+                <input name="radiorep" type="radio" value="1" checked> Все пациенты
+                <br>
+                <input name="radiorep" type="radio" value="2"> Пришли на прием
+                <br>
+                <input name="radiorep" type="radio" value="3"> Не пришли на прием
+                <br>
+                <input name="radiorep" type="radio" value="4"> Продолжили лечение
+            </div>
+
+            <div class="filter_select_button">
+                <a href="#" onclick="ctx.updateTable()" class="knopka">Сформировать</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="filter_2" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="container_filter">
+
+        <div class="filter_block_1">
+
+            <div class="filter_group">
+                <label for="startDate">Начало записи в расписании:</label>
+                <input type="date" id="startDate" name="startDate">
+                <br><br>
+                <label for="endDate">Конец записи в расписании:&nbsp&nbsp</label>
+                <input type="date" id="endDate" name="endDate">
+            </div>
+
+            <div class="filter_group">
+                <label for="allDepartmentWithId">Отделение:</label>
+                <select th:field="${allDepartmentWithId}" id="allDepartmentWithId" name="allDepartmentWithId">
+                    <option value="0"> Все</option>
+                    <option th:each="dep : ${allDepartmentWithId}"
+                            th:value="${dep.get('DEPNUM')}"
+                            th:utext="${dep.get('DEPNAME')}">
+                    </option>
+                </select>
+                <br><br>
+                <label for="allRegistrarWithId">ФИО Регистратора:&nbsp&nbsp</label>
+                <select name="allRegistrar" id="allRegistrarWithId">
+                    <option value="0"> Все</option>
+                    <option th:each="registrar : ${allRegistrarWithId}"
+                            th:value="${registrar.get('DCODE')}"
+                            th:utext="${registrar.get('DNAME')}"/>
+                </select>
+            </div>
+
+            <div class="filter_select">
+                <input name="radiorep" type="radio" value="1" checked> Все П.П. за период
+                <br>
+                <input name="radiorep" type="radio" value="2"> П.П. не пришли за период
+                <br>
+                <input name="radiorep" type="radio" value="3"> П.П. перезаписались
+                <br>
+                <input name="radiorep" type="radio" value="4"> П.П. НЕ перезаписались
+            </div>
+
+            <div class="filter_select_button">
+                <a href="#" onclick="ctx.updateTable()" class="knopka">Сформировать</a>
+            </div>
+        </div>
+    </div>
+</div>
