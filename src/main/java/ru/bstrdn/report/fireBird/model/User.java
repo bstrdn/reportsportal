@@ -1,4 +1,4 @@
-package ru.bstrdn.report.model;
+package ru.bstrdn.report.fireBird.model;
 
 import lombok.Data;
 

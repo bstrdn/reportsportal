@@ -1,9 +1,9 @@
-package ru.bstrdn.report.config;
+package ru.bstrdn.report.configurations;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.bstrdn.report.model.User;
+import ru.bstrdn.report.fireBird.model.User;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,10 +16,9 @@ public class MyUserDetails implements UserDetails {
     private String dpasswrd;
     private List<GrantedAuthority> authorityDoctcodeList;
 
-
     public MyUserDetails(User user) {
         System.out.println(user.getDname() + user.getDpasswrd()
-        +user.getDoctcode());
+                + user.getDoctcode());
         this.dname = user.getDname();
         this.dpasswrd = user.getDpasswrd();
         this.authorityDoctcodeList = Arrays.stream(user.getDoctcode().trim().split(","))

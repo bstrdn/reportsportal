@@ -1,4 +1,4 @@
-package ru.bstrdn.report.config;
+package ru.bstrdn.report.configurations;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-//@Configuration
 @EnableWebSecurity
 @Slf4j
-//@AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Qualifier("myUserDetailsService")
@@ -34,15 +32,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/admin").hasAuthority("1")
                 .antMatchers("/user").hasAuthority("2")
-//                .antMatchers("/logout").anonymous()
-                .antMatchers("/").anonymous()
-//                .antMatchers("/").authenticated()
-//                .anyRequest()
-//                .permitAll()
+                .antMatchers("/").authenticated()
                 .and()
                 .formLogin()
                 .and().logout()
-//                .logoutUrl("/logout")
                 //кастомная страница авторизации
                 .and().formLogin()
                 .loginPage("/login")

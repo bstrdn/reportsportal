@@ -1,8 +1,3 @@
-//
-// $(document).ready(function() {
-//     alert(document.getElementsByName());
-// });
-
 //Обрезка ФИО, фамилия + инициалы
 $(document).ready(function() {
     var select = document.getElementsByName('allRegistrar')[0].getElementsByTagName('option');

@@ -5,12 +5,25 @@
         body {
             max-width: 400px; /* ограничение максимальной ширины  */
             margin: 200px auto;
-
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .form_login {
+            position: absolute;
+            background-color: rgba(66, 66, 66, 0.85)
         }
     </style>
+    <script type="text/javascript" th:src="@{/js/neron.js}" defer></script>
 </head>
 <body>
-<div tiles:fragment="content">
+
+<!--neron-->
+<canvas id="c"></canvas>
+
+<div tiles:fragment="content" class="form_login">
     <form name="f" th:action="@{/login}" method="post">
         <fieldset>
             <br>

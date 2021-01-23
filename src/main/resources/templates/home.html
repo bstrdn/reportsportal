@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
 
-<header th:insert="blocks/header :: header"/>
-<script type="text/javascript" th:src="@{/js/util.js}" defer></script>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title text="Портал отчетов"></title>
+    <div th:insert="blocks/css_and_js :: all_css_and_js"/>
+</head>
+<body>
 
+<header th:insert="blocks/header :: main_header"/>
+<div class="container">
+
+    <h3>На портале представлены следующие отчеты:</h3>
+    <h4>П.П. по дате обращения</h4>
+    Данный отчет формируется....
+    <h4>П.П. по дате записи в расписание</h4>
+    Данный отчет формируется....
+
+</div>
 <br>
 <br>
-
-<!--<input type="button" onclick="showMessage('текст 2222')" value="Считать кролей!"/>-->
-
-<br>
-<br>
-
-
-
-
-
-<!--<p th:text="'Hello' + ${title}"/>-->
-
 <footer th:insert="blocks/footer :: footer"/>
 </body>
 </html>

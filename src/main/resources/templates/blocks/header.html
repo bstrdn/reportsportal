@@ -1,45 +1,14 @@
-<div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
-
-
+<div th:fragment="main_header" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
             <a href="/" class="navbar-brand"> Портал отчетов</a>
 
-<!--            <span th:class="'base '+${condition ? 'condition-true' : 'condition-false'}"></span>-->
-
-            <a href="/report_1" th:class="${reportName=='report1' ? 'navbar-brand mb-0 h1' : 'navbar-brand'}"> П.П. по дате обращения</a>
-            <a href="/report_2" th:class="${reportName=='report2' ? 'navbar-brand mb-0' : 'navbar-brand'}"> П.П. по дате записи в расписание</a>
-
-<!--     <a href="/report_1" class="navbar-brand"> П.П. по дате обращения</a>-->
-<!--            <a href="/report_2" class="navbar-brand"> П.П. по дате записи в расписание</a>-->
-<!--            <span class="navbar-brand" th:text="${reportNameRu}"></span>-->
+            <a href="/report_1" th:class="${reportName=='report1' ? 'navbar-brand navbar-brand-custom-selected' : 'navbar-brand'}"> П.П. по дате обращения</a>
+            <a href="/report_2" th:class="${reportName=='report2' ? 'navbar-brand navbar-brand-custom-selected' : 'navbar-brand'}"> П.П. по дате записи в расписание</a>
 
             <a href="/logout" class="navbar-brand-custom_1">Выход</a>
             <div class="navbar-brand-custom_1" sec:authorize="isAuthenticated()">
                 <span sec:authentication="name"></span>
             </div>
         </div>
-    <!--    <nav class="navbar navbar-dark bg-dark py-0">-->
-    <!--        <div class="container">-->
-
-    <!--            <form class="form-inline my-2">-->
-    <!--                <a class="btn btn-info mr-1" href="users">Отчеты</a>-->
-    <!--                <a class="btn btn-primary" href="">-->
-    <!--                    <span class="fa fa-sign-in"></span>-->
-    <!--                </a>-->
-    <!--            </form>-->
-    <!--        </div>-->
-    <!--    </nav>-->
-
-
-    <!--    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">-->
-    <!--    <h5 class="my-0 me-md-auto fw-normal">Портал отчетов</h5>-->
-    <!--    <nav class="my-2 my-md-0 mr-md-3">-->
-    <!--        <a class="p-2 text-dark" href="/">Главная</a>-->
-    <!--        <a class="p-2 text-dark" href="report">Отчеты</a>-->
-    <!--        <a class="p-2 text-dark" href="#">Support</a>-->
-    <!--        <a class="p-2 text-dark" href="#">Pricing</a>-->
-    <!--    </nav>-->
-    <!--    <a class="btn btn-outline-primary" href="#">Sign up</a>-->
-    <!--</div>-->
 </div>

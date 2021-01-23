@@ -2,73 +2,24 @@
 
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <div th:replace="blocks/head :: head"/>
+    <meta charset="UTF-8">
+    <title th:text="${reportNameRu}"></title>
+    <div th:insert="blocks/css_and_js :: all_css_and_js"/>
+</head>
 <body>
-<script type="text/javascript" th:src="@{/js/report_test.js}" defer></script>
+<script type="text/javascript" th:src="@{/js/report_util.js}" defer></script>
 <script type="text/javascript" th:src="@{/lib/buttons.print.js}" defer></script>
 
-<header th:insert="blocks/header :: header"/>
+<header th:insert="blocks/header :: main_header"/>
 
 <input type="hidden" id="reportName" th:value="${reportName}"/>
 
 <div class="container">
 
     <div th:switch="${reportName}">
-            <header th:case="'report1'" th:insert="blocks/filters :: filter_1"/>
-            <header th:case="'report2'" th:insert="blocks/filters :: filter_2"/>
+        <header th:case="'report1'" th:insert="blocks/filters :: filter_1"/>
+        <header th:case="'report2'" th:insert="blocks/filters :: filter_2"/>
     </div>
-
-<!--    <header th:insert="blocks/filters :: filter_2"/>-->
-
-
-<!--    <div class="container_filter">-->
-
-<!--        <div class="filter_block_1">-->
-
-<!--            <div class="filter_group">-->
-<!--                <label for="startDate">Начало обращения:</label>-->
-<!--                <input type="date" id="startDate" name="startDate">-->
-<!--                <br><br>-->
-<!--                <label for="endDate">Конец обращения:&nbsp&nbsp</label>-->
-<!--                <input type="date" id="endDate" name="endDate">-->
-<!--            </div>-->
-
-<!--            <div class="filter_group">-->
-<!--                <label for="allDepartmentWithId">Отделение:</label>-->
-<!--                <select th:field="${allDepartmentWithId}" id="allDepartmentWithId" name="allDepartmentWithId">-->
-<!--                    <option value="0"> Все</option>-->
-<!--                    <option th:each="dep : ${allDepartmentWithId}"-->
-<!--                            th:value="${dep.get('DEPNUM')}"-->
-<!--                            th:utext="${dep.get('DEPNAME')}">-->
-<!--                    </option>-->
-<!--                </select>-->
-<!--                <br><br>-->
-<!--                <label for="allRegistrarWithId">ФИО Регистратора:&nbsp&nbsp</label>-->
-<!--                <select name="allRegistrar" id="allRegistrarWithId">-->
-<!--                    <option value="0"> Все</option>-->
-<!--                    <option th:each="registrar : ${allRegistrarWithId}"-->
-<!--                            th:value="${registrar.get('DCODE')}"-->
-<!--                            th:utext="${registrar.get('DNAME')}"/>-->
-<!--                </select>-->
-<!--            </div>-->
-
-<!--            <div class="filter_select">-->
-<!--                <input name="radiorep" type="radio" value="1" checked> Все пациенты-->
-<!--                <br>-->
-<!--                <input name="radiorep" type="radio" value="2"> Пришли на прием-->
-<!--                <br>-->
-<!--                <input name="radiorep" type="radio" value="3"> Не пришли на прием-->
-<!--                <br>-->
-<!--                <input name="radiorep" type="radio" value="4"> Продолжили лечение-->
-<!--            </div>-->
-
-<!--            <div class="filter_select_button">-->
-<!--            <a href="#" onclick="ctx.updateTable()" class="knopka">Сформировать</a>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    </select>-->
-
 
     <table id="datatable" class="table table-striped table-bordered">
         <thead>
@@ -81,13 +32,8 @@
         </tr>
         </thead>
     </table>
-    <!--    </div>-->
 </div>
 
 <footer th:insert="blocks/footer :: footer"/>
-
-<!--<button type="button" th:onclick="demo()">тест работы js</button>-->
-<script type="text/javascript" th:src="@{/js/util.js}" defer></script>
-
 </body>
 </html>

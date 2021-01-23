@@ -1,6 +1,5 @@
 var reportName = $('#reportName').val()
 var resturl = 'rest/' + reportName;
-// var resturl = 'rest/report1';
 
 var date = new Date();
 var day = date.getDate();
@@ -9,7 +8,6 @@ var day = date.getDate();
     year = (month == 1 ? year - 1 : year);
     startmonth = (month == 1 ? 12 : month - 1);
     month = (startmonth < 10 ? "0" : "") + startmonth;
-// day = (day < 10 ? "0" : "") + day;
 var enddate = year + "-" + month + "-" + daysInMonth(month, year);
 document.getElementById('endDate').value = enddate;
 var startdate = year + "-" + month + "-01";
@@ -19,14 +17,6 @@ document.getElementById('startDate').value = startdate;
 function daysInMonth (month, year) {
     return new Date(year, month, 0).getDate();
 }
-//
-// function demo() {
-//     table
-//         .clear()
-//         .draw();
-//     alert("test");
-//
-// }
 
 function getRadio() {
     var allradio = document.getElementsByName('radiorep');
@@ -124,13 +114,12 @@ function makeEditable(datatableOpts) {
         ));
 }
 
-
 $(function () {
     makeEditable({
         "columns": [
             {"data": "fullname"},
             {
-                "data": "fixdate",
+                "data": "createdate",
                 "render": function (date, type, row) {
                         return moment(date).format("DD.MM.YYYY");
                 }
@@ -158,12 +147,3 @@ $(function () {
 function updateTableByData(data) {
     ctx.datatableApi.clear().rows.add(data).draw();
 }
-
-
-// function clearFilter() {
-//     $("#filter")[0].reset();
-//     $.get(mealAjaxUrl, updateTableByData);
-// }
-
-
-
