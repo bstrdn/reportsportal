@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title text="Портал отчетов"></title>
+    <div th:insert="blocks/css_and_js :: all_css_and_js"/>
+</head>
+<body>
+
+<header th:insert="blocks/header :: main_header"/>
+<div class="container">
+
+    <h4><span sec:authentication="name"/> Авторизовывался:</h4>
+
+    <table id="countryList">
+        <thead>
+        <tr>
+            <th> Дата </th>
+<!--            <th th:text="#{country.label.capital}"> Capital </th>-->
+<!--            <th th:text="#{country.label.square}"> Square </th>-->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="log : ${logs}">
+            <td th:text="${log.getDate()}"></td>
+<!--            <td th:text="${country.capital}"></td>-->
+<!--            <td th:text="${country.square}"></td>-->
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+<br>
+<br>
+<footer th:insert="blocks/footer :: footer"/>
+</body>
+</html>

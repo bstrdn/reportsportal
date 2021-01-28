@@ -1,14 +1,61 @@
 <div th:fragment="main_header" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
-    <nav class="navbar navbar-default navbar-static-top">
-        <div class="container">
-            <a href="/" class="navbar-brand"> Портал отчетов</a>
 
-            <a href="/report_1" th:class="${reportName=='report1' ? 'navbar-brand navbar-brand-custom-selected' : 'navbar-brand'}"> П.П. по дате обращения</a>
-            <a href="/report_2" th:class="${reportName=='report2' ? 'navbar-brand navbar-brand-custom-selected' : 'navbar-brand'}"> П.П. по дате записи в расписание</a>
+
+<!--    <nav class="navbar navbar-default navbar-static-top">-->
+<!--        <div class="container">-->
+<!--            <a href="/" class="navbar-brand"> Портал отчетов</a>-->
+
+            <!--            <a href="/report_1" th:class="${reportName=='report1' ? 'navbar-brand navbar-brand-custom-selected' : 'navbar-brand'}"> П.П. по дате обращения</a>-->
+            <!--            <a href="/report_2" th:class="${reportName=='report2' ? 'navbar-brand navbar-brand-custom-selected' : 'navbar-brand'}"> П.П. по дате записи в расписание</a>-->
+<div class="nav_wrapp">
+            <nav>
+                <ul class="dropdown">
+                    <li class="drop" ><a href="#">Отчеты МИС</a>
+                        <ul class="sub_menu">
+                            <li sec:authorize="hasAnyAuthority('1', '2')"><a href="/report_1">П.П. по дате обращения</a></li>
+                            <li sec:authorize="hasAnyAuthority('1', '2')"><a href="/report_2">П.П. по дате записи</a></li>
+                            <li><a href="/report_cert">Сертификаты</a></li>
+                        </ul>
+<!--                    </li>-->
+<!--                    <li class="drop" sec:authorize="hasAnyAuthority('1', '2', '3')"><a href="#">Отчеты Арктур</a>-->
+<!--                        <ul class="sub_menu">-->
+<!--                            <li sec:authorize="hasAnyAuthority('1', '2')"><a href="/report_1">П.П. по дате обращения</a></li>-->
+<!--                            <li sec:authorize="hasAnyAuthority('1', '2')"><a href="/report_2">П.П. по дате записи в расписание</a></li>-->
+<!--                            <li sec:authorize="hasAnyAuthority('1', '3')"><a href="/report_sert">Сертификаты</a></li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
+                    <li class="drop" sec:authorize="hasAnyAuthority('1', '6')"><a href="#">УКЦ ЭДМЕД</a>
+                        <ul class="sub_menu">
+                            <li><a href="#">Слушатели</a></li>
+                            <li><a href="#">Отчет</a></li>
+                        </ul>
+                    </li>
+                    <li class="drop" sec:authorize="hasAnyAuthority('1', '4')"><a href="#">План-Факт</a>
+                        <ul class="sub_menu">
+                            <li><a href="#">Отчет</a></li>
+                        </ul>
+                    </li>
+                    <li class="drop" sec:authorize="hasAnyAuthority('1', '5')"><a href="#">Скуд</a>
+                        <ul class="sub_menu">
+                            <li><a href="#">Отчет</a></li>
+                        </ul>
+                    </li>
+                    <li class="drop" sec:authorize="hasAnyAuthority('7')"><a href="#">План лечения</a>
+                        <ul class="sub_menu">
+                            <li><a href="#">Отчет</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Рассылка</a>
+                    </li>
+                </ul>
+<!--            </nav>-->
+
 
             <a href="/logout" class="navbar-brand-custom_1">Выход</a>
             <div class="navbar-brand-custom_1" sec:authorize="isAuthenticated()">
-                <span sec:authentication="name"></span>
+                <a href="/profile"><span sec:authentication="name"/></a>
             </div>
-        </div>
+<!--        </div>-->
+    </nav>
+</div>
 </div>

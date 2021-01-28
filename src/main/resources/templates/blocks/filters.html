@@ -40,7 +40,7 @@
                 <input name="radiorep" type="radio" value="4"> Продолжили лечение
             </div>
 
-            <div class="filter_select_button">
+            <div class="filter_select">
                 <a href="#" onclick="ctx.updateTable()" class="knopka">Сформировать</a>
             </div>
         </div>
@@ -89,9 +89,50 @@
                 <input name="radiorep" type="radio" value="4"> П.П. НЕ перезаписались
             </div>
 
-            <div class="filter_select_button">
+            <div class="filter_select">
                 <a href="#" onclick="ctx.updateTable()" class="knopka">Сформировать</a>
             </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Для бухгалтерии-->
+<div th:fragment="filter_buh_1" xmlns:th="http://www.w3.org/1999/xhtml">
+
+    <div class="filter_block_1">
+
+        <div class="filter_group">
+            <label for="startDate">Начало периода:</label>
+            <input type="date" id="startDate" name="startDate">
+            <br><br>
+            <label for="endDate">Конец периода:&nbsp&nbsp</label>
+            <input type="date" id="endDate" name="endDate">
+        </div>
+
+        <div class="filter_group">
+            <label for="allCertificate">Тип сертификата:</label>
+            <select th:field="${allCertificate}" id="allCertificate" name="allCertificate">
+                <option value="0"> Все</option>
+                <option th:each="dep : ${allCertificate}"
+                        th:value="${dep.get('id')}"
+                        th:utext="${dep.get('name')}">
+                </option>
+                <br>
+
+            </select>
+            <br><br>
+            <label for="summ">Всего бабок:</label>
+            <p id="summ" style="display:inline-block"></p>
+
+        </div>
+
+        <div class="filter_select">
+
+        </div>
+
+        <div class="filter_select">
+            <a href="#" onclick="ctx.updateTable()" class="knopka">Сформировать</a>
         </div>
     </div>
 </div>

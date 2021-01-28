@@ -2,11 +2,14 @@ package ru.bstrdn.report.web;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.bstrdn.report.fireBird.repository.JdbcReportRepository;
+import ru.bstrdn.report.service.LoggingService;
 
 @Data
 @AllArgsConstructor
@@ -14,8 +17,8 @@ import ru.bstrdn.report.fireBird.repository.JdbcReportRepository;
 public class MainController {
     JdbcReportRepository report;
 
-//    @Autowired
-//    private UserH2RepositoryTest userH2RepositoryTest;
+    @Autowired
+    private LoggingService loggingService;
 
     @GetMapping("/report_1")
     public String home(Model model) {
@@ -35,6 +38,14 @@ public class MainController {
         return "report_1";
     }
 
+    @GetMapping("/report_cert")
+    public String report_sert(Model model) {
+        model.addAttribute("allCertificate", report.getAllCertWithId());
+        model.addAttribute("reportNameRu", "Отчет по сертификатам");
+        model.addAttribute("reportName", "report_buh_1");
+        return "report_buh_1";
+    }
+
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("allUsers", report.getAllUsers());
@@ -46,6 +57,13 @@ public class MainController {
         return "home";
     }
 
+    @GetMapping("/profile")
+    public String profile(Model model) {
+        model.addAttribute("logs", loggingService.getAllByFio(SecurityContextHolder
+                .getContext().getAuthentication().getName()));
+        return "profile";
+    }
+
     @GetMapping("/user")
     @ResponseBody
     public String user() {
@@ -55,7 +73,6 @@ public class MainController {
     @GetMapping("/admin")
     @ResponseBody
     public String admin() {
-//        userH2RepositoryTest.findByDescription("Админ ужин");
         return "<h1>Welcome Admin</h1>";
     }
 }

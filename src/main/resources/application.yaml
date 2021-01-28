@@ -5,7 +5,8 @@ spring:
     show-sql: true
     open-in-view: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
+
     properties:
       #  http://docs.jboss.org/hibernate/orm/5.3/userguide/html_single/Hibernate_User_Guide.html#configurations
       hibernate:
@@ -14,12 +15,20 @@ spring:
         # https://stackoverflow.com/questions/21257819/what-is-the-difference-between-hibernate-jdbc-fetch-size-and-hibernate-jdbc-batc
         jdbc.batch_size: 20
 
-h2:
+postgres:
   datasource:
-    jdbcUrl: jdbc:h2:./src/main/resources/db/h2
-    username: sa
-    password:
+    jdbcUrl: jdbc:postgresql://localhost:5432/postgres
+    username: user
+    password: password
     default-auto-commit: false
+#    h2.console.enabled: true
+#h2:
+#  datasource:
+#    jdbcUrl: jdbc:h2:./src/main/resources/db/h2
+#    username: sa
+#    password:
+#    default-auto-commit: false
+#    h2.console.enabled: true
 
 firebird:
   datasource:

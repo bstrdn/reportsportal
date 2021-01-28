@@ -1,5 +1,6 @@
 package ru.bstrdn.report.configurations;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class MyUserDetails implements UserDetails {
 
     private String dname;
@@ -17,8 +19,6 @@ public class MyUserDetails implements UserDetails {
     private List<GrantedAuthority> authorityDoctcodeList;
 
     public MyUserDetails(User user) {
-        System.out.println(user.getDname() + user.getDpasswrd()
-                + user.getDoctcode());
         this.dname = user.getDname();
         this.dpasswrd = user.getDpasswrd();
         this.authorityDoctcodeList = Arrays.stream(user.getDoctcode().trim().split(","))
@@ -28,13 +28,11 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        System.out.println(authorityDoctcodeList);
         return authorityDoctcodeList;
     }
 
     @Override
     public String getPassword() {
-        System.out.println(dpasswrd);
         return dpasswrd;
     }
 

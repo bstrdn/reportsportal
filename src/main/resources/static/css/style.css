@@ -53,11 +53,12 @@ a.navbar-brand-custom-selected {
 }
 
 a.knopka {
+    float: right;
     color: #fff; /* цвет текста */
     text-decoration: none; /* убирать подчёркивание у ссылок */
     user-select: none; /* убирать выделение текста */
     background: #337ab7; /* фон кнопки */
-    padding: 1.4em 1.4em; /* отступ от текста */
+    padding: 10px 10px; /* отступ от текста */
     outline: none; /* убирать контур в Mozilla */
 }
 /* при наведении курсора мышки */
@@ -71,24 +72,152 @@ a.knopka:active {
 
 .filter_block_1, .filter_block_2 {
     width: 100%;
+    height: 88px;
     display: block;
     text-align: left;
 }
 
 .filter_group {
-    width: calc(35% - 24px);
+    overflow: hidden;
+    width: 375px;
+    height: 88px;
+    /*width: calc(35% - 24px);*/
     display: inline-block;
 }
 
 .filter_select {
     vertical-align: top;
-    width: calc(20% - 24px);
+    width: 189px;
+    height: 88px;
     display: inline-block;
 }
 
 .filter_select_button {
-    margin: 35px 0 0 35px;
-    vertical-align: top;
-    width: calc(10% - 24px);
+    /*margin: 35px 0 0 35px;*/
+    vertical-align: middle;
+    width: 160px;
+    height: 88px;
     display: inline-block;
+}
+
+
+
+
+/*body{*/
+/*    margin: 0px;*/
+/*    padding: 0px;*/
+/*    background: #e74c3c;*/
+/*    font-family: 'Lato', sans-serif;*/
+/*}*/
+
+.nav_wrapp {
+    background: #ecf0f1;
+    height: 60px;
+margin: 0 0 20px;
+}
+
+h1{
+    margin: 2em 0px;
+    padding: 0px;
+    color: #fff;
+    text-align: center;
+    font-weight: 100;
+    font-size: 50px;
+}
+
+nav{
+    width: 1140px;
+    margin: 0em auto;
+}
+
+ul{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+ul.dropdown{
+    position: relative;
+    width: 100%;
+}
+
+ul.dropdown li{
+    font-weight: bold;
+    float: left;
+    width: 160px;
+    position: relative;
+    background: #ecf0f1;
+}
+
+ul.dropdown a:hover{
+    color: #000;
+}
+
+ul.dropdown li a {
+    display: block;
+    padding: 20px 8px;
+    color: #34495e;
+    position: relative;
+    z-index: 2000;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 300;
+}
+
+ul.dropdown li a:hover,
+ul.dropdown li a.hover{
+    background: #3498db;
+    position: relative;
+    color: #fff;
+}
+
+
+ul.dropdown ul{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 180px;
+    z-index: 1000;
+}
+
+ul.dropdown ul li {
+    font-weight: normal;
+    background: #f6f6f6;
+    color: #000;
+    border-bottom: 1px solid #ccc;
+}
+
+ul.dropdown ul li a{
+    display: block;
+    color: #34495e !important;
+    background: #eee !important;
+}
+
+ul.dropdown ul li a:hover{
+    display: block;
+    background: #3498db !important;
+    color: #fff !important;
+}
+
+.drop > a{
+    position: relative;
+}
+
+.drop > a:after{
+    content:"";
+    position: absolute;
+    right: 10px;
+    top: 40%;
+    border-left: 5px solid transparent;
+    border-top: 5px solid #333;
+    border-right: 5px solid transparent;
+    z-index: 999;
+}
+
+.drop > a:hover:after{
+    content:"";
+    border-left: 5px solid transparent;
+    border-top: 5px solid #fff;
+    border-right: 5px solid transparent;
 }

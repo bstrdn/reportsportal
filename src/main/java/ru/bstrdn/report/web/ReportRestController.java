@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bstrdn.report.fireBird.model.Report_1;
+import ru.bstrdn.report.fireBird.model.Report_buh_1;
 import ru.bstrdn.report.fireBird.repository.JdbcReportRepository;
 
 import java.util.List;
@@ -59,5 +60,22 @@ public class ReportRestController {
             endDate = WebUtil.getEndDate();
         }
         return rep.queryReport_2(startDate + " 00:00:00", endDate + " 23:59:59", radio, department, registrar);
+    }
+
+    @GetMapping("/report_buh_1")
+    public List<Report_buh_1> report_cert(
+            @RequestParam @Nullable String startDate,
+            @RequestParam @Nullable String endDate,
+            @RequestParam(defaultValue = "report_buh_1") String reportName,
+            @RequestParam(defaultValue = "0") Integer sertId,
+            Model model) {
+
+        if (startDate == null) {
+            startDate = "2020-01-01";
+        }
+        if (endDate == null) {
+            endDate = WebUtil.getEndDate();
+        }
+        return rep.queryReport_buh_1(sertId, startDate  + " 00:00:00", endDate  + " 00:00:00");
     }
 }

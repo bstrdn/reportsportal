@@ -29,17 +29,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
+                //для консоли h2
+                .headers().frameOptions().disable()
+                .and()
                 .authorizeRequests()
-                .antMatchers("/admin").hasAuthority("1")
-                .antMatchers("/user").hasAuthority("2")
-                .antMatchers("/").authenticated()
+//                .antMatchers("/admin").hasAuthority("1")
+//                .antMatchers("/report_1", "/report_2").hasAnyAuthority("1", "2")
+//                .antMatchers("/login", "/error", "/js/**").permitAll()
+//                .antMatchers("/**").authenticated()
+                .antMatchers("/**").permitAll()
                 .and()
                 .formLogin()
                 .and().logout()
                 //кастомная страница авторизации
                 .and().formLogin()
-                .loginPage("/login")
-                .permitAll();
+                .loginPage("/login");
     }
 
     @Bean

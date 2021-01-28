@@ -1,4 +1,4 @@
-package ru.bstrdn.report.h2.model;
+package ru.bstrdn.report.postgres.model;
 
 import lombok.Data;
 
