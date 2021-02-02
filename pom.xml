@@ -10,7 +10,7 @@
     </parent>
     <groupId>ru.bstrdn</groupId>
     <artifactId>report</artifactId>
-    <version>0.3.5</version>
+    <version>0.4.5</version>
     <name>report</name>
     <description>report</description>
 
@@ -43,6 +43,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
         </dependency>
 
         <dependency>
@@ -86,6 +91,17 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <!-- Access -->
+        <dependency>
+            <groupId>net.sf.ucanaccess</groupId>
+            <artifactId>ucanaccess</artifactId>
+            <version>5.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.healthmarketscience.jackcess</groupId>
+            <artifactId>jackcess-encrypt</artifactId>
+            <version>3.0.0</version>
         </dependency>
 
         <!-- Logging with SLF4J -->
