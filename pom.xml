@@ -84,8 +84,10 @@
         </dependency>
         <dependency>
             <groupId>org.firebirdsql.jdbc</groupId>
-            <artifactId>jaybird</artifactId>
-            <version>4.0.1.java8</version>
+            <artifactId>jaybird-jdk18</artifactId>
+            <version>3.0.10</version>
+<!--            <artifactId>jaybird</artifactId>-->
+<!--            <version>4.0.1.java8</version>-->
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>

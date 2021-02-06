@@ -8,11 +8,11 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 
-public class GateUsersDataSource implements DataSource {
+public class GateDataSource implements DataSource {
 
     private String connUrl;
 
-    public GateUsersDataSource(String connUrl) {
+    public GateDataSource(String connUrl) {
         this.connUrl = connUrl;
     }
 

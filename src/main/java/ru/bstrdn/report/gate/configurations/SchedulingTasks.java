@@ -2,15 +2,16 @@ package ru.bstrdn.report.gate.configurations;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import ru.bstrdn.report.gate.GateUtil;
 import ru.bstrdn.report.gate.repository.GateRepository;
+import ru.bstrdn.report.postgres.repository.GateEventsRepository;
 import ru.bstrdn.report.postgres.repository.GateUsersRepository;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.io.IOException;
 
 @Slf4j
 @Component
@@ -20,33 +21,47 @@ public class SchedulingTasks {
     GateRepository gateRepository;
     @Autowired
     GateUsersRepository gateUsersRepository;
+    @Autowired
+    GateEventsRepository gateEventsRepository;
+    @Autowired
+    GateUtil gateUtil;
 
-    private final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("YYMMdd");
-
+    @Value("${gate.sourceDir}")
+    String sourceDir;
+    @Value("${gate.targetDir}")
+    String targetDir;
 
     @Scheduled(cron = "0 0 7 * * ?")
-//    @Scheduled(cron = "0 45 15 * * ?")
     public void updateGateUsers() {
         gateUsersRepository.deleteAll();
         gateUsersRepository.saveAll(gateRepository.getGateUsers());
     }
 
     @Scheduled(cron = "0 0 6 * * ?")
-//    @Scheduled(cron = "0 45 15 * * ?")
     public void updateGateEvents() {
-        LocalDate tenDaysAgo = LocalDate.now().minusDays(1);
-        log.info("n" + DATETIME_FORMATTER.format(tenDaysAgo) + ".mdb");
+        try {
+            String summary = gateUtil.copyDir(sourceDir, targetDir);
+            log.info(summary);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
-
 }
 
+
+//достать файл за предыдущий день "n210204.mdb"
+//    private final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("YYMMdd");
+//       LocalDate tenDaysAgo = LocalDate.now().minusDays(1);
+//        log.info("n" + DATETIME_FORMATTER.format(tenDaysAgo) + ".mdb");
+
+//отложенная задача на конкретное время
+//    @Scheduled(cron = "0 45 15 * * ?")
 
 //https://spring.io/guides/gs/scheduling-tasks/
 //https://docs.oracle.com/cd/E12058_01/doc/doc.1014/e12030/cron_expressions.htm
 //@Scheduled(cron = "0 1 1 * * ?")
 //Below you can find the example patterns from the spring forum:
-//
+
 //        * "0 0 * * * *" = the top of every hour of every day.
 //        * "*/10 * * * * *" = every ten seconds.
 //        * "0 0 8-10 * * *" = 8, 9 and 10 o'clock of every day.

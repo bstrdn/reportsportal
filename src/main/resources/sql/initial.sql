@@ -1,4 +1,7 @@
 drop table gate_users;
+drop table gate_events;
+CREATE SEQUENCE global_seq START WITH 100000;
+
 
 create table gate_users
 (
@@ -46,3 +49,32 @@ alter table logs
 
 create unique index logs_id_uindex
     on logs (id);
+
+
+
+
+
+
+
+create table gate_events
+(
+    id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    datetime TIMESTAMP,
+    eventtype INTEGER,
+    eventcode INTEGER,
+    devptr INTEGER,
+    rdrptr INTEGER,
+    userptr INTEGER,
+    operatorid INTEGER,
+    alarmstatus INTEGER,
+    unit VARCHAR,
+    message VARCHAR,
+    name VARCHAR
+);
+
+create unique index gate_events_id_uindex
+    on gate_events ("id");
+
+alter table gate_events
+    add constraint gate_events_pk
+        primary key ("id");
