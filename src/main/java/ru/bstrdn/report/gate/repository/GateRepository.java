@@ -1,5 +1,6 @@
 package ru.bstrdn.report.gate.repository;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -12,6 +13,8 @@ import java.util.List;
 
 @Repository
 public class GateRepository {
+    @Value("${gate.configFile}")
+    String configFile;
 
 
     private static final RowMapper<GateUser> ROW_MAPPER = BeanPropertyRowMapper.newInstance(GateUser.class);
@@ -19,9 +22,10 @@ public class GateRepository {
     private static String connUrl = "jdbc:ucanaccess://";
 
     public List<GateUser> getGateUsers() {
+
         try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-            JdbcTemplate jdbcTemplate = new JdbcTemplate(new GateDataSource(connUrl + "C:/GATE/Server/config.mdb"));
+            JdbcTemplate jdbcTemplate = new JdbcTemplate(new GateDataSource(connUrl + configFile));
             return jdbcTemplate.query("SELECT * FROM Users", ROW_MAPPER);
         } catch (Exception e) {
             System.out.println(e.getMessage());

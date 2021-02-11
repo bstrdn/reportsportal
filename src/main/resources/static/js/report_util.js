@@ -3,17 +3,17 @@
 
 var date = new Date();
 var day = date.getDate();
-    month = date.getMonth() + 1;
-    year = date.getFullYear();
-    year = (month == 1 ? year - 1 : year);
-    startmonth = (month == 1 ? 12 : month - 1);
-    month = (startmonth < 10 ? "0" : "") + startmonth;
+month = date.getMonth() + 1;
+year = date.getFullYear();
+year = (month == 1 ? year - 1 : year);
+startmonth = (month == 1 ? 12 : month - 1);
+month = (startmonth < 10 ? "0" : "") + startmonth;
 var enddate = year + "-" + month + "-" + daysInMonth(month, year);
 document.getElementById('endDate').value = enddate;
+var restPlug = 'rest/plug';
 
 
-
-function daysInMonth (month, year) {
+function daysInMonth(month, year) {
     return new Date(year, month, 0).getDate();
 }
 
@@ -22,6 +22,15 @@ function getRadio() {
     for (var i = 0; i < allradio.length; i++) {
         if (allradio[i].checked) {
             return allradio[i].value;
+        }
+    }
+}
+
+function getFilterCombine() {
+    var allradio2 = document.getElementsByName('radio_combine');
+    for (var i = 0; i < allradio2.length; i++) {
+        if (allradio2[i].checked) {
+            return allradio2[i].value;
         }
     }
 }
@@ -52,10 +61,12 @@ function makeEditable(datatableOpts) {
         // https://api.jquery.com/jquery.extend/#jQuery-extend-deep-target-object1-objectN
         $.extend(true, datatableOpts,
             {
-                "ajax": {
-                    "url": resturl,
-                    "dataSrc": ""
-                },
+                // "processing": true,
+                // "serverSide": true,
+                // "ajax": {
+                //     "url": resturl,
+                //     "dataSrc": ""
+                // },
                 stateSave: true,
                 retrieve: true,
                 destroy: true,
@@ -87,10 +98,11 @@ function makeEditable(datatableOpts) {
                     }
                 ],
                 language: {
+                    "sProcessing": "loading data...",
                     "processing": "Подождите...",
                     "search": "Поиск:",
-                    "lengthMenu": "Показать _MENU_ пациентов",
-                    "info": "Всего _TOTAL_ пациентов",
+                    "lengthMenu": "Показать _MENU_ записей",
+                    "info": "Всего _TOTAL_ записей",
                     // "info": "Пациенты с _START_ по _END_ из _TOTAL_ пациентов",
                     "infoEmpty": "Записи с 0 до 0 из 0 записей",
                     "infoFiltered": "(отфильтровано из _MAX_ записей)",
@@ -110,13 +122,14 @@ function makeEditable(datatableOpts) {
                     }
                 }
             }
-
         ));
-    setTimeout(function() {
-        ctx.updateTable();
-        var summary = ctx.datatableApi.column(1).data().sum();
-        $('#summ').html(summary);
-    }, 10);
+    //Обновление суммы Сертификатов
+    // setTimeout(function() {
+    //     ctx.updateTable();
+    //     var summary = ctx.datatableApi.column(1).data().sum();
+    //     $('#summ').html(summary);
+    // }, 10);
+
     // var summary = ctx.datatableApi.column(1).data().sum();
     // $('#summ').html(summary);
 }
@@ -157,13 +170,6 @@ function updateTableByData(data) {
 }
 
 
-
-
-
-
-
-
-
 /*
 *
 * Credits to https://css-tricks.com/long-dropdowns-solution/
@@ -172,9 +178,9 @@ function updateTableByData(data) {
 
 var maxHeight = 400;
 
-$(function(){
+$(function () {
 
-    $(".dropdown > li").hover(function() {
+    $(".dropdown > li").hover(function () {
 
         var $container = $(this),
             $list = $container.find("ul"),
@@ -202,16 +208,17 @@ $(function(){
                     height: maxHeight,
                     overflow: "hidden"
                 })
-                .mousemove(function(e) {
+                .mousemove(function (e) {
                     var offset = $container.offset();
                     var relativeY = ((e.pageY - offset.top) * multiplier) - ($container.data("origHeight") * multiplier);
                     if (relativeY > $container.data("origHeight")) {
                         $list.css("top", -relativeY + $container.data("origHeight"));
-                    };
+                    }
+                    ;
                 });
         }
 
-    }, function() {
+    }, function () {
 
         var $el = $(this);
 
@@ -219,7 +226,7 @@ $(function(){
         $el
             .height($(this).data("origHeight"))
             .find("ul")
-            .css({ top: 0 })
+            .css({top: 0})
             .hide()
             .end()
             .find("a")

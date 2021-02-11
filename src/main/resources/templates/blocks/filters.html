@@ -20,7 +20,7 @@
                             th:utext="${dep.get('DEPNAME')}">
                     </option>
                 </select>
-                <br><br>
+                <br>
                 <label for="allRegistrarWithId">ФИО Регистратора:&nbsp&nbsp</label>
                 <select name="allRegistrar" id="allRegistrarWithId">
                     <option value="0"> Все</option>
@@ -28,6 +28,10 @@
                             th:value="${registrar.get('DCODE')}"
                             th:utext="${registrar.get('DNAME')}"/>
                 </select>
+                <div class="filter_combine">
+                    <input name="radio_combine" type="radio" value="1" checked> Все приёмы&nbsp&nbsp&nbsp
+                    <input name="radio_combine" type="radio" value="2"> Уникальные пациенты
+                </div>
             </div>
 
             <div class="filter_select">
@@ -69,7 +73,7 @@
                             th:utext="${dep.get('DEPNAME')}">
                     </option>
                 </select>
-                <br><br>
+                <br>
                 <label for="allRegistrarWithId">ФИО Регистратора:&nbsp&nbsp</label>
                 <select name="allRegistrar" id="allRegistrarWithId">
                     <option value="0"> Все</option>
@@ -77,6 +81,10 @@
                             th:value="${registrar.get('DCODE')}"
                             th:utext="${registrar.get('DNAME')}"/>
                 </select>
+                <div class="filter_combine">
+                    <input name="radio_combine" type="radio" value="1" checked> Все приёмы&nbsp&nbsp&nbsp
+                    <input name="radio_combine" type="radio" value="2"> Уникальные пациенты
+                </div>
             </div>
 
             <div class="filter_select">

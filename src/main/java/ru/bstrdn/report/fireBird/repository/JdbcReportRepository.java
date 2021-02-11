@@ -10,7 +10,6 @@ import ru.bstrdn.report.fireBird.model.Report_1;
 import ru.bstrdn.report.fireBird.model.Report_buh_1;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -30,20 +29,43 @@ public class JdbcReportRepository {
     }
 
     //ПЕРВИЧНЫЕ ПАЦИЕНТЫ (ВСЕ) не уникальные пациенты
-    public List<Report_1> queryReport_1(String fromDate, String toDate, String radio, Integer department, Integer registrar) {
+    public List<Report_1> queryReport_1(String fromDate, String toDate, String radio, Integer department, Integer registrar, Integer filter_combine) {
         StringBuilder stringBuilder = new StringBuilder();
 
+        if (filter_combine == 1) {
+            stringBuilder.append("""
+                    SELECT
+                    cl.fullname,
+                    cl.phone1,
+                    IIF (EXTRACT (DAY FROM s.createdate) < 10, '0' || EXTRACT (DAY FROM s.createdate) || '.', EXTRACT (DAY FROM s.createdate) || '.') ||
+                    IIF (EXTRACT (MONTH FROM s.createdate) < 10, '0' || EXTRACT (MONTH FROM s.createdate) || '.', EXTRACT (MONTH FROM s.createdate) || '.') ||
+                    EXTRACT (YEAR FROM s.createdate) createdate,
+                    IIF (EXTRACT (DAY FROM s.workdate) < 10, '0' || EXTRACT (DAY FROM s.workdate) || '.', EXTRACT (DAY FROM s.workdate) || '.') ||
+                    IIF (EXTRACT (MONTH FROM s.workdate) < 10, '0' || EXTRACT (MONTH FROM s.workdate) || '.', EXTRACT (MONTH FROM s.workdate) || '.') ||
+                    EXTRACT (YEAR FROM s.workdate) workdate,
+                    doc.ntuser docFullname
+                    """);
+        }
+        if (filter_combine == 2) {
+            stringBuilder.append("""
+                    SELECT
+                    DISTINCT (cl.fullname) fullname,
+                    cl.phone1,
+                    LIST (IIF (EXTRACT (DAY FROM s.createdate) < 10, '0' || EXTRACT (DAY FROM s.createdate) || '.', EXTRACT (DAY FROM s.createdate) || '.') ||
+                    IIF (EXTRACT (MONTH FROM s.createdate) < 10, '0' || EXTRACT (MONTH FROM s.createdate) || '.', EXTRACT (MONTH FROM s.createdate) || '.') ||
+                    EXTRACT (YEAR FROM s.createdate), '; ') createdate,
+                    LIST (IIF (EXTRACT (DAY FROM s.workdate) < 10, '0' || EXTRACT (DAY FROM s.workdate) || '.', EXTRACT (DAY FROM s.workdate) || '.') ||
+                    IIF (EXTRACT (MONTH FROM s.workdate) < 10, '0' || EXTRACT (MONTH FROM s.workdate) || '.', EXTRACT (MONTH FROM s.workdate) || '.') ||
+                    EXTRACT (YEAR FROM s.workdate), '; ') workdate,
+                    LIST (doc.ntuser, '; ') docFullname
+                    """);
+        }
+
         stringBuilder.append("""
-                SELECT
-                cl.fullname,
-                cl.phone1,
-                SUBSTRING (s.createdate FROM 1 FOR 10) createdate,
-                SUBSTRING (s.workdate FROM 1 FOR 10) workdate,
-                doc.fullname docFullname
-                FROM schedule s
-                JOIN clients cl ON s.pcode = cl.pcode
-                LEFT JOIN doctor reg ON s.uid = reg.dcode
-                LEFT JOIN doctor doc ON s.dcode = doc.dcode
+                                    FROM schedule s
+                                    JOIN clients cl ON s.pcode = cl.pcode
+                                    LEFT JOIN doctor reg ON s.uid = reg.dcode
+                                    LEFT JOIN doctor doc ON s.dcode = doc.dcode
                 """);
 
         if (radio.equals("4")) {
@@ -60,15 +82,16 @@ public class JdbcReportRepository {
         stringBuilder.append("""
                 WHERE s.status = 1 --Статус назначения "Первичный"
                 AND doc.fullname IS NOT NULL
-                AND doc.depnum != 10001020
-                AND reg.stdtype = 1
+                AND doc.depnum != 10001020 --Отделение доктора не равно рентгену
+                AND reg.stdtype = 1 --Запись в расписание внес "Регистратор" а не доктор
                 AND s.createdate BETWEEN ? AND ? 
 
                 """);
 
+        //Фильтр по департаменту и регистратору
         departmentFilter(stringBuilder, department, registrar);
 
-        //пришли на прием
+        //Пришли на прием
         if (radio.equals("2")) {
             stringBuilder.append("""
                      AND s.clvisit = 1 
@@ -82,24 +105,34 @@ public class JdbcReportRepository {
                     """);
         }
 
-        List<Report_1> report_1 = jdbcTemplate.query(stringBuilder.append("ORDER BY cl.fullname DESC;").toString(), ROW_MAPPER_1, fromDate, toDate);
-        report_1.forEach(r -> r.setDocFullname(r.getDocFullname().replaceAll(FIO_PATTERN, "$1$2. $3.")));
+        if (filter_combine == 2) {
+            stringBuilder.append("""
+                    GROUP BY fullname, cl.phone1
+                    """);
+        }
+
+        List<Report_1> report_1 = jdbcTemplate.query(stringBuilder.toString(), ROW_MAPPER_1, fromDate, toDate);
+//        report_1.forEach(r -> r.setDocFullname(r.getDocFullname().replaceAll(FIO_PATTERN, "$1$2. $3.")));
         return report_1;
     }
 
-    public List<Report_1> queryReport_2(String fromDate, String toDate, String radio, Integer department, Integer registrar) {
+    public List<Report_1> queryReport_2(String fromDate, String toDate, String radio, Integer department, Integer registrar, Integer filter_combine) {
 
         List<Report_1> report_2 = new ArrayList<>();
         StringBuilder stringBuilder = new StringBuilder();
 
-        if (radio.equals("1")) {
+        if (filter_combine == 1 && radio.equals("1")) {
             stringBuilder.append("""
                     SELECT
                     cl.fullname,
                     cl.phone1,
-                    SUBSTRING (s.createdate FROM 1 FOR 10) createdate,
-                    SUBSTRING (s.workdate FROM 1 FOR 10) workdate,
-                    doc.fullname docFullname
+                    IIF (EXTRACT (DAY FROM s.createdate) < 10, '0' || EXTRACT (DAY FROM s.createdate) || '.', EXTRACT (DAY FROM s.createdate) || '.') ||
+                    IIF (EXTRACT (MONTH FROM s.createdate) < 10, '0' || EXTRACT (MONTH FROM s.createdate) || '.', EXTRACT (MONTH FROM s.createdate) || '.') ||
+                    EXTRACT (YEAR FROM s.createdate) createdate,
+                    IIF (EXTRACT (DAY FROM s.workdate) < 10, '0' || EXTRACT (DAY FROM s.workdate) || '.', EXTRACT (DAY FROM s.workdate) || '.') ||
+                    IIF (EXTRACT (MONTH FROM s.workdate) < 10, '0' || EXTRACT (MONTH FROM s.workdate) || '.', EXTRACT (MONTH FROM s.workdate) || '.') ||
+                    EXTRACT (YEAR FROM s.workdate) workdate,
+                    doc.NTUSER docFullname
                     FROM schedule s
                     JOIN clients cl ON s.pcode = cl.pcode
                     LEFT JOIN doctor reg ON s.uid = reg.dcode
@@ -111,39 +144,86 @@ public class JdbcReportRepository {
                     AND reg.stdtype = 1
                                     """);
             departmentFilter(stringBuilder, department, registrar);
-
-            stringBuilder.append(" ORDER BY cl.fullname DESC");
             report_2 = jdbcTemplate.query(stringBuilder.toString(), ROW_MAPPER_1, fromDate, toDate);
-
         }
 
-        if (radio.equals("2")) {
+        if (filter_combine == 2 && radio.equals("1")) {
             stringBuilder.append("""
                     SELECT
-                    tmp_res_1.tmp_name_1 fullname,
-                    SUBSTRING (tmp_res_1.tmp_creat_date FROM 1 FOR 10) createdate,
-                    SUBSTRING (tmp_res_1.tmp_work_date FROM 1 FOR 10) workdate,
-                    tmp_res_1.tmp_doc_fullname docFullname,
-                    tmp_res_1.tmp_phone phone1
-                            
-                    FROM(SELECT  --Таблица всех НЕ пришедших (хоть один раз за период)
-                    cl.fullname AS tmp_name_1,
-                    s.createdate AS tmp_creat_date,
-                    s.workdate AS tmp_work_date,
-                    doc.fullname AS tmp_doc_fullname,
-                    cl.phone1 AS tmp_phone
-                            
+                    DISTINCT (cl.fullname) fullname,
+                    cl.phone1,
+                    LIST (IIF (EXTRACT (DAY FROM s.createdate) < 10, '0' || EXTRACT (DAY FROM s.createdate) || '.', EXTRACT (DAY FROM s.createdate) || '.') ||
+                    IIF (EXTRACT (MONTH FROM s.createdate) < 10, '0' || EXTRACT (MONTH FROM s.createdate) || '.', EXTRACT (MONTH FROM s.createdate) || '.') ||
+                    EXTRACT (YEAR FROM s.createdate), '; ') createdate,
+                    LIST (IIF (EXTRACT (DAY FROM s.workdate) < 10, '0' || EXTRACT (DAY FROM s.workdate) || '.', EXTRACT (DAY FROM s.workdate) || '.') ||
+                    IIF (EXTRACT (MONTH FROM s.workdate) < 10, '0' || EXTRACT (MONTH FROM s.workdate) || '.', EXTRACT (MONTH FROM s.workdate) || '.') ||
+                    EXTRACT (YEAR FROM s.workdate), '; ') workdate,
+                    LIST (doc.NTUSER, '; ') docFullname
                     FROM schedule s
                     JOIN clients cl ON s.pcode = cl.pcode
                     LEFT JOIN doctor reg ON s.uid = reg.dcode
                     LEFT JOIN doctor doc ON s.dcode = doc.dcode
-                            
                     WHERE s.status = 1 --Статус назначения "Первичный"
                     AND doc.fullname IS NOT NULL
                     AND doc.depnum != 10001020
                     AND s.workdate BETWEEN ? AND ?
-                    AND  (s.clvisit IS NULL OR s.clvisit != 1)
                     AND reg.stdtype = 1
+                    GROUP BY fullname, cl.phone1
+                                    """);
+            departmentFilter(stringBuilder, department, registrar);
+            report_2 = jdbcTemplate.query(stringBuilder.toString(), ROW_MAPPER_1, fromDate, toDate);
+        }
+
+
+        if (radio.equals("2")) {
+            if (filter_combine == 1) {
+                stringBuilder.append("""
+                        SELECT
+                        tmp_res_1.tmp_name_1 fullname,
+                        IIF (EXTRACT (DAY FROM tmp_res_1.tmp_creat_date) < 10, '0' || EXTRACT (DAY FROM tmp_res_1.tmp_creat_date) || '.', EXTRACT (DAY FROM tmp_res_1.tmp_creat_date) || '.') ||
+                        IIF (EXTRACT (MONTH FROM tmp_res_1.tmp_creat_date) < 10, '0' || EXTRACT (MONTH FROM tmp_res_1.tmp_creat_date) || '.', EXTRACT (MONTH FROM tmp_res_1.tmp_creat_date) || '.') ||
+                        EXTRACT (YEAR FROM tmp_res_1.tmp_creat_date) createdate,
+                        IIF (EXTRACT (DAY FROM tmp_res_1.tmp_work_date) < 10, '0' || EXTRACT (DAY FROM tmp_res_1.tmp_work_date) || '.', EXTRACT (DAY FROM tmp_res_1.tmp_work_date) || '.') ||
+                        IIF (EXTRACT (MONTH FROM tmp_res_1.tmp_work_date) < 10, '0' || EXTRACT (MONTH FROM tmp_res_1.tmp_work_date) || '.', EXTRACT (MONTH FROM tmp_res_1.tmp_work_date) || '.') ||
+                        EXTRACT (YEAR FROM tmp_res_1.tmp_work_date) workdate,
+                        tmp_res_1.tmp_doc_fullname docFullname,
+                        tmp_res_1.tmp_phone phone1
+                        """);
+            }
+
+            if (filter_combine == 2) {
+                stringBuilder.append("""
+                        SELECT
+                        DISTINCT (tmp_res_1.tmp_name_1) fullname,
+                        LIST (IIF (EXTRACT (DAY FROM tmp_res_1.tmp_creat_date) < 10, '0' || EXTRACT (DAY FROM tmp_res_1.tmp_creat_date) || '.', EXTRACT (DAY FROM tmp_res_1.tmp_creat_date) || '.') ||
+                        IIF (EXTRACT (MONTH FROM tmp_res_1.tmp_creat_date) < 10, '0' || EXTRACT (MONTH FROM tmp_res_1.tmp_creat_date) || '.', EXTRACT (MONTH FROM tmp_res_1.tmp_creat_date) || '.') ||
+                        EXTRACT (YEAR FROM tmp_res_1.tmp_creat_date), '; ') createdate,
+                        LIST (IIF (EXTRACT (DAY FROM tmp_res_1.tmp_work_date) < 10, '0' || EXTRACT (DAY FROM tmp_res_1.tmp_work_date) || '.', EXTRACT (DAY FROM tmp_res_1.tmp_work_date) || '.') ||
+                        IIF (EXTRACT (MONTH FROM tmp_res_1.tmp_work_date) < 10, '0' || EXTRACT (MONTH FROM tmp_res_1.tmp_work_date) || '.', EXTRACT (MONTH FROM tmp_res_1.tmp_work_date) || '.') ||
+                        EXTRACT (YEAR FROM tmp_res_1.tmp_work_date), '; ') workdate,
+                        LIST (tmp_res_1.tmp_doc_fullname, '; ') docFullname,
+                        tmp_res_1.tmp_phone phone1
+                        """);
+            }
+            stringBuilder.append("""
+                    FROM(SELECT  --Таблица всех НЕ пришедших (хоть один раз за период)
+                                        cl.fullname AS tmp_name_1,
+                                        s.createdate AS tmp_creat_date,
+                                        s.workdate AS tmp_work_date,
+                                        doc.ntuser AS tmp_doc_fullname,
+                                        cl.phone1 AS tmp_phone
+                                                
+                                        FROM schedule s
+                                        JOIN clients cl ON s.pcode = cl.pcode
+                                        LEFT JOIN doctor reg ON s.uid = reg.dcode
+                                        LEFT JOIN doctor doc ON s.dcode = doc.dcode
+                                                
+                                        WHERE s.status = 1 --Статус назначения "Первичный" 
+                                        AND doc.fullname IS NOT NULL
+                                        AND doc.depnum != 10001020
+                                        AND s.workdate BETWEEN ? AND ?
+                                        AND  (s.clvisit IS NULL OR s.clvisit != 1)
+                                        AND reg.stdtype = 1
                     """);
             departmentFilter(stringBuilder, department, registrar);
             stringBuilder.append(
@@ -162,31 +242,55 @@ public class JdbcReportRepository {
                                                     AND s1.clvisit = 1
                                                     AND reg1.stdtype = 1
                                                     ORDER BY cl1.fullname)) tmp_res_1
-                            ORDER BY  tmp_res_1.tmp_name_1
                             """);
+            if (filter_combine == 2) {
+                stringBuilder.append("GROUP BY fullname, phone1");
+            }
             report_2 = jdbcTemplate.query(stringBuilder.toString(), ROW_MAPPER_1, fromDate, toDate, fromDate, toDate);
         }
 
-//Таблица, записанных пациентов на будущее
+        //Таблица, записанных пациентов на будущее
         if (radio.equals("3")) {
+            if (filter_combine == 1) {
+                stringBuilder.append("""
+                        SELECT 
+                        cl.fullname,
+                        IIF (EXTRACT (DAY FROM s.createdate) < 10, '0' || EXTRACT (DAY FROM s.createdate) || '.', EXTRACT (DAY FROM s.createdate) || '.') ||
+                        IIF (EXTRACT (MONTH FROM s.createdate) < 10, '0' || EXTRACT (MONTH FROM s.createdate) || '.', EXTRACT (MONTH FROM s.createdate) || '.') ||
+                        EXTRACT (YEAR FROM s.createdate) createdate,
+                        IIF (EXTRACT (DAY FROM s.workdate) < 10, '0' || EXTRACT (DAY FROM s.workdate) || '.', EXTRACT (DAY FROM s.workdate) || '.') ||
+                        IIF (EXTRACT (MONTH FROM s.workdate) < 10, '0' || EXTRACT (MONTH FROM s.workdate) || '.', EXTRACT (MONTH FROM s.workdate) || '.') ||
+                        EXTRACT (YEAR FROM s.workdate) workdate,
+                        doc.ntuser docFullname,
+                        cl.phone1
+                        """);
+            }
+
+            if (filter_combine == 2) {
+                stringBuilder.append("""
+                        SELECT
+                        DISTINCT (cl.fullname) fullname,
+                        LIST (IIF (EXTRACT (DAY FROM s.createdate) < 10, '0' || EXTRACT (DAY FROM s.createdate) || '.', EXTRACT (DAY FROM s.createdate) || '.') ||
+                        IIF (EXTRACT (MONTH FROM s.createdate) < 10, '0' || EXTRACT (MONTH FROM s.createdate) || '.', EXTRACT (MONTH FROM s.createdate) || '.') ||
+                        EXTRACT (YEAR FROM s.createdate), '; ') createdate,
+                        LIST (IIF (EXTRACT (DAY FROM s.workdate) < 10, '0' || EXTRACT (DAY FROM s.workdate) || '.', EXTRACT (DAY FROM s.workdate) || '.') ||
+                        IIF (EXTRACT (MONTH FROM s.workdate) < 10, '0' || EXTRACT (MONTH FROM s.workdate) || '.', EXTRACT (MONTH FROM s.workdate) || '.') ||
+                        EXTRACT (YEAR FROM s.workdate), '; ') workdate,
+                        LIST (doc.ntuser, '; ') docFullname,
+                        cl.phone1
+                        """);
+            }
             stringBuilder.append("""
-                    SELECT 
-                    cl.fullname,
-                    s.createdate,
-                    s.workdate,
-                    doc.fullname docFullname,
-                    cl.phone1
-                                        
                     FROM schedule s
-                    JOIN clients cl ON s.pcode = cl.pcode
-                    LEFT JOIN doctor reg ON s.uid = reg.dcode
-                    LEFT JOIN doctor doc ON s.dcode = doc.dcode
-                                        
-                    WHERE s.status = 1 --Статус назначения "Первичный"
-                    AND doc.fullname IS NOT NULL
-                    AND doc.depnum != 10001020
-                    AND s.workdate > ?
-                    AND reg.stdtype = 1
+                                        JOIN clients cl ON s.pcode = cl.pcode
+                                        LEFT JOIN doctor reg ON s.uid = reg.dcode
+                                        LEFT JOIN doctor doc ON s.dcode = doc.dcode
+                                                            
+                                        WHERE s.status = 1 --Статус назначения "Первичный"
+                                        AND doc.fullname IS NOT NULL
+                                        AND doc.depnum != 10001020
+                                        AND s.workdate > ?
+                                        AND reg.stdtype = 1
                     """);
             departmentFilter(stringBuilder, department, registrar);
             stringBuilder.append(
@@ -223,43 +327,67 @@ public class JdbcReportRepository {
                             AND s1.clvisit = 1
                             AND reg1.stdtype = 1
                             ORDER BY cl1.fullname)) tmp_res_1)
-                                                                  
-                            ORDER BY cl.fullname
-                                   """);
+                            """);
+            if (filter_combine == 2) {
+                stringBuilder.append("GROUP BY fullname, phone1");
+            }
             report_2 = jdbcTemplate.query(stringBuilder.toString(), ROW_MAPPER_1, toDate, fromDate, toDate, fromDate, toDate);
         }
 
         //НЕ_ПЕРЕЗАПИСАВШИЕСЯ
         if (radio.equals("4")) {
+            if (filter_combine == 1) {
+
+                stringBuilder.append("""
+                        SELECT
+                        tmp_res_1.tmp_name_1 fullname,
+                        IIF (EXTRACT (DAY FROM tmp_res_1.tmp_creat_date) < 10, '0' || EXTRACT (DAY FROM tmp_res_1.tmp_creat_date) || '.', EXTRACT (DAY FROM tmp_res_1.tmp_creat_date) || '.') ||
+                        IIF (EXTRACT (MONTH FROM tmp_res_1.tmp_creat_date) < 10, '0' || EXTRACT (MONTH FROM tmp_res_1.tmp_creat_date) || '.', EXTRACT (MONTH FROM tmp_res_1.tmp_creat_date) || '.') ||
+                        EXTRACT (YEAR FROM tmp_res_1.tmp_creat_date) createdate,
+                        IIF (EXTRACT (DAY FROM tmp_res_1.tmp_workdate) < 10, '0' || EXTRACT (DAY FROM tmp_res_1.tmp_workdate) || '.', EXTRACT (DAY FROM tmp_res_1.tmp_workdate) || '.') ||
+                        IIF (EXTRACT (MONTH FROM tmp_res_1.tmp_workdate) < 10, '0' || EXTRACT (MONTH FROM tmp_res_1.tmp_workdate) || '.', EXTRACT (MONTH FROM tmp_res_1.tmp_workdate) || '.') ||
+                        EXTRACT (YEAR FROM tmp_res_1.tmp_workdate) workdate,
+                        tmp_res_1.tmp_doc_fullname docFullname,
+                        tmp_res_1.tmp_phone phone1
+                        """);
+            }
+            if (filter_combine == 2) {
+
+                stringBuilder.append("""
+                        SELECT
+                        DISTINCT (tmp_res_1.tmp_name_1) fullname,
+                        LIST (IIF (EXTRACT (DAY FROM tmp_res_1.tmp_creat_date) < 10, '0' || EXTRACT (DAY FROM tmp_res_1.tmp_creat_date) || '.', EXTRACT (DAY FROM tmp_res_1.tmp_creat_date) || '.') ||
+                        IIF (EXTRACT (MONTH FROM tmp_res_1.tmp_creat_date) < 10, '0' || EXTRACT (MONTH FROM tmp_res_1.tmp_creat_date) || '.', EXTRACT (MONTH FROM tmp_res_1.tmp_creat_date) || '.') ||
+                        EXTRACT (YEAR FROM tmp_res_1.tmp_creat_date), '; ') createdate,
+                        LIST (IIF (EXTRACT (DAY FROM tmp_res_1.tmp_workdate) < 10, '0' || EXTRACT (DAY FROM tmp_res_1.tmp_workdate) || '.', EXTRACT (DAY FROM tmp_res_1.tmp_workdate) || '.') ||
+                        IIF (EXTRACT (MONTH FROM tmp_res_1.tmp_workdate) < 10, '0' || EXTRACT (MONTH FROM tmp_res_1.tmp_workdate) || '.', EXTRACT (MONTH FROM tmp_res_1.tmp_workdate) || '.') ||
+                        EXTRACT (YEAR FROM tmp_res_1.tmp_workdate), '; ') workdate,
+                        LIST (tmp_res_1.tmp_doc_fullname, '; ') docFullname,
+                        tmp_res_1.tmp_phone phone1
+                        """);
+            }
+
             stringBuilder.append("""
-                    SELECT
-                    tmp_res_1.tmp_name_1 fullname,
-                    tmp_res_1.tmp_creat_date createdate,
-                    tmp_res_1.tmp_workdate workdate,
-                    tmp_res_1.tmp_doc_fullname docFullname,
-                    tmp_res_1.tmp_phone phone1
-                                        
-                                        
-                    FROM(SELECT  --Таблица всех НЕ пришедших (хоть один раз за период)
-                    cl.fullname AS tmp_name_1,
-                    cl.pcode AS tmp_pcode_1,
-                    SUBSTRING (s.createdate FROM 1 FOR 10) tmp_creat_date,
-                    SUBSTRING (s.workdate FROM 1 FOR 10) tmp_workdate,
-                    doc.fullname AS tmp_doc_fullname,
-                    cl.phone1 AS tmp_phone
-                                        
-                                        
-                    FROM schedule s
-                    JOIN clients cl ON s.pcode = cl.pcode
-                    LEFT JOIN doctor reg ON s.uid = reg.dcode
-                    LEFT JOIN doctor doc ON s.dcode = doc.dcode
-                                        
-                    WHERE s.status = 1 --Статус назначения "Первичный"
-                    AND doc.fullname IS NOT NULL
-                    AND doc.depnum != 10001020
-                    AND s.workdate BETWEEN ? AND ?
-                    AND  (s.clvisit IS NULL OR s.clvisit != 1)
-                    AND reg.stdtype = 1
+                                        FROM(SELECT  --Таблица всех НЕ пришедших (хоть один раз за период)
+                                        cl.fullname AS tmp_name_1,
+                                        cl.pcode AS tmp_pcode_1,
+                                        s.createdate tmp_creat_date,
+                                        s.workdate tmp_workdate,
+                                        doc.ntuser AS tmp_doc_fullname,
+                                        cl.phone1 AS tmp_phone
+                                                            
+                                                            
+                                        FROM schedule s
+                                        JOIN clients cl ON s.pcode = cl.pcode
+                                        LEFT JOIN doctor reg ON s.uid = reg.dcode
+                                        LEFT JOIN doctor doc ON s.dcode = doc.dcode
+                                                            
+                                        WHERE s.status = 1 --Статус назначения "Первичный"
+                                        AND doc.fullname IS NOT NULL
+                                        AND doc.depnum != 10001020
+                                        AND s.workdate BETWEEN ? AND ?
+                                        AND  (s.clvisit IS NULL OR s.clvisit != 1)
+                                        AND reg.stdtype = 1
                     """);
             departmentFilter(stringBuilder, department, registrar);
             stringBuilder.append(
@@ -292,13 +420,14 @@ public class JdbcReportRepository {
                             AND doc.depnum != 10001020
                             AND s.workdate > ?
                             AND reg.stdtype = 1)
-                                                 
-                            ORDER BY tmp_res_1.tmp_name_1
                             """);
+            if (filter_combine == 2) {
+                stringBuilder.append("GROUP BY fullname, phone1");
+            }
             report_2 = jdbcTemplate.query(stringBuilder.toString(), ROW_MAPPER_1, fromDate, toDate, fromDate, toDate, toDate);
         }
 
-        report_2.forEach(r -> r.setDocFullname(r.getDocFullname().replaceAll(FIO_PATTERN, "$1$2. $3.")));
+//        report_2.forEach(r -> r.setDocFullname(r.getDocFullname().replaceAll(FIO_PATTERN, "$1$2. $3.")));
         return report_2;
     }
 
@@ -369,10 +498,11 @@ public class JdbcReportRepository {
     public List<Map<String, Object>> getAllRegistrarWithId() {
         List<Map<String, Object>> map;
         map = jdbcTemplate.queryForList("""
-                        SELECT dcode, dname
+                        SELECT dcode, ntuser dname
                         FROM doctor
                         WHERE stdtype = 1
-                        order by dname
+                        AND doctor.locked != 1
+                        order by ntuser
                 """);
         return map;
     }

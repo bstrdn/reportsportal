@@ -29,18 +29,23 @@ public class ReportRestController {
             @RequestParam @Nullable String startDate,
             @RequestParam @Nullable String endDate,
             @RequestParam(defaultValue = "report1") String reportName,
+            //TODO make integer var
             @RequestParam(defaultValue = "1") String radio,
+            @RequestParam(defaultValue = "1") Integer filter_combine,
             @RequestParam(defaultValue = "0") Integer department,
             @RequestParam(defaultValue = "0") Integer registrar,
             Model model) {
         if (startDate == null) {
-            startDate = WebUtil.getStartDate();
+//            startDate = WebUtil.getStartDate();
+            startDate = "2018-02-26";
         }
         if (endDate == null) {
-            endDate = WebUtil.getEndDate();
+//            endDate = WebUtil.getEndDate();
+            endDate = "2018-02-26";
         }
 
-        return rep.queryReport_1(startDate + " 00:00:00", endDate + " 23:59:59", radio, department, registrar);
+        return rep.queryReport_1(startDate + " 00:00:00", endDate + " 23:59:59", radio,
+                department, registrar, filter_combine);
     }
 
     @GetMapping("/report2")
@@ -49,6 +54,7 @@ public class ReportRestController {
             @RequestParam @Nullable String endDate,
             @RequestParam(defaultValue = "report2") String reportName,
             @RequestParam(defaultValue = "1") String radio,
+            @RequestParam(defaultValue = "1") Integer filter_combine,
             @RequestParam(defaultValue = "0") Integer department,
             @RequestParam(defaultValue = "0") Integer registrar,
             Model model) {
@@ -59,7 +65,7 @@ public class ReportRestController {
         if (endDate == null) {
             endDate = WebUtil.getEndDate();
         }
-        return rep.queryReport_2(startDate + " 00:00:00", endDate + " 23:59:59", radio, department, registrar);
+        return rep.queryReport_2(startDate + " 00:00:00", endDate + " 23:59:59", radio, department, registrar, filter_combine);
     }
 
     @GetMapping("/report_buh_1")
@@ -76,6 +82,12 @@ public class ReportRestController {
         if (endDate == null) {
             endDate = WebUtil.getEndDate();
         }
-        return rep.queryReport_buh_1(sertId, startDate  + " 00:00:00", endDate  + " 00:00:00");
+        return rep.queryReport_buh_1(sertId, startDate + " 00:00:00", endDate + " 00:00:00");
+    }
+
+
+    @GetMapping("/plug")
+    public List<Report_1> plug(Model model) {
+        return rep.queryReport_1("2018-02-26 08:43:48", "2018-02-26 08:43:50", "0", 0, 0, 1);
     }
 }

@@ -9,6 +9,24 @@ document.getElementById('startDate').value = startdate;
 var ctx = {
     ajaxUrl: firstResturl,
     updateTable: function () {
+
+        makeEditable({
+            "columns": [
+                {"data": "fullname"},
+                {"data": "summ"},
+                {"data": "rashod"},
+                {"data": "nameCert"},
+            ],
+            "order": [
+                [
+                    0,
+                    "asc"
+                ]
+            ],
+        });
+        $('#datatable_info').css('font-weight', 'bold');
+
+
         $.ajax({
             type: "GET",
             url: firstResturl,
@@ -22,32 +40,32 @@ var ctx = {
             },
         }).done(updateTableByData);
 
-        setTimeout(function() {
+        setTimeout(function () {
             var summary = ctx.datatableApi.column(1).data().sum();
             $('#summ').html(summary);
-        }, 500);
+        }, 1000);
 
     }
 };
 
 
-$(function () {
-    makeEditable({
-        "columns": [
-            {"data": "fullname"},
-            {"data": "summ"},
-            {"data": "rashod"},
-            {"data": "nameCert"},
-        ],
-        "order": [
-            [
-                0,
-                "asc"
-            ]
-        ],
-    });
-    $('#datatable_info').css('font-weight', 'bold');
-});
+// $(function () {
+//     makeEditable({
+//         "columns": [
+//             {"data": "fullname"},
+//             {"data": "summ"},
+//             {"data": "rashod"},
+//             {"data": "nameCert"},
+//         ],
+//         "order": [
+//             [
+//                 0,
+//                 "asc"
+//             ]
+//         ],
+//     });
+//     $('#datatable_info').css('font-weight', 'bold');
+// });
 
 
 // setTimeout(function() { ctx.updateTable() }, 1000);
