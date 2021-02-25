@@ -7,10 +7,29 @@ month = date.getMonth() + 1;
 year = date.getFullYear();
 year = (month == 1 ? year - 1 : year);
 startmonth = (month == 1 ? 12 : month - 1);
-month = (startmonth < 10 ? "0" : "") + startmonth;
-var enddate = year + "-" + month + "-" + daysInMonth(month, year);
+lmonth = (startmonth < 10 ? "0" : "") + startmonth;
+var enddate = year + "-" + lmonth + "-" + daysInMonth(lmonth, year);
 document.getElementById('endDate').value = enddate;
 var restPlug = 'rest/plug';
+
+function getMonthWithO (month) {
+    return (month < 10 ? "0" : "") + month;
+}
+
+function lastMonth() {
+
+    document.getElementById('startDate').value = year + "-" + lmonth + "-" + "01";
+    document.getElementById('endDate').value = enddate;
+
+
+}
+
+function currentMonth() {
+    document.getElementById('startDate').value = year + "-" + getMonthWithO(month)  + "-" + "01";
+    document.getElementById('endDate').value = year + "-" + getMonthWithO(month)  + "-" + day;
+
+}
+
 
 
 function daysInMonth(month, year) {

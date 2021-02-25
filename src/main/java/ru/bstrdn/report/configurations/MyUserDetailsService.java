@@ -18,15 +18,15 @@ public class MyUserDetailsService implements UserDetailsService {
     @Autowired
     JpaUserRepository jpaUserRepository;
 
-    @Autowired
-    LogsRepository logsRepository;
+//    @Autowired
+//    LogsRepository logsRepository;
 
     @Override
     public UserDetails loadUserByUsername(String dname) throws UsernameNotFoundException {
         Optional<User> user = jpaUserRepository.findByDname(dname);
         user.orElseThrow(() -> new UsernameNotFoundException("Not found: " + dname));
 
-        logsRepository.save(new Log(dname, "Авторизация"));
+//        logsRepository.save(new Log(dname, "Авторизация"));
 
         return user.map(MyUserDetails::new).get();
     }

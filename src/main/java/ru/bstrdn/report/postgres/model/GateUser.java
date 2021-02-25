@@ -28,4 +28,7 @@ public class GateUser {
     String Details3;
     String Details4;
     String Details5;
+    String Details6;
+    String Details7;
+    String Details8;
 }

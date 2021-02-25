@@ -84,17 +84,28 @@ a.knopka:active {
     /*width: calc(35% - 24px);*/
     display: inline-block;
 }
+.filter_group_2 {
+    overflow: hidden;
+    width: 310px;
+    height: 88px;
+    /*width: calc(35% - 24px);*/
+    display: inline-block;
+}
+
+p {
+    margin: 0;
+}
 
 .filter_select {
     vertical-align: top;
-    width: 189px;
+    width: 280px;
     height: 88px;
     display: inline-block;
 }
 
 .filter_select_button {
     /*margin: 35px 0 0 35px;*/
-    vertical-align: middle;
+    /*vertical-align: middle;*/
     width: 160px;
     height: 88px;
     display: inline-block;
@@ -113,7 +124,7 @@ a.knopka:active {
 .nav_wrapp {
     background: #ecf0f1;
     height: 60px;
-margin: 0 0 20px;
+margin: 0 0 0px;
 }
 
 h1{
@@ -124,6 +135,8 @@ h1{
     font-weight: 100;
     font-size: 50px;
 }
+
+
 
 nav{
     width: 1140px;

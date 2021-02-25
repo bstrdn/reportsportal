@@ -1,61 +1,109 @@
 <div th:fragment="main_header" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 
-<!--    <nav class="navbar navbar-default navbar-static-top">-->
-<!--        <div class="container">-->
-<!--            <a href="/" class="navbar-brand"> Портал отчетов</a>-->
+    <!--    <nav class="navbar navbar-default navbar-static-top">-->
+    <!--        <div class="container">-->
+    <!--            <a href="/" class="navbar-brand"> Портал отчетов</a>-->
 
-            <!--            <a href="/report_1" th:class="${reportName=='report1' ? 'navbar-brand navbar-brand-custom-selected' : 'navbar-brand'}"> П.П. по дате обращения</a>-->
-            <!--            <a href="/report_2" th:class="${reportName=='report2' ? 'navbar-brand navbar-brand-custom-selected' : 'navbar-brand'}"> П.П. по дате записи в расписание</a>-->
-<div class="nav_wrapp">
-            <nav>
-                <ul class="dropdown">
-                    <li class="drop" ><a href="#">Отчеты МИС</a>
-                        <ul class="sub_menu">
-                            <li sec:authorize="hasAnyAuthority('1', '2')"><a href="/report_1">П.П. по дате обращения</a></li>
-                            <li sec:authorize="hasAnyAuthority('1', '2')"><a href="/report_2">П.П. по дате записи</a></li>
-                            <li><a href="/report_cert">Сертификаты</a></li>
-                        </ul>
-<!--                    </li>-->
-<!--                    <li class="drop" sec:authorize="hasAnyAuthority('1', '2', '3')"><a href="#">Отчеты Арктур</a>-->
-<!--                        <ul class="sub_menu">-->
-<!--                            <li sec:authorize="hasAnyAuthority('1', '2')"><a href="/report_1">П.П. по дате обращения</a></li>-->
-<!--                            <li sec:authorize="hasAnyAuthority('1', '2')"><a href="/report_2">П.П. по дате записи в расписание</a></li>-->
-<!--                            <li sec:authorize="hasAnyAuthority('1', '3')"><a href="/report_sert">Сертификаты</a></li>-->
-<!--                        </ul>-->
-<!--                    </li>-->
-                    <li class="drop" sec:authorize="hasAnyAuthority('1', '6')"><a href="#">УКЦ ЭДМЕД</a>
-                        <ul class="sub_menu">
-                            <li><a href="#">Слушатели</a></li>
-                            <li><a href="#">Отчет</a></li>
-                        </ul>
-                    </li>
-                    <li class="drop" sec:authorize="hasAnyAuthority('1', '4')"><a href="#">План-Факт</a>
-                        <ul class="sub_menu">
-                            <li><a href="#">Отчет</a></li>
-                        </ul>
-                    </li>
-                    <li class="drop" sec:authorize="hasAnyAuthority('1', '5')"><a href="#">Скуд</a>
-                        <ul class="sub_menu">
-                            <li><a href="#">Отчет</a></li>
-                        </ul>
-                    </li>
-                    <li class="drop" sec:authorize="hasAnyAuthority('7')"><a href="#">План лечения</a>
-                        <ul class="sub_menu">
-                            <li><a href="#">Отчет</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Рассылка</a>
-                    </li>
-                </ul>
-<!--            </nav>-->
+    <!--            <a href="/report_1" th:class="${reportName=='report1' ? 'navbar-brand navbar-brand-custom-selected' : 'navbar-brand'}"> П.П. по дате обращения</a>-->
+    <!--            <a href="/report_2" th:class="${reportName=='report2' ? 'navbar-brand navbar-brand-custom-selected' : 'navbar-brand'}"> П.П. по дате записи в расписание</a>-->
+    <div class="nav_wrapp">
+        <nav>
+            <ul class="dropdown">
+                <li class="drop"><a href="#">Отчеты МИС</a>
+                    <ul class="sub_menu">
+                        <li sec:authorize="hasAnyAuthority('1', '2')"><a href="/report_1">Первичные по дате
+                            обращения</a></li>
+                        <li sec:authorize="hasAnyAuthority('1', '2')"><a href="/report_2">Первичные по дате записи</a>
+                        </li>
+                    </ul>
+                    <!--                    </li>-->
+                    <!--                    <li class="drop" sec:authorize="hasAnyAuthority('1', '2', '3')"><a href="#">Отчеты Арктур</a>-->
+                    <!--                        <ul class="sub_menu">-->
+                    <!--                            <li sec:authorize="hasAnyAuthority('1', '2')"><a href="/report_1">П.П. по дате обращения</a></li>-->
+                    <!--                            <li sec:authorize="hasAnyAuthority('1', '2')"><a href="/report_2">П.П. по дате записи в расписание</a></li>-->
+                    <!--                            <li sec:authorize="hasAnyAuthority('1', '3')"><a href="/report_sert">Сертификаты</a></li>-->
+                    <!--                        </ul>-->
+                    <!--                    </li>-->
+                <li class="drop" sec:authorize="hasAnyAuthority('1', '3')"><a href="#">Бухгалтерия</a>
+                    <ul class="sub_menu">
+                        <li><a href="/report_cert">Сертификаты</a></li>
+<!--                        <li><a href="#">Отчет</a></li>-->
+                    </ul>
+                </li>
+                <li class="drop" sec:authorize="hasAnyAuthority('1', '4')"><a href="#">План-Факт</a>
+                    <ul class="sub_menu">
+                        <li><a href="#">Отчет</a></li>
+                    </ul>
+                </li>
+                <li class="drop" sec:authorize="hasAnyAuthority('1', '5')"><a href="/report_skud/9/2">Скуд</a>
+                    <ul class="sub_menu">
+                        <li><a href="/report_skud/9/2">Отчет</a></li>
+                    </ul>
+                </li>
+                <li class="drop" sec:authorize="hasAnyAuthority('7')"><a href="#">План лечения</a>
+                    <ul class="sub_menu">
+                        <li><a href="#">Отчет</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Рассылка</a>
+                </li>
+            </ul>
+            <!--            </nav>-->
 
 
             <a href="/logout" class="navbar-brand-custom_1">Выход</a>
             <div class="navbar-brand-custom_1" sec:authorize="isAuthenticated()">
                 <a href="/profile"><span sec:authentication="name"/></a>
             </div>
-<!--        </div>-->
-    </nav>
-</div>
+            <!--        </div>-->
+        </nav>
+
+    </div>
+    <div class="container">
+        <div th:switch="${reportName}" style="margin: 15px 0 15px 0; color: #337ab7; overflow: hidden; width: 100%;">
+            <div th:case="'report1'">
+                <div style="float: left; width: 400px;"><p class="h3">
+                    Первичные по дате обращения</p>
+                </div>
+                <div style="float: left; width: 700px; color: #000000;">
+                    В отчет попадают первичные пациенты, которые обратились в клинику в выбранный период.
+                    Дата записи может быть от начала выбранного периода и на любое будущее время.
+                    В отчет НЕ попадают первичные пациенты, у которых лечение состоит из КТ
+                </div>
+            </div>
+
+            <div th:case="'report2'">
+                <div style="float: left; width: 400px;"><p class="h3">
+                    Первичные по дате записи</p>
+                </div>
+                <div style="float: left; width: 700px; color: #000000;">
+                    В отчет попадают первичные пациенты, которые БЫЛИ ЗАПИСАНЫ В РАССПИСАНИЕ в выбранный период.
+                    Дата обращения не учитывается. В отчет НЕ попадают первичные пациенты, у которых лечение состоит из КТ
+                </div>
+            </div>
+
+            <div th:case="'report_buh_1'">
+                <div style="float: left; width: 400px;"><p class="h3">
+                    Сертификаты</p>
+                </div>
+                <div style="float: left; width: 700px; color: #000000;">
+                </div>
+            </div>
+
+            <div th:case="'report_skud_1'">
+                <div style="float: left; width: 400px;"><p class="h3">
+                    Учет рабочего времени</p>
+                </div>
+                <div style="float: left; width: 700px; color: #000000;">
+                </div>
+            </div>
+
+            <!--            <p th:case="'report1'">Первичные по дате обращения</p>-->
+            <!--            <p th:case="'report2'">Первичные по дате записи</p>-->
+            <!--            <p th:case="'report_buh_1'">Сертификаты</p>-->
+        </div><!--        <p th:text="${reportName}"></p>-->
+        <hr style="border-top: 2px solid #337ab7;">
+    </div>
+
 </div>

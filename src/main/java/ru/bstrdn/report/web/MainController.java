@@ -7,8 +7,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.bstrdn.report.fireBird.repository.JdbcReportRepository;
+import ru.bstrdn.report.postgres.repository.JdbcSkudRepository;
 import ru.bstrdn.report.service.LoggingService;
 
 @Data
@@ -19,6 +21,9 @@ public class MainController {
 
     @Autowired
     private LoggingService loggingService;
+
+    @Autowired
+    private JdbcSkudRepository skudRepository;
 
     @GetMapping("/report_1")
     public String home(Model model) {
@@ -46,6 +51,15 @@ public class MainController {
         return "report_buh_1";
     }
 
+    @GetMapping("/report_skud/{groupNum}/{accessLevel}")
+    public String report_skud_1(@PathVariable String groupNum, @PathVariable String accessLevel, Model model) {
+        model.addAttribute("allSkudUsers", skudRepository.getAllSkudUsers(groupNum, accessLevel));
+//        model.addAttribute("allCertificate", report.getAllCertWithId());
+//        model.addAttribute("reportNameRu", "Отчет по сертификатам");
+        model.addAttribute("reportName", "report_skud_1");
+        return "report_skud_1";
+    }
+
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("allUsers", report.getAllUsers());
@@ -63,6 +77,9 @@ public class MainController {
                 .getContext().getAuthentication().getName()));
         return "profile";
     }
+
+
+
 
     @GetMapping("/user")
     @ResponseBody

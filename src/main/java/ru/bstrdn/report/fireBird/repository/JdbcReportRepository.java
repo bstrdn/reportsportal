@@ -541,5 +541,6 @@ public class JdbcReportRepository {
             stringBuilder.append(String.format(" AND reg.dcode = %d", registrar));
         }
     }
+
 }
 

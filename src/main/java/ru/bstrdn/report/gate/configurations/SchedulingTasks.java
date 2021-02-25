@@ -31,9 +31,11 @@ public class SchedulingTasks {
     String targetDir;
 
     @Scheduled(cron = "0 0 7 * * ?")
+//    @Scheduled(cron = "0 50 9 * * ?")
     public void updateGateUsers() {
         gateUsersRepository.deleteAll();
         gateUsersRepository.saveAll(gateRepository.getGateUsers());
+        log.info("GATE user base has been completely updated");
     }
 
     @Scheduled(cron = "0 0 6 * * ?")
