@@ -7,8 +7,8 @@
     <div th:insert="blocks/css_and_js :: all_css_and_js"/>
 </head>
 <body>
+<script type="text/javascript" th:src="@{/js/report_buh_3_util.js}" defer></script>
 <script type="text/javascript" th:src="@{/js/report_util.js}" defer></script>
-<script type="text/javascript" th:src="@{/js/report_stom_util.js}" defer></script>
 
 <header th:insert="blocks/header :: main_header"/>
 
@@ -17,18 +17,16 @@
 <div class="container">
 
     <div th:switch="${reportName}">
-        <header th:case="'report1'" th:insert="blocks/filters :: filter_1"/>
-        <header th:case="'report2'" th:insert="blocks/filters :: filter_2"/>
+        <header th:case="'report_buh_3'" th:include="blocks/filters :: filter_buh_3"/>
     </div>
 
     <table id="datatable" class="table table-striped table-bordered">
         <thead>
         <tr>
             <th>ФИО Пациента</th>
-            <th>День обращения</th>
-            <th>Записан на дату</th>
-            <th>Записан к доктору</th>
-            <th>Телефон</th>
+            <th>Сумма</th>
+            <th>Израсходовано</th>
+            <th>Тип сертификата</th>
         </tr>
         </thead>
     </table>

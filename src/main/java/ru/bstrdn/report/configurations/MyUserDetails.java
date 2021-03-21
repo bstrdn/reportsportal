@@ -1,5 +1,6 @@
 package ru.bstrdn.report.configurations;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,9 +17,12 @@ public class MyUserDetails implements UserDetails {
 
     private String dname;
     private String dpasswrd;
+    @Getter
+    private int dcode;
     private List<GrantedAuthority> authorityDoctcodeList;
 
     public MyUserDetails(User user) {
+        this.dcode = user.getDcode();
         this.dname = user.getDname();
         this.dpasswrd = user.getDpasswrd();
         this.authorityDoctcodeList = Arrays.stream(user.getDoctcode().trim().split(","))

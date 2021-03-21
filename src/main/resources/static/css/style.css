@@ -1,3 +1,19 @@
+tr[data-mealExcess="false"] {
+    /*color: green;*/
+    background: #dfffd2;
+}
+
+tr[data-mealExcess="true"] {
+    /*color: red;*/
+    background: #ffc9c1;
+}
+
+
+.changeDate{
+    display:inline-block;
+    text-decoration: none !important;
+}
+
 .dt-buttons {
     margin-bottom: 10px;
 }

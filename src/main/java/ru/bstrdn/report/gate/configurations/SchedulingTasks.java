@@ -1,21 +1,35 @@
 package ru.bstrdn.report.gate.configurations;
 
+import com.github.moneytostr.MoneyToStr;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.CellCopyPolicy;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import ru.bstrdn.report.fireBird.model.Report_akt_sverki;
+import ru.bstrdn.report.fireBird.repository.JdbcBuhRepository;
 import ru.bstrdn.report.gate.GateUtil;
 import ru.bstrdn.report.gate.repository.GateRepository;
 import ru.bstrdn.report.postgres.repository.GateEventsRepository;
 import ru.bstrdn.report.postgres.repository.GateUsersRepository;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Slf4j
 @Component
 public class SchedulingTasks {
-
+    @Autowired
+    JdbcBuhRepository buhRepository;
     @Autowired
     GateRepository gateRepository;
     @Autowired
@@ -31,7 +45,7 @@ public class SchedulingTasks {
     String targetDir;
 
     @Scheduled(cron = "0 0 7 * * ?")
-//    @Scheduled(cron = "0 50 9 * * ?")
+//    @Scheduled(cron = "0 21 14 * * ?")
     public void updateGateUsers() {
         gateUsersRepository.deleteAll();
         gateUsersRepository.saveAll(gateRepository.getGateUsers());
@@ -47,6 +61,8 @@ public class SchedulingTasks {
             e.printStackTrace();
         }
     }
+
+
 }
 
 

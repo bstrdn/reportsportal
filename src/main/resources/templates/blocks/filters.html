@@ -1,15 +1,23 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+
+<!--Первый отчет СТОМА-->
+
 <div th:fragment="filter_1" xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="container_filter">
 
         <div class="filter_block_1">
 
             <div class="filter_group">
-                <label for="startDate">Начало обращения:</label>
-                <input type="date" id="startDate" name="startDate">
-                <br><br>
-                <label for="endDate">Конец обращения:&nbsp&nbsp</label>
-                <input type="date" id="endDate" name="endDate">
+                <div th:insert="::changeDate"></div>
             </div>
+<!--            <div class="filter_group">-->
+<!--                <label for="startDate">Начало обращения:</label>-->
+<!--                <input type="date" id="startDate" name="startDate">-->
+<!--                <br><br>-->
+<!--                <label for="endDate">Конец обращения:&nbsp&nbsp</label>-->
+<!--                <input type="date" id="endDate" name="endDate">-->
+<!--            </div>-->
 
             <div class="filter_group_2">
                 <label for="allDepartmentWithId">Отделение:</label>
@@ -56,18 +64,23 @@
     </div>
 </div>
 
+
+<!--Второй отчет СТОМА-->
 <div th:fragment="filter_2" xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="container_filter">
 
         <div class="filter_block_1">
 
             <div class="filter_group">
-                <label for="startDate">Начало записи в расписании:</label>
-                <input type="date" id="startDate" name="startDate">
-                <br><br>
-                <label for="endDate">Конец записи в расписании:&nbsp&nbsp</label>
-                <input type="date" id="endDate" name="endDate">
+                <div th:insert="::changeDate"></div>
             </div>
+<!--            <div class="filter_group">-->
+<!--                <label for="startDate">Начало записи в расписании:</label>-->
+<!--                <input type="date" id="startDate" name="startDate">-->
+<!--                <br><br>-->
+<!--                <label for="endDate">Конец записи в расписании:&nbsp&nbsp</label>-->
+<!--                <input type="date" id="endDate" name="endDate">-->
+<!--            </div>-->
 
             <div class="filter_group_2">
                 <label for="allDepartmentWithId">Отделение:</label>
@@ -97,13 +110,16 @@
                     <input name="radiorep" type="radio" value="1" checked> Все первичные за период
                 </p>
                 <p title="Первичные пациенты, которые были записаны в расписание в выбранный период и не пришли на прием">
-                    <input name="radiorep" type="radio" value="2" title="Все первичные за период~"> Первичные не пришли за период
+                    <input name="radiorep" type="radio" value="2" title="Все первичные за период~"> Первичные не пришли
+                    за период
                 </p>
                 <p title="Первичные пациенты, которые не пришли в выбранный период, но имеют запись на будущее время. (Не учитываются перезаписи в выбранном периоде – таких считаем, что пришли)">
-                    <input name="radiorep" type="radio" value="3" title="Все первичные за период~"> Первичные перезаписались
+                    <input name="radiorep" type="radio" value="3" title="Все первичные за период~"> Первичные
+                    перезаписались
                 </p>
                 <p title="Первичные пациенты, которые не пришли в выбранный период, и не имеют записи в расписании на будущее время">
-                    <input name="radiorep" type="radio" value="4" title="Все первичные за период~"> Первичные НЕ перезаписались
+                    <input name="radiorep" type="radio" value="4" title="Все первичные за период~"> Первичные НЕ
+                    перезаписались
                 </p>
             </div>
 
@@ -115,18 +131,72 @@
 </div>
 
 
-<!--Для бухгалтерии-->
+<!--Для бухгалтерии 1-->
 <div th:fragment="filter_buh_1" xmlns:th="http://www.w3.org/1999/xhtml">
 
     <div class="filter_block_1">
 
         <div class="filter_group">
-            <label for="startDate">Начало периода:</label>
-            <input type="date" id="startDate" name="startDate">
-            <br><br>
-            <label for="endDate">Конец периода:&nbsp&nbsp</label>
-            <input type="date" id="endDate" name="endDate">
+            <div th:insert="::changeDate"></div>
         </div>
+<!--        <div class="filter_group">-->
+<!--            <label for="startDate">Начало периода:</label>-->
+<!--            <input type="date" id="startDate" name="startDate">-->
+<!--            <br>-->
+<!--            <label for="endDate">Конец периода:&nbsp&nbsp</label>-->
+<!--            <input type="date" id="endDate" name="endDate">-->
+<!--            <br>-->
+<!--            <label for="allCertificate">Тип сертификата:</label>-->
+<!--            <select th:field="${allCertificate}" id="allCertificate" name="allCertificate" required>-->
+<!--                &lt;!&ndash;          <&#45;&#45;    <option label="Выберите тип" value=""></option> &ndash;&gt;&ndash;&gt;-->
+<!--                <option th:each="dep : ${allCertificate}"-->
+<!--                        th:value="${dep.get('id')}"-->
+<!--                        th:utext="${dep.get('name')}">-->
+<!--                </option>-->
+<!--            </select>-->
+<!--        </div>-->
+
+        <div class="filter_group_2">
+            <label for="summVh">Вх. остаток на начало периода:</label>
+            <p id="summVh" style="display:inline-block"></p>
+            <label for="summRs">Общий расход за период:</label>
+            <p id="summRs" style="display:inline-block"></p>
+            <label for="summIsh">Исх. остаток на конец периода:</label>
+            <p id="summIsh" style="display:inline-block"></p>
+        </div>
+
+        <div class="filter_select">
+                        <select th:field="${allCertificate}" id="allCertificate" name="allCertificate" required>
+                            <!--          <--    <option label="Выберите тип" value=""></option> &ndash;&gt;-->
+                            <option th:each="dep : ${allCertificate}"
+                                    th:value="${dep.get('id')}"
+                                    th:utext="${dep.get('name')}">
+                            </option>
+                        </select>
+        </div>
+
+        <div class="filter_select_button">
+            <a href="#" onclick="ctx.updateTable()" class="knopka">Сформировать</a>
+        </div>
+    </div>
+</div>
+
+
+<!--Для бухгалтерии 3-->
+<div th:fragment="filter_buh_3" xmlns:th="http://www.w3.org/1999/xhtml">
+
+    <div class="filter_block_1">
+
+        <div class="filter_group">
+            <div th:insert="::changeDate"></div>
+        </div>
+<!--        <div class="filter_group">-->
+<!--            <label for="startDate">Начало периода:</label>-->
+<!--            <input type="date" id="startDate" name="startDate">-->
+<!--            <br><br>-->
+<!--            <label for="endDate">Конец периода:&nbsp&nbsp</label>-->
+<!--            <input type="date" id="endDate" name="endDate">-->
+<!--        </div>-->
 
         <div class="filter_group_2">
             <label for="allCertificate">Тип сертификата:</label>
@@ -140,7 +210,7 @@
 
             </select>
             <br><br>
-            <label for="summ">Всего денежных средств:</label>
+            <label for="summ">Выдано за период на сумму:</label>
             <p id="summ" style="display:inline-block"></p>
 
         </div>
@@ -157,6 +227,47 @@
 
 
 
+<!--Для бухгалтерии АКТ СВЕРКИ-->
+
+<div th:fragment="akt_sverki" xmlns:th="http://www.w3.org/1999/xhtml">
+    <form th:action="@{/download}" method="POST">
+
+    <div class="filter_block_1">
+
+        <div class="filter_group">
+            <div th:insert="::changeDate"></div>
+        </div>
+
+        <div class="filter_group_2">
+            <label for="legalEntitiesWithId">Юридическое лицо:</label>
+            <select  id="legalEntitiesWithId" name="legalEntitiesWithId"   required="true">
+                <option value="0"> Все</option>
+                <option th:each="entity : ${legalEntitiesWithId}"
+                        th:value="${entity.get('jid')}"
+                        th:utext="${entity.get('jname')}">
+                </option>
+                <br>
+
+            </select>
+            <br><br>
+<!--            <label for="summ">Выдано за период на сумму:</label>-->
+<!--            <p id="summ" style="display:inline-block"></p>-->
+        </div>
+
+        <div class="filter_select">
+
+        </div>
+
+        <div class="filter_select_button">
+            <a href="#" onclick="ctx.updateTable()" class="knopka">Сформировать</a>
+            <input type="submit" class="knopka" value="Cформировать АКТ">
+<!--            <a href="/download"  class="knopka">Сформировать АКТ</a>-->
+        </div>
+    </div>
+    </form>
+
+</div>
+
 
 <!--Для СКУД-->
 <div th:fragment="filter_skud_1" xmlns:th="http://www.w3.org/1999/xhtml">
@@ -164,30 +275,33 @@
     <div class="filter_block_1">
 
         <div class="filter_group">
-            <label for="startDate">Начало периода:</label>
-            <input type="date" id="startDate" name="startDate">
-            <br><br>
-            <label for="endDate">Конец периода:&nbsp&nbsp</label>
-            <input type="date" id="endDate" name="endDate">
+            <div th:insert="::changeDate"></div>
         </div>
+<!--        <div class="filter_group">-->
+<!--            <label for="startDate">Начало периода:</label>-->
+<!--            <input type="date" id="startDate" name="startDate">-->
+<!--            <br><br>-->
+<!--            <label for="endDate">Конец периода:&nbsp&nbsp</label>-->
+<!--            <input type="date" id="endDate" name="endDate">-->
+<!--        </div>-->
 
         <div class="filter_group_2">
             <label for="allSkudUsers">Сотрудник:</label>
             <select th:field="${allSkudUsers}" id="allSkudUsers" name="allSkudUsers">
                 <option value="0"> Выберите:</option>
                 <option th:each="user : ${allSkudUsers}"
-                        th:value="${user.get('id')}"
+                        th:value="${user.get('userptr')}"
                         th:utext="${user.get('fio')}">
                 </option>
                 <br>
 
             </select>
             <br><br>
-            <a href="#" onclick="lastMonth()">Прошлый месяц</a>
-            <a href="#" onclick="currentMonth()">Текущий месяц</a>
+<!--            <a href="#" onclick="lastMonth()">Прошлый месяц</a>-->
+<!--            <a href="#" onclick="currentMonth()">Текущий месяц</a>-->
 
             <!--            <label for="summ">Всего денежных средств:</label>-->
-<!--            <p id="summ" style="display:inline-block"></p>-->
+            <!--            <p id="summ" style="display:inline-block"></p>-->
 
         </div>
 
@@ -199,4 +313,14 @@
             <a href="#" onclick="ctx.updateTable()" class="knopka">Сформировать</a>
         </div>
     </div>
+</div>
+
+
+
+<div th:fragment="changeDate">
+    <label for="startDate">Начало периода:</label>
+    <input type="date" id="startDate" name="startDate">&nbsp;&nbsp;<a href="#" id="previousMonth" onclick="previousMonth()" class="changeDate">←</a>
+    <br><br>
+    <label for="endDate">Конец периода:&nbsp&nbsp</label>
+    <input type="date" id="endDate" name="endDate">&nbsp;&nbsp;<a href="#" id="nextMonth" onclick="nextMonth()" class="changeDate">→</a>
 </div>

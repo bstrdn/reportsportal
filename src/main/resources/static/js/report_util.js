@@ -1,79 +1,3 @@
-// var reportName = $('#reportName').val()
-// var resturl = 'rest/' + reportName;
-
-var date = new Date();
-var day = date.getDate();
-month = date.getMonth() + 1;
-year = date.getFullYear();
-year = (month == 1 ? year - 1 : year);
-startmonth = (month == 1 ? 12 : month - 1);
-lmonth = (startmonth < 10 ? "0" : "") + startmonth;
-var enddate = year + "-" + lmonth + "-" + daysInMonth(lmonth, year);
-document.getElementById('endDate').value = enddate;
-var restPlug = 'rest/plug';
-
-function getMonthWithO (month) {
-    return (month < 10 ? "0" : "") + month;
-}
-
-function lastMonth() {
-
-    document.getElementById('startDate').value = year + "-" + lmonth + "-" + "01";
-    document.getElementById('endDate').value = enddate;
-
-
-}
-
-function currentMonth() {
-    document.getElementById('startDate').value = year + "-" + getMonthWithO(month)  + "-" + "01";
-    document.getElementById('endDate').value = year + "-" + getMonthWithO(month)  + "-" + day;
-
-}
-
-
-
-function daysInMonth(month, year) {
-    return new Date(year, month, 0).getDate();
-}
-
-function getRadio() {
-    var allradio = document.getElementsByName('radiorep');
-    for (var i = 0; i < allradio.length; i++) {
-        if (allradio[i].checked) {
-            return allradio[i].value;
-        }
-    }
-}
-
-function getFilterCombine() {
-    var allradio2 = document.getElementsByName('radio_combine');
-    for (var i = 0; i < allradio2.length; i++) {
-        if (allradio2[i].checked) {
-            return allradio2[i].value;
-        }
-    }
-}
-
-
-//РАБОЧАЯ С ТОПДЖАВА!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// var ctx = {
-//     ajaxUrl: resturl,
-//     updateTable: function () {
-//         $.ajax({
-//             type: "GET",
-//             url: resturl,
-//             data: {
-//                 reportName: reportName,
-//                 startDate: $('#startDate').val(),
-//                 endDate: $('#endDate').val(),
-//                 radio: getRadio(),
-//                 department: $('#allDepartmentWithId').val(),
-//                 registrar: $('#allRegistrarWithId').val()
-//             },
-//         }).done(updateTableByData);
-//     }
-// };
-
 
 function makeEditable(datatableOpts) {
     ctx.datatableApi = $("#datatable").DataTable(
@@ -86,6 +10,13 @@ function makeEditable(datatableOpts) {
                 //     "url": resturl,
                 //     "dataSrc": ""
                 // },
+
+
+                // "bPaginate": false,
+                // "bSortClasses":false,
+                // asStripClasses:[],
+                // stripeClasses: [],
+                "deferRender": true,
                 stateSave: true,
                 retrieve: true,
                 destroy: true,
@@ -138,119 +69,14 @@ function makeEditable(datatableOpts) {
                     "aria": {
                         "sortAscending": ": активировать для сортировки столбца по возрастанию",
                         "sortDescending": ": активировать для сортировки столбца по убыванию"
-                    }
+                    },
+                    // stripeClasses: [],
+                    // asStripClasses: []
                 }
             }
         ));
-    //Обновление суммы Сертификатов
-    // setTimeout(function() {
-    //     ctx.updateTable();
-    //     var summary = ctx.datatableApi.column(1).data().sum();
-    //     $('#summ').html(summary);
-    // }, 10);
-
-    // var summary = ctx.datatableApi.column(1).data().sum();
-    // $('#summ').html(summary);
-}
-
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// $(function () {
-//     makeEditable({
-//         "columns": [
-//             {"data": "fullname"},
-//             {
-//                 "data": "createdate",
-//                 "render": function (date, type, row) {
-//                         return moment(date).format("DD.MM.YYYY");
-//                 }
-//             },
-//             {
-//                 "data": "workdate",
-//                 "render": function (date, type, row) {
-//                     return moment(date).format("DD.MM.YYYY");
-//                 }
-//             },
-//             {"data": "docFullname"},
-//             {"data": "phone1"}
-//         ],
-//         "order": [
-//             [
-//                 0,
-//                 "asc"
-//             ]
-//         ]
-//     });
-//     $('#datatable_info').css('font-weight', 'bold');
-// });
-
-
-function updateTableByData(data) {
-    ctx.datatableApi.clear().rows.add(data).draw();
 }
 
 
-/*
-*
-* Credits to https://css-tricks.com/long-dropdowns-solution/
-*Выпадающее меню
-*/
 
-var maxHeight = 400;
 
-$(function () {
-
-    $(".dropdown > li").hover(function () {
-
-        var $container = $(this),
-            $list = $container.find("ul"),
-            $anchor = $container.find("a"),
-            height = $list.height() * 1.1,       // make sure there is enough room at the bottom
-            multiplier = height / maxHeight;     // needs to move faster if list is taller
-
-        // need to save height here so it can revert on mouseout
-        $container.data("origHeight", $container.height());
-
-        // so it can retain it's rollover color all the while the dropdown is open
-        $anchor.addClass("hover");
-
-        // make sure dropdown appears directly below parent list item
-        $list
-            .show()
-            .css({
-                paddingTop: $container.data("origHeight")
-            });
-
-        // don't do any animation if list shorter than max
-        if (multiplier > 1) {
-            $container
-                .css({
-                    height: maxHeight,
-                    overflow: "hidden"
-                })
-                .mousemove(function (e) {
-                    var offset = $container.offset();
-                    var relativeY = ((e.pageY - offset.top) * multiplier) - ($container.data("origHeight") * multiplier);
-                    if (relativeY > $container.data("origHeight")) {
-                        $list.css("top", -relativeY + $container.data("origHeight"));
-                    }
-                    ;
-                });
-        }
-
-    }, function () {
-
-        var $el = $(this);
-
-        // put things back to normal
-        $el
-            .height($(this).data("origHeight"))
-            .find("ul")
-            .css({top: 0})
-            .hide()
-            .end()
-            .find("a")
-            .removeClass("hover");
-
-    });
-
-});

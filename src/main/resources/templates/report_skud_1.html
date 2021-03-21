@@ -7,9 +7,9 @@
     <div th:insert="blocks/css_and_js :: all_css_and_js"/>
 </head>
 <body>
-<script type="text/javascript" th:src="@{/js/report_buh_util.js}" defer></script>
 <script type="text/javascript" th:src="@{/js/report_util.js}" defer></script>
-<script type="text/javascript" th:src="@{/lib/buttons.print.js}" defer></script>
+
+<script type="text/javascript" th:src="@{/js/report_skud_util.js}" defer></script>
 
 <header th:insert="blocks/header :: main_header"/>
 
@@ -21,14 +21,15 @@
         <header th:case="'report_skud_1'" th:include="blocks/filters :: filter_skud_1"/>
     </div>
 
-    <table id="datatable" class="table table-striped table-bordered">
+    <table id="datatable" class="table table-bordered">
         <thead>
         <tr>
             <th>Дата</th>
             <th>Вход</th>
             <th>Выход</th>
-            <th>Рабочее время</th>
+            <th>Фактическое время</th>
             <th>Рабочее время (Инфодент)</th>
+            <th>Разница</th>
         </tr>
         </thead>
     </table>

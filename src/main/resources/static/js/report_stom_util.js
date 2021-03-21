@@ -1,7 +1,7 @@
-var reportName = $('#reportName').val()
-var resturl = 'rest/' + reportName;
-var startdate = year + "-" + month + "-01";
-document.getElementById('startDate').value = startdate;
+// var reportName = $('#reportName').val()
+// var resturl = 'rest/' + reportName;
+// var startdate = year + "-" + month + "-01";
+// document.getElementById('startDate').value = startdate;
 
 var ctx = {
     ajaxUrl: resturl,

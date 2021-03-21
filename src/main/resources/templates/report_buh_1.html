@@ -7,9 +7,9 @@
     <div th:insert="blocks/css_and_js :: all_css_and_js"/>
 </head>
 <body>
-<script type="text/javascript" th:src="@{/js/report_buh_util.js}" defer></script>
+<!--<script type="text/javascript" th:src="@{/js/util.js}" defer></script>-->
 <script type="text/javascript" th:src="@{/js/report_util.js}" defer></script>
-<script type="text/javascript" th:src="@{/lib/buttons.print.js}" defer></script>
+<script type="text/javascript" th:src="@{/js/report_buh_util.js}" defer></script>
 
 <header th:insert="blocks/header :: main_header"/>
 
@@ -25,9 +25,12 @@
         <thead>
         <tr>
             <th>ФИО Пациента</th>
+            <th>Зарег-н</th>
             <th>Сумма</th>
-            <th>Израсходовано</th>
-            <th>Тип сертификата</th>
+            <th>Вх.ост</th>
+            <th>Даты и суммы оплаты</th>
+            <th>Расход</th>
+            <th>Исх.ост</th>
         </tr>
         </thead>
     </table>

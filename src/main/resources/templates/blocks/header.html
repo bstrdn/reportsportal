@@ -27,7 +27,9 @@
                     <!--                    </li>-->
                 <li class="drop" sec:authorize="hasAnyAuthority('1', '3')"><a href="#">Бухгалтерия</a>
                     <ul class="sub_menu">
-                        <li><a href="/report_cert">Сертификаты</a></li>
+                        <li><a href="/report_buh_3">Сертификаты по дате выдачи</a></li>
+                        <li><a href="/report_cert">Сертификаты по дате оплаты</a></li>
+                        <li><a href="/akt_sverki">Акт сверки</a></li>
 <!--                        <li><a href="#">Отчет</a></li>-->
                     </ul>
                 </li>
@@ -36,9 +38,9 @@
                         <li><a href="#">Отчет</a></li>
                     </ul>
                 </li>
-                <li class="drop" sec:authorize="hasAnyAuthority('1', '5')"><a href="/report_skud/9/2">Скуд</a>
+                <li class="drop" sec:authorize="hasAnyAuthority('1', '5')"><a href="/report_skud">Скуд </a>
                     <ul class="sub_menu">
-                        <li><a href="/report_skud/9/2">Отчет</a></li>
+                        <li><a href="/report_skud">Учет рабочего времени</a></li>
                     </ul>
                 </li>
                 <li class="drop" sec:authorize="hasAnyAuthority('7')"><a href="#">План лечения</a>
@@ -85,7 +87,7 @@
 
             <div th:case="'report_buh_1'">
                 <div style="float: left; width: 400px;"><p class="h3">
-                    Сертификаты</p>
+                    Сертификаты по дате оплаты</p>
                 </div>
                 <div style="float: left; width: 700px; color: #000000;">
                 </div>
@@ -94,6 +96,22 @@
             <div th:case="'report_skud_1'">
                 <div style="float: left; width: 400px;"><p class="h3">
                     Учет рабочего времени</p>
+                </div>
+                <div style="float: left; width: 700px; color: #000000;">
+                </div>
+            </div>
+
+            <div th:case="'report_buh_3'">
+                <div style="float: left; width: 400px;"><p class="h3">
+                    Сертификаты по дате выдачи</p>
+                </div>
+                <div style="float: left; width: 700px; color: #000000;">
+                </div>
+            </div>
+
+            <div th:case="'report_aktsverki'">
+                <div style="float: left; width: 400px;"><p class="h3">
+                    Акт сверки</p>
                 </div>
                 <div style="float: left; width: 700px; color: #000000;">
                 </div>

@@ -10,7 +10,7 @@
     </parent>
     <groupId>ru.bstrdn</groupId>
     <artifactId>report</artifactId>
-    <version>0.5.3</version>
+    <version>0.5.9</version>
     <name>report</name>
     <description>report</description>
 
@@ -123,6 +123,25 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+
+<!--        The tool to convert amount to words in Russian/Ukrainian/English languages-->
+        <dependency>
+            <groupId>com.github.javadev</groupId>
+            <artifactId>moneytostr</artifactId>
+            <version>1.18</version>
+        </dependency>
+
     </dependencies>
 
     <build>
