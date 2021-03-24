@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -39,9 +40,10 @@ public class FileService {
         final DateTimeFormatter DTF_TODAY = DateTimeFormatter.ofPattern("dd MMMM YYYY");
         final DateTimeFormatter DTF_START_WITH_DAY = DateTimeFormatter.ofPattern("dd MMMM YYYY");
         final DateTimeFormatter DTF_END_WITH_DAY = DateTimeFormatter.ofPattern("dd MMMM YYYY");
-        final DateTimeFormatter DTF_START = DateTimeFormatter.ofPattern("MMMM YYYY");
-        final DateTimeFormatter DTF_END = DateTimeFormatter.ofPattern("MMMM YYYY");
+        final DateTimeFormatter DTF_START = DateTimeFormatter.ofPattern("LLLL YYYY");
+        final DateTimeFormatter DTF_END = DateTimeFormatter.ofPattern("LLLL YYYY");
         final DateTimeFormatter FOR_INFO = DateTimeFormatter.ofPattern("dd.MM.YYYY");
+
         LocalDate today = LocalDate.now();
         LocalDate sDate = LocalDate.parse(startDate1);
         LocalDate eDate = LocalDate.parse(endDate1);
@@ -68,7 +70,7 @@ public class FileService {
         Double org2_oborot = Double.parseDouble(infoForAktSverki.getOrg2_oborot().toString());
 
 
-        String debt_after_text = moneyToStr.convert(debt_after);
+        String debt_after_text = moneyToStr.convert(Math.abs(debt_after));
         String todayDate = DTF_TODAY.format(today);
         String startDateWithDay = DTF_START_WITH_DAY.format(sDate);
         String endDateWithDay = DTF_END_WITH_DAY.format(eDate);
@@ -76,7 +78,12 @@ public class FileService {
 
 
         String line1 = String.format("Акт сверки взаимных расчетов № %s от %s г.", doc_num, todayDate);
-        String line2 = String.format("за %s г. - %s г.", startDate, endDate);
+        String line2 = "";
+        if (startDate.equals(endDate)) {
+            line2 = String.format("за %s г.", startDate);
+        } else {
+            line2 = String.format("за %s г. - %s г.", startDate, endDate);
+        }
         String line3 = String.format("между %s и %s", org1, org2);
         String line4 = String.format("""
                    Мы, нижеподписавшиеся, Генеральный директор %s %s, с одной стороны, 
@@ -87,24 +94,21 @@ public class FileService {
                                      "были осуществлены следующие расчеты:", startDateWithDay, endDateWithDay);
         String line6 = String.format("Задолженность по состоянию на %s г.", startDateWithDay);
 
-
         String line11 = String.format("Задолженность по состоянию на %s г.", endDateWithDay);
         String line12 = String.format("   2. Таким образом, на %s г.", endDateWithDay);
-        String line13 = String.format("долг %s в валюте RUB %s (%s);", org1, debt_after, debt_after_text);
-
+        String line13 = "";
+        if (debt_after > 0) {
+            line13 = String.format("долг %s в валюте RUB %s (%s);", org1, debt_after, debt_after_text);
+        } else if (debt_after == 0) {
+            line13 = "задолженности нет.";
+        } else {
+            line13 = String.format("долг %s в валюте RUB %s (%s);", org2, Math.abs(debt_after), debt_after_text);
+        }
 
         try (XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream("C:/Portal/sv.xlsx"));
              FileOutputStream fileOut = new FileOutputStream("C:/Portal/new.xlsx")
         ) {
 
-            log.info("test START");
-
-            //Sheet mySheet = wb.getSheetAt(0);
-//            XSSFSheet sheet1 = wb.getSheet("Summary");
-//            CreationHelper createHelper = wb.getCreationHelper();
-//            XSSFRow row0 = sheet1.getRow(0);
-//            XSSFCell cell = row0.getCell(0);
-//            cell.setCellValue("Акт сверки взаимных расчетов № 1 от 04 марта 2021 г.");
             XSSFSheet sheet1 = wb.getSheetAt(0);
             sheet1.getRow(0).getCell(0).setCellValue(line1);
             sheet1.getRow(1).getCell(0).setCellValue(line2);
@@ -114,10 +118,19 @@ public class FileService {
             sheet1.getRow(9).getCell(4).setCellValue(org1);
             sheet1.getRow(9).getCell(6).setCellValue(org2);
             sheet1.getRow(11).getCell(1).setCellValue(line6);
-            sheet1.getRow(11).getCell(5).setCellValue(debt_before);
-//            sheet1.getRow(11).getCell(6).setCellValue(debt_before);
+            if(debt_before < 0) {
+                sheet1.getRow(11).getCell(4).setCellValue(Math.abs(debt_before));
+            } else {
+                sheet1.getRow(11).getCell(5).setCellValue(debt_before);
+            }
             sheet1.getRow(13).getCell(4).setCellValue(org1_oborot);
             sheet1.getRow(13).getCell(5).setCellValue(org2_oborot);
+
+            if (debt_after >=0) {
+                sheet1.getRow(14).getCell(5).setCellValue(debt_after);
+            } else {
+                sheet1.getRow(14).getCell(4).setCellValue(Math.abs(debt_after));
+            }
 
             sheet1.getRow(14).getCell(1).setCellValue(line11);
             sheet1.getRow(16).getCell(0).setCellValue(line12);
@@ -131,7 +144,8 @@ public class FileService {
             CellCopyPolicy ccp = new CellCopyPolicy();
             for (Report_akt_sverki report : list) {
                 XSSFRow row = sheet1.getRow(startRow);
-                row.getCell(0).setCellValue(report.getDat());
+                LocalDate tempDate = LocalDate.parse(report.getDat());
+                row.getCell(0).setCellValue(FOR_INFO.format(tempDate));
                 row.getCell(1).setCellValue(report.getDoc());
                 row.getCell(3).setCellValue(report.getOrg());
                 row.getCell(4).setCellValue(report.getDeb());

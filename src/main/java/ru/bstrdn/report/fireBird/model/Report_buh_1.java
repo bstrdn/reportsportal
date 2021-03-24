@@ -1,18 +1,15 @@
 package ru.bstrdn.report.fireBird.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class Report_buh_1 {
 
-//    @Getter
+    //    @Getter
 //    @Setter
 //    @JsonSerialize
 //    static int sum = 0;
-
+    String number_cert;
     String fullname;
     String date_reg;
     Integer summ;

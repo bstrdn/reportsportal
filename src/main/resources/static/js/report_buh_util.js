@@ -12,8 +12,10 @@ var ctx = {
 
         makeEditable({
             "columns": [
+                {"data": "number_cert",
+                    "width": "4%"},
                 {"data": "fullname",
-                    "width": "27%"},
+                    "width": "25%"},
                 {"data": "date_reg",
                     "width": "8%"},
                 {"data": "summ",
@@ -21,7 +23,7 @@ var ctx = {
                 {"data": "n_saldo",
                     "width": "6%"},
                 {"data": "dates_pay",
-                    "width": "39%"},
+                    "width": "37%"},
                 {"data": "r_amountrub",
                     "width": "7%"},
                 {"data": "k_saldo",
@@ -62,7 +64,14 @@ var ctx = {
             var summVh = ctx.datatableApi.column(3).data().sum();
             $('#summVh').html(summVh);
         }, 1000);
-
+        setTimeout(function () {
+            var summIsh = ctx.datatableApi.column(6).data().sum();
+            $('#summIsh').html(summIsh);
+            var summRs = ctx.datatableApi.column(5).data().sum();
+            $('#summRs').html(summRs);
+            var summVh = ctx.datatableApi.column(3).data().sum();
+            $('#summVh').html(summVh);
+        }, 2000);
         setTimeout(function () {
             var summIsh = ctx.datatableApi.column(6).data().sum();
             $('#summIsh').html(summIsh);
@@ -71,6 +80,7 @@ var ctx = {
             var summVh = ctx.datatableApi.column(3).data().sum();
             $('#summVh').html(summVh);
         }, 3000);
+
 
     }
 };

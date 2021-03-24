@@ -10,10 +10,11 @@ var ctx = {
 
         makeEditable({
             "columns": [
+                {"data": "number_cert",
+                    "width": "6%"},
                 {"data": "fullname"},
                 {"data": "summ"},
                 {"data": "rashod"},
-                {"data": "name_cert"},
             ],
             "order": [
                 [
@@ -37,12 +38,17 @@ var ctx = {
         }).done(updateTableByData);
 
         setTimeout(function () {
-            var summary = ctx.datatableApi.column(1).data().sum();
+            var summary = ctx.datatableApi.column(2).data().sum();
             $('#summ').html(summary);
         }, 1000);
 
         setTimeout(function () {
-            var summary = ctx.datatableApi.column(1).data().sum();
+            var summary = ctx.datatableApi.column(2).data().sum();
+            $('#summ').html(summary);
+        }, 2000);
+
+        setTimeout(function () {
+            var summary = ctx.datatableApi.column(2).data().sum();
             $('#summ').html(summary);
         }, 3000);
 

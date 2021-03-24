@@ -12,6 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * ОТЧЕТЫ ДЛЯ СТОМАТОЛОГИИ:
+ * 1. Первичные пациенты по дате обращения {@link #queryReport_1}
+ * 2. Первичные пациенты по дате записи  {@link #queryReport_2}
+ */
+
 @Slf4j
 @Repository
 @Transactional(readOnly = true)
@@ -21,10 +28,15 @@ public class JdbcReportRepository {
     private static final RowMapper<Report_1> ROW_MAPPER_1 = BeanPropertyRowMapper.newInstance(Report_1.class);
     private final JdbcTemplate jdbcTemplate;
 
+
     public JdbcReportRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+
+    /** ОТЧЕТ ДЛЯ СТОМАТОЛОГИИ **
+     * 1. Первичные пациенты по дате обращения
+     */
     //ПЕРВИЧНЫЕ ПАЦИЕНТЫ (ВСЕ) не уникальные пациенты
     public List<Report_1> queryReport_1(String fromDate, String toDate, String radio, Integer department, Integer registrar, Integer filter_combine) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -109,10 +121,12 @@ public class JdbcReportRepository {
         }
 
         List<Report_1> report_1 = jdbcTemplate.query(stringBuilder.toString(), ROW_MAPPER_1, fromDate, toDate);
-//        report_1.forEach(r -> r.setDocFullname(r.getDocFullname().replaceAll(FIO_PATTERN, "$1$2. $3.")));
         return report_1;
     }
 
+    /** ОТЧЕТ ДЛЯ СТОМАТОЛОГИИ **
+     * 2. Первичные пациенты по дате записи
+     */
     public List<Report_1> queryReport_2(String fromDate, String toDate, String radio, Integer department, Integer registrar, Integer filter_combine) {
 
         List<Report_1> report_2 = new ArrayList<>();
@@ -428,7 +442,9 @@ public class JdbcReportRepository {
         return report_2;
     }
 
-
+    /**
+     * @return Список регистраторов с ID
+     */
     //регистраторы
     public List<Map<String, Object>> getAllRegistrarWithId() {
         List<Map<String, Object>> map;
@@ -442,6 +458,9 @@ public class JdbcReportRepository {
         return map;
     }
 
+    /**
+     * @return Список департаментов с ID
+     */
     //департамент
     public List<Map<String, Object>> getAllDepartmentWithId() {
         return jdbcTemplate.queryForList("""
@@ -452,6 +471,9 @@ public class JdbcReportRepository {
                 """);
     }
 
+    /**
+     * @return Список список всех юхеров для входа в систему
+     */
     //список юзеров для входа в систему
     public List<String> getAllUsers() {
         return jdbcTemplate.queryForList("""
@@ -464,6 +486,9 @@ public class JdbcReportRepository {
     }
 
 
+    /**
+     * Фильтр по отделению и ФИО регистратора
+     */
     private void departmentFilter(StringBuilder stringBuilder, Integer department, Integer registrar) {
         //фильтр по отделению
         if (department > 0) {
