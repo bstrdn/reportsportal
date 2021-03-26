@@ -4,18 +4,6 @@ function makeEditable(datatableOpts) {
         // https://api.jquery.com/jquery.extend/#jQuery-extend-deep-target-object1-objectN
         $.extend(true, datatableOpts,
             {
-                // "processing": true,
-                // "serverSide": true,
-                // "ajax": {
-                //     "url": resturl,
-                //     "dataSrc": ""
-                // },
-
-
-                // "bPaginate": false,
-                // "bSortClasses":false,
-                // asStripClasses:[],
-                // stripeClasses: [],
                 "deferRender": true,
                 stateSave: true,
                 retrieve: true,

@@ -11,11 +11,15 @@ var ctx = {
 
         makeEditable({
             "columns": [
-                {"data": "dat",
+                {
+
+                    "sType": "ruDate",
+                    "data": "dat",
                     "width": "10%",
-                    "render": function (date, type, row) {
-                        return moment(date).format("DD.MM.YYYY");
-                    }
+                    // "render": function (date, type, row) {
+                    //     return moment(date).format("DD.MM.YYYY");
+                    // },
+
                 },
                 {"data": "doc",
                     "width": "30%"
@@ -24,9 +28,21 @@ var ctx = {
                     // "width": "44%"
                 },
                 {"data": "deb",
+                    "render": function (date, type, row) {
+                    if (date === 0) {
+                        return ""
+                    }
+                        return date;
+                    }
                     // "width": "10%"
                 },
                 {"data": "cred",
+                    "render": function (date, type, row) {
+                        if (date === 0) {
+                            return ""
+                        }
+                        return date;
+                    }
                     // "width": "10%"
                 },
             ],

@@ -130,7 +130,39 @@
     </div>
 </div>
 
+<!--CALL 1 Отчет по первичным звонкам-->
+<div th:fragment="filter_call_1" xmlns:th="http://www.w3.org/1999/xhtml">
 
+    <div class="filter_block_1">
+
+        <div class="filter_group">
+            <div th:insert="::changeDate"></div>
+        </div>
+
+        <div class="filter_group_2">
+                        <label for="select1">Сотрудник:</label>
+                        <select id="select1" name="select1">
+                            <option value="0"> Все</option>
+                            <option th:each="user : ${select1}"
+                                    th:value="${user.get('dcode')}"
+                                    th:utext="${user.get('dname')}">
+                            </option>
+                            <br>
+
+                        </select>
+            <br><br>
+
+        </div>
+
+        <div class="filter_select">
+
+        </div>
+
+        <div class="filter_select_button">
+            <a href="#" onclick="ctx.updateTable()" class="knopka">Сформировать</a>
+        </div>
+    </div>
+</div>
 
 <!--Для бухгалтерии 1-->
 <div th:fragment="filter_buh_3" xmlns:th="http://www.w3.org/1999/xhtml">
@@ -219,7 +251,7 @@
         <div class="filter_group_2">
             <label for="legalEntitiesWithId">Юридическое лицо:</label>
             <select  id="legalEntitiesWithId" name="legalEntitiesWithId"   required>
-                <option value="0"> Выберите:</option>
+                <option value=""> Выберите:</option>
                 <option th:each="entity : ${legalEntitiesWithId}"
                         th:value="${entity.get('jid')}"
                         th:utext="${entity.get('jname')}">
@@ -234,7 +266,8 @@
 
         <div class="filter_select_button">
             <a href="#" onclick="ctx.updateTable()" class="knopka">Сформировать</a>
-            <input type="submit" class="knopka" value="Cформировать АКТ">
+            <br><br>
+            <input type="submit" class="button_act" value="Cформировать в EXCEL">
         </div>
     </div>
     </form>
@@ -252,7 +285,7 @@
 
         <div class="filter_group_2">
             <label for="allSkudUsers">Сотрудник:</label>
-            <select th:field="${allSkudUsers}" id="allSkudUsers" name="allSkudUsers">
+            <select id="allSkudUsers" name="allSkudUsers" >
                 <option value="0"> Выберите:</option>
                 <option th:each="user : ${allSkudUsers}"
                         th:value="${user.get('userptr')}"
@@ -274,6 +307,10 @@
         </div>
     </div>
 </div>
+
+
+
+
 
 
 

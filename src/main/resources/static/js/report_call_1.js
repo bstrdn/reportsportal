@@ -8,35 +8,50 @@ var ctx = {
 
             "columns": [
                 {
-                    "data": "fullname",
-                    "width": "27%"
+                    "data": "name",
+                    // "width": "27%"
                 },
                 {
-                    "data": "createdate",
-                    "width": "18%"
+                    "data": "call_out",
+                    // "width": "27%"
+                },
+                {
+                    "data": "call_in",
+                    // "width": "18%"
+                    // "render": function (date, type, row) {
+                    //     return moment(date).format("DD.MM.YYYY");
+                    // }
+
+                },
+                {
+                    "data": "all_call",
+                    // "width": "18%"
                     // "render": function (date, type, row) {
                     //     return moment(date).format("DD.MM.YYYY");
                     // }
                 },
                 {
-                    "data": "workdate",
-                    "width": "18%"
-                    // "render": function (date, type, row) {
-                    //     return moment(date).format("DD.MM.YYYY");
-                    // }
+                    "data": "in_sched",
+                    // "width": "24%"
                 },
                 {
-                    "data": "docFullname",
-                    "width": "24%"
+                    "data": "out_sched",
+                    // "width": "17%"
                 },
                 {
-                    "data": "phone1",
-                    "width": "17%"
+                    "data": "procent",
+                    "width": "20%",
+                    render: function (data, type, row, meta) {
+                        return type === 'display' ?
+                            '<progress value="' + data + '" max="100"></progress>&nbsp&nbsp' + data + '%' :
+                            data;
+
+                    }
                 }
             ],
             "order": [
                 [
-                    0,
+                    6,
                     "asc"
                 ]
             ]
@@ -51,10 +66,7 @@ var ctx = {
                 reportName: reportName,
                 startDate: $('#startDate').val(),
                 endDate: $('#endDate').val(),
-                radio: getRadio(),
-                filter_combine: getFilterCombine(),
-                department: $('#allDepartmentWithId').val(),
-                registrar: $('#allRegistrarWithId').val()
+                select1: $('#select1').val()
             },
         }).done(updateTableByData);
 

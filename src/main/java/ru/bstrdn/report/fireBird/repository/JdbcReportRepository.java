@@ -7,7 +7,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bstrdn.report.fireBird.model.Report_1;
+import ru.bstrdn.report.fireBird.model.Report_akt_sverki_info;
+import ru.bstrdn.report.fireBird.model.Report_call_1;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +20,7 @@ import java.util.Map;
  * ОТЧЕТЫ ДЛЯ СТОМАТОЛОГИИ:
  * 1. Первичные пациенты по дате обращения {@link #queryReport_1}
  * 2. Первичные пациенты по дате записи  {@link #queryReport_2}
+ * 3. Первичные пациенты по звонкам  {@link #report_call_1}
  */
 
 @Slf4j
@@ -26,6 +30,7 @@ public class JdbcReportRepository {
     static final String FIO_PATTERN = "(\\S+\\s)(\\S{1})\\S+\\s(\\S{1})\\S+";
 
     private static final RowMapper<Report_1> ROW_MAPPER_1 = BeanPropertyRowMapper.newInstance(Report_1.class);
+    private static final RowMapper<Report_call_1> ROW_MAPPER_CALL_1 = BeanPropertyRowMapper.newInstance(Report_call_1.class);
     private final JdbcTemplate jdbcTemplate;
 
 
@@ -34,7 +39,8 @@ public class JdbcReportRepository {
     }
 
 
-    /** ОТЧЕТ ДЛЯ СТОМАТОЛОГИИ **
+    /**
+     * ОТЧЕТ ДЛЯ СТОМАТОЛОГИИ **
      * 1. Первичные пациенты по дате обращения
      */
     //ПЕРВИЧНЫЕ ПАЦИЕНТЫ (ВСЕ) не уникальные пациенты
@@ -124,7 +130,8 @@ public class JdbcReportRepository {
         return report_1;
     }
 
-    /** ОТЧЕТ ДЛЯ СТОМАТОЛОГИИ **
+    /**
+     * ОТЧЕТ ДЛЯ СТОМАТОЛОГИИ **
      * 2. Первичные пациенты по дате записи
      */
     public List<Report_1> queryReport_2(String fromDate, String toDate, String radio, Integer department, Integer registrar, Integer filter_combine) {
@@ -442,6 +449,148 @@ public class JdbcReportRepository {
         return report_2;
     }
 
+
+    /**
+     * ОТЧЕТ ДЛЯ СТОМАТОЛОГИИ **
+     * 3. Первичные пациенты по звонкам (список по всем регистраторам)
+     *
+     */
+    public List<Report_call_1> report_call_1 (String startDate, String endDate) {
+        List<Report_call_1> report_call_1 = new ArrayList<>();
+        List<Map<String, Object>> caller = getAllCallRegistrarWithId();
+
+        for (Map<String, Object> map : caller) {
+            Integer dcod = ((Long) map.get("dcode")).intValue();
+            String dname = map.get("dname").toString();
+
+            List<Report_call_1> calls = report_call_1(startDate, endDate, dcod);
+            if(calls.size() != 0) {
+                Report_call_1 call = calls.get(0);
+                call.setName(dname);
+                report_call_1.add(call);
+            }
+        }
+
+return report_call_1;
+    }
+
+
+    /**
+     * ОТЧЕТ ДЛЯ СТОМАТОЛОГИИ **
+     * 3. Первичные пациенты по звонкам (по одному регистратору)
+     */
+    public List<Report_call_1> report_call_1(String startDate, String endDate, Integer reg) {
+        Timestamp start = Timestamp.valueOf(startDate);
+        Timestamp end = Timestamp.valueOf(endDate);
+
+        return jdbcTemplate.query("""
+                --Все первичные звонки (вход, исход, общ кол-во)--
+                SELECT
+                IIF (MIN (res_call.call) = MAX (res_call.call), 0, MIN (res_call.call)) call_out,
+                MAX (res_call.call)call_in,
+                
+                all_calltabl.all_call all_call,
+                zapisalis.in_sched in_sched,
+                all_calltabl.all_call  -
+                zapisalis.in_sched out_sched,
+                CAST (CAST (zapisalis.in_sched AS float) /
+                CAST (all_calltabl.all_call AS float) * 100 AS INTEGER) procent
+                FROM ( SELECT  COUNT (tmp.call) call
+                FROM
+                (SELECT
+                clog.phone phone_call,
+                clog.calltype call
+                FROM call_log clog
+                WHERE clog.callstatus = 2
+                AND clog.pcode = 0
+                AND clog.phone LIKE '89%'
+                AND clog.calldate BETWEEN ? AND ?  --Фильтр по дате
+                AND clog.uid = ? --ФИЛЬТР по сотруднику
+                GROUP BY call, clog.phone) tmp GROUP BY tmp.call) res_call
+                
+                JOIN
+                
+                (SELECT COUNT (phone_call) all_call
+                FROM (
+                SELECT     --Таблица исходящих номеров
+                clog.phone       phone_call
+                FROM call_log clog
+                WHERE clog.callstatus = 2
+                AND clog.pcode = 0
+                AND clog.phone LIKE '89%'
+                AND clog.calldate BETWEEN ? AND ?  --Фильтр по дате
+                AND clog.uid = ? --ФИЛЬТР по сотруднику
+                AND clog.calltype = 1
+                GROUP BY  clog.phone
+                UNION
+                SELECT   --Таблица входящих номеров
+                clog.phone phone_call
+                FROM call_log clog
+                WHERE clog.callstatus = 2
+                AND clog.pcode = 0
+                AND clog.phone LIKE '89%'
+                AND clog.calldate BETWEEN ? AND ?   --Фильтр по дате
+                AND clog.uid = ? --ФИЛЬТР по сотруднику
+                AND clog.calltype = 2
+                GROUP BY  clog.phone)) all_calltabl  ON 1=1
+                
+                JOIN
+                --Кол-во записавшихся, из тех, кто звонил (первичные звонки)
+                (SELECT COUNT (result.call_1) in_sched
+                FROM
+                (SELECT call_1
+                FROM
+                (SELECT phone_call call_1
+                FROM (
+                SELECT     --Таблица исходящих номеров
+                clog.phone       phone_call
+                FROM call_log clog
+                WHERE clog.callstatus = 2
+                AND clog.pcode = 0
+                AND clog.phone LIKE '89%'
+                AND clog.calldate BETWEEN ? AND ?  --Фильтр по дате
+                AND clog.uid = ? --ФИЛЬТР по сотруднику
+                AND clog.calltype = 1
+                GROUP BY  clog.phone
+                UNION
+                SELECT   --Таблица входящих номеров
+                clog.phone phone_call
+                FROM call_log clog
+                WHERE clog.callstatus = 2
+                AND clog.pcode = 0
+                AND clog.phone LIKE '89%'
+                AND clog.calldate BETWEEN ? AND ? --Фильтр по дате
+                AND clog.uid = ? --ФИЛЬТР по сотруднику
+                AND clog.calltype = 2
+                GROUP BY  clog.phone) all_call) tabl_1
+                JOIN
+                (SELECT
+                REPLACE (REPLACE (REPLACE (REPLACE (REPLACE (REPLACE (cl.phone1,'+7','8'),'(',''),')',''),'-',''),'+3','3'),'+4','4') sch_phone1
+                FROM schedule sch
+                JOIN clients cl ON sch.pcode = cl.pcode
+                WHERE sch.workdate >= ?   --Фильтр по дате
+                AND sch.uid = ? --Фильтр по сотруднику
+                UNION
+                SELECT
+                REPLACE (REPLACE (REPLACE (REPLACE (REPLACE (REPLACE (cl.phone2,'+7','8'),'(',''),')',''),'-',''),'+3','3'),'+4','4') sch_phone1
+                FROM schedule sch
+                JOIN clients cl ON sch.pcode = cl.pcode
+                WHERE sch.workdate >= ?   --Фильтр по дате
+                AND sch.uid = ? --Фильтр по сотруднику
+                UNION
+                SELECT
+                REPLACE (REPLACE (REPLACE (REPLACE (REPLACE (REPLACE (cl.phone3,'+7','8'),'(',''),')',''),'-',''),'+3','3'),'+4','4') sch_phone1
+                FROM schedule sch
+                JOIN clients cl ON sch.pcode = cl.pcode
+                WHERE sch.workdate >= ?
+                AND sch.uid = ? --Фильтр по сотруднику
+                ) tabl_2 ON tabl_1.call_1 = tabl_2.sch_phone1 --Фильтр по дате
+                GROUP BY call_1, sch_phone1) result) zapisalis ON 1=1
+                GROUP BY   all_calltabl.all_call, zapisalis.in_sched                
+                """, ROW_MAPPER_CALL_1, start, end, reg, start, end, reg, start, end, reg, start, end, reg, start, end, reg, start, reg, start, reg, start, reg);
+    }
+
+
     /**
      * @return Список регистраторов с ID
      */
@@ -454,6 +603,23 @@ public class JdbcReportRepository {
                         WHERE stdtype = 1
                         AND doctor.locked != 1
                         order by ntuser
+                """);
+        return map;
+    }
+
+    /**
+     * @return Список сотрудников Колл-центра с ID
+     */
+    //регистраторы
+    public List<Map<String, Object>> getAllCallRegistrarWithId() {
+        List<Map<String, Object>> map;
+        map = jdbcTemplate.queryForList("""
+                        SELECT d.dcode, d.ntuser dname
+                        FROM doctor d
+                        WHERE stdtype = 1
+                        AND d.locked != 1
+                        AND d.callcentre = 1
+                        order by d.ntuser
                 """);
         return map;
     }

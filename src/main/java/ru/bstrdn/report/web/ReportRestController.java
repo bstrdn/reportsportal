@@ -10,14 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bstrdn.report.fireBird.model.Report_1;
-import ru.bstrdn.report.fireBird.model.Report_buh_1;
-import ru.bstrdn.report.fireBird.model.Skud2;
+import ru.bstrdn.report.fireBird.model.Report_buh_2;
+import ru.bstrdn.report.fireBird.model.Report_call_1;
 import ru.bstrdn.report.fireBird.repository.JdbcBuhRepository;
 import ru.bstrdn.report.fireBird.repository.JdbcReportRepository;
 import ru.bstrdn.report.postgres.model.SkudResult_1;
 import ru.bstrdn.report.postgres.repository.JdbcSkudRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -75,8 +74,31 @@ public class ReportRestController {
         return rep.queryReport_2(startDate + " 00:00:00", endDate + " 23:59:59", radio, department, registrar, filter_combine);
     }
 
+    @GetMapping("/report_call_1")
+    public List<Report_call_1> report_call_1(
+            @RequestParam @Nullable String startDate,
+            @RequestParam @Nullable String endDate,
+            @RequestParam(defaultValue = "report_call_1") String reportName,
+            @RequestParam(defaultValue = "0") Integer select1,
+            Model model) {
+
+        if (startDate == null) {
+            startDate = WebUtil.getStartDate();
+        }
+        if (endDate == null) {
+            endDate = WebUtil.getEndDate();
+        }
+
+        if (select1 == 0) {
+            return rep.report_call_1(startDate + " 00:00:00", endDate + " 23:59:59");
+
+        }
+
+        return rep.report_call_1(startDate + " 00:00:00", endDate + " 23:59:59", select1);
+    }
+
     @GetMapping("/report_buh_1")
-    public List<Report_buh_1> report_cert(
+    public List<Report_buh_2> report_cert(
             @RequestParam @Nullable String startDate,
             @RequestParam @Nullable String endDate,
             @RequestParam(defaultValue = "report_buh_1") String reportName,
@@ -94,8 +116,9 @@ public class ReportRestController {
 
     /**
      * СКУД
-     * @param startDate - С даты
-     * @param endDate - До даты
+     *
+     * @param startDate  - С даты
+     * @param endDate    - До даты
      * @param skudUserId - ID пользователя в системе GATE
      * @groupSkud - пока что заглушка, значение 2 - Поленок. Прописывается в карточке пользователя GATE.
      * @details8Skud - пока что заглушка, значение 9 - Группа СТОМАТОЛОГИЯ. Прописывается в GATE.
@@ -116,7 +139,7 @@ public class ReportRestController {
             endDate = WebUtil.getEndDate();
         }
 
-        return skudRepository.querySkud_1(groupSkud, details8Skud, skudUserId, startDate+ " 00:00:00", endDate+ " 00:00:00");
+        return skudRepository.querySkud_1(groupSkud, details8Skud, skudUserId, startDate + " 00:00:00", endDate + " 00:00:00");
     }
 
     @GetMapping("/plug")

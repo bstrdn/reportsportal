@@ -15,6 +15,7 @@
                         <li sec:authorize="hasAnyAuthority('1', '2')"><a href="/report_1">Первичные по дате
                             обращения</a></li>
                         <li sec:authorize="hasAnyAuthority('1', '2')"><a href="/report_2">Первичные по дате записи</a>
+                        <li sec:authorize="hasAnyAuthority('1', '2')"><a href="/report_call_1">По первичным звонкам</a>
                         </li>
                     </ul>
                     <!--                    </li>-->
@@ -27,7 +28,7 @@
                     <!--                    </li>-->
                 <li class="drop" sec:authorize="hasAnyAuthority('1', '3')"><a href="#">Бухгалтерия</a>
                     <ul class="sub_menu">
-                        <li><a href="/report_buh_3">Сертификаты по дате выдачи</a></li>
+                        <li><a href="/report_buh_1">Сертификаты по дате выдачи</a></li>
                         <li><a href="/report_cert">Сертификаты по дате оплаты</a></li>
                         <li><a href="/akt_sverki">Акт сверки</a></li>
 <!--                        <li><a href="#">Отчет</a></li>-->
@@ -85,13 +86,33 @@
                 </div>
             </div>
 
+            <div th:case="'report_call_1'">
+                <div style="float: left; width: 400px;"><p class="h3">
+                    По первичным звонкам</p>
+                </div>
+                <div style="float: left; width: 700px; color: #000000;">
+
+                </div>
+            </div>
+
+
+            <div th:case="'report_buh_3'">
+                <div style="float: left; width: 400px;"><p class="h3">
+                    Сертификаты по дате выдачи</p>
+                </div>
+                <div style="float: left; width: 700px; color: #000000;">
+                    <br>
+                    В отчет попадают сертификаты, которые были ВЫДАНЫ в выбранный период.
+                </div>
+            </div>
+
             <div th:case="'report_buh_1'">
                 <div style="float: left; width: 400px;"><p class="h3">
                     Сертификаты по дате оплаты</p>
                 </div>
                 <div style="float: left; width: 700px; color: #000000;">
                     <br>
-                    В отчет попадают сертификаты за счет которых были лечения в выбраном периоде.
+                    В отчет попадают сертификаты, за счет которых были выполнены лечения в выбранном периоде.
                 </div>
             </div>
 
@@ -103,15 +124,7 @@
                 </div>
             </div>
 
-            <div th:case="'report_buh_3'">
-                <div style="float: left; width: 400px;"><p class="h3">
-                    Сертификаты по дате выдачи</p>
-                </div>
-                <div style="float: left; width: 700px; color: #000000;">
-                </div>
-            </div>
-
-            <div th:case="'report_aktsverki'">
+            <div th:case="'akt_sverki'">
                 <div style="float: left; width: 400px;"><p class="h3">
                     Акт сверки</p>
                 </div>
@@ -121,7 +134,7 @@
 
             <!--            <p th:case="'report1'">Первичные по дате обращения</p>-->
             <!--            <p th:case="'report2'">Первичные по дате записи</p>-->
-            <!--            <p th:case="'report_buh_1'">Сертификаты</p>-->
+            <!--            <p th:case="'report_buh_2'">Сертификаты</p>-->
         </div><!--        <p th:text="${reportName}"></p>-->
         <hr style="border-top: 2px solid #337ab7;">
     </div>

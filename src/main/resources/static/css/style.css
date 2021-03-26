@@ -68,8 +68,16 @@ a.navbar-brand-custom-selected {
     color: #777;
 }
 
+.button_act{
+    background-color:transparent;
+    border:0;
+    padding:0;
+    outline:0;
+    user-select:text;
+}
+
 a.knopka {
-    float: right;
+    float: left;
     color: #fff; /* цвет текста */
     text-decoration: none; /* убирать подчёркивание у ссылок */
     user-select: none; /* убирать выделение текста */
@@ -121,7 +129,7 @@ p {
 
 .filter_select_button {
     /*margin: 35px 0 0 35px;*/
-    /*vertical-align: middle;*/
+    vertical-align: bottom;
     width: 160px;
     height: 88px;
     display: inline-block;

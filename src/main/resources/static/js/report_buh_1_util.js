@@ -12,6 +12,7 @@ var ctx = {
             "columns": [
                 {"data": "number_cert",
                     "width": "6%"},
+                {"data": "given"},
                 {"data": "fullname"},
                 {"data": "summ"},
                 {"data": "rashod"},
@@ -38,17 +39,17 @@ var ctx = {
         }).done(updateTableByData);
 
         setTimeout(function () {
-            var summary = ctx.datatableApi.column(2).data().sum();
+            var summary = ctx.datatableApi.column(3).data().sum();
             $('#summ').html(summary);
         }, 1000);
 
         setTimeout(function () {
-            var summary = ctx.datatableApi.column(2).data().sum();
+            var summary = ctx.datatableApi.column(3).data().sum();
             $('#summ').html(summary);
         }, 2000);
 
         setTimeout(function () {
-            var summary = ctx.datatableApi.column(2).data().sum();
+            var summary = ctx.datatableApi.column(3).data().sum();
             $('#summ').html(summary);
         }, 3000);
 

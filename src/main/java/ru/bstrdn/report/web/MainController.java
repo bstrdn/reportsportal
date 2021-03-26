@@ -45,12 +45,21 @@ public class MainController {
         return "report_1";
     }
 
+    @GetMapping("/report_call_1")
+    public String report_call_1(Model model) {
+        model.addAttribute("select1", report.getAllCallRegistrarWithId());
+//        model.addAttribute("allDepartmentWithId", report.getAllDepartmentWithId());
+        model.addAttribute("reportNameRu", "По первичным звонкам");
+        model.addAttribute("reportName", "report_call_1");
+        return "report_call_1";
+    }
+
     @GetMapping("/report_cert")
     public String report_sert(Model model) {
         model.addAttribute("allCertificate", buhRepository.getAllCertWithId());
         model.addAttribute("reportNameRu", "Отчет по сертификатам");
         model.addAttribute("reportName", "report_buh_1");
-        return "report_buh_1";
+        return "report_buh_2";
     }
 
     //Акт сверки
@@ -63,12 +72,12 @@ public class MainController {
     }
 
     //Сертификаты 2
-    @GetMapping("/report_buh_3")
+    @GetMapping("/report_buh_1")
     public String report_buh_3(Model model) {
         model.addAttribute("allCertificate", buhRepository.getAllCertWithId());
         model.addAttribute("reportNameRu", "Отчет по сертификатам");
         model.addAttribute("reportName", "report_buh_3");
-        return "report_buh_3";
+        return "report_buh_1";
     }
 
     //    @GetMapping("/report_skud/{groupNum}/{accessLevel}")

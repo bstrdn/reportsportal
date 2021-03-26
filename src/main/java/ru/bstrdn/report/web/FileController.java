@@ -17,7 +17,9 @@ import ru.bstrdn.report.configurations.MyUserDetails;
 import ru.bstrdn.report.fireBird.repository.JdbcBuhRepository;
 import ru.bstrdn.report.fireBird.service.FileService;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URLEncoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -38,14 +40,10 @@ public class FileController {
     public ResponseEntity downloadFileFromLocal2(@AuthenticationPrincipal MyUserDetails user,
                                                  @RequestParam @Nullable String startDate,
                                                  @RequestParam @Nullable String endDate,
-                                                 @RequestParam(defaultValue = "0") Integer legalEntitiesWithId) throws InterruptedException {
+                                                 @RequestParam(defaultValue = "0") Integer legalEntitiesWithId) throws Exception {
 
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         int userId = user.getDcode();
         String generatedFile = fileService.generateAktSverki(startDate, endDate, legalEntitiesWithId, userId);
-
-
-
         Path path = Paths.get(FILE_BASE_PATH + generatedFile);
         Resource resource = null;
         try {
@@ -53,10 +51,12 @@ public class FileController {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+        String URLEncodedFileName = URLEncoder.encode(resource.getFilename(), "UTF-8");
+
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(CONTENT_TYPE))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""
-                                                         + resource.getFilename() + "\"")
+                                                         + URLEncodedFileName + "\"")
                 .body(resource);
     }
 }
