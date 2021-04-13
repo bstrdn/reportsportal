@@ -1,5 +1,5 @@
-
 function makeEditable(datatableOpts) {
+    $.fn.dataTable.moment('DD.MM.Y');
     ctx.datatableApi = $("#datatable").DataTable(
         // https://api.jquery.com/jquery.extend/#jQuery-extend-deep-target-object1-objectN
         $.extend(true, datatableOpts,
@@ -58,9 +58,7 @@ function makeEditable(datatableOpts) {
                         "sortAscending": ": активировать для сортировки столбца по возрастанию",
                         "sortDescending": ": активировать для сортировки столбца по убыванию"
                     },
-                    // stripeClasses: [],
-                    // asStripClasses: []
-                }
+                },
             }
         ));
 }

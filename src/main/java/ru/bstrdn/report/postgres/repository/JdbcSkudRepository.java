@@ -163,7 +163,7 @@ public class JdbcSkudRepository {
     public List<Map<String, Object>> getAllSkudUsers(String groupNum, String accessLevel) {
 
         return postgresJdbc.queryForList("""
-                SELECT\s
+                SELECT
                 gu.userptr,
                 gu.details7,
                 gu.lastname || ' ' ||

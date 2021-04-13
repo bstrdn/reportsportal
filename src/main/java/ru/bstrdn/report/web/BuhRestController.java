@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bstrdn.report.fireBird.model.Report_akt_sverki;
 import ru.bstrdn.report.fireBird.model.Report_buh_1;
+import ru.bstrdn.report.fireBird.model.Report_buh_4;
 import ru.bstrdn.report.fireBird.repository.JdbcBuhRepository;
 
 import java.util.List;
@@ -57,6 +58,23 @@ public class BuhRestController {
             endDate = WebUtil.getEndDate();
         }
         return buhRepository.queryReport_akt_sverki(orgId, startDate + " 00:00:00", endDate + " 00:00:00");
+    }
+
+    @GetMapping("/report_buh_4")
+    public List<Report_buh_4> report_buh_4(
+            @RequestParam @Nullable String startDate,
+            @RequestParam @Nullable String endDate,
+            @RequestParam(defaultValue = "report_buh_4") String reportName,
+            @RequestParam(defaultValue = "0") Integer dcode,
+            Model model) {
+
+        if (startDate == null) {
+            startDate = "2020-01-01";
+        }
+        if (endDate == null) {
+            endDate = WebUtil.getEndDate();
+        }
+        return buhRepository.queryReport_buh_4(dcode, startDate + " 00:00:00", endDate + " 00:00:00");
     }
 
 }

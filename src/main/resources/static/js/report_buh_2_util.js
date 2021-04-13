@@ -57,27 +57,27 @@ var ctx = {
         // $('#summ').html(summary);
 
         setTimeout(function () {
-            var summIsh = ctx.datatableApi.column(6).data().sum();
+            var summIsh = ctx.datatableApi.column(7).data().sum();
             $('#summIsh').html(summIsh);
-            var summRs = ctx.datatableApi.column(5).data().sum();
+            var summRs = ctx.datatableApi.column(6).data().sum();
             $('#summRs').html(summRs);
-            var summVh = ctx.datatableApi.column(3).data().sum();
+            var summVh = ctx.datatableApi.column(4).data().sum();
             $('#summVh').html(summVh);
         }, 1000);
         setTimeout(function () {
-            var summIsh = ctx.datatableApi.column(6).data().sum();
+            var summIsh = ctx.datatableApi.column(7).data().sum();
             $('#summIsh').html(summIsh);
-            var summRs = ctx.datatableApi.column(5).data().sum();
+            var summRs = ctx.datatableApi.column(6).data().sum();
             $('#summRs').html(summRs);
-            var summVh = ctx.datatableApi.column(3).data().sum();
+            var summVh = ctx.datatableApi.column(4).data().sum();
             $('#summVh').html(summVh);
         }, 2000);
         setTimeout(function () {
-            var summIsh = ctx.datatableApi.column(6).data().sum();
+            var summIsh = ctx.datatableApi.column(7).data().sum();
             $('#summIsh').html(summIsh);
-            var summRs = ctx.datatableApi.column(5).data().sum();
+            var summRs = ctx.datatableApi.column(6).data().sum();
             $('#summRs').html(summRs);
-            var summVh = ctx.datatableApi.column(3).data().sum();
+            var summVh = ctx.datatableApi.column(4).data().sum();
             $('#summVh').html(summVh);
         }, 3000);
 

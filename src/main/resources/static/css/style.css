@@ -8,6 +8,14 @@ tr[data-mealExcess="true"] {
     background: #ffc9c1;
 }
 
+td[excess="true"] {
+    color: red;
+    background: green;
+}
+
+
+
+
 
 .changeDate{
     display:inline-block;

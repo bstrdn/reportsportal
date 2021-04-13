@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${reportNameRu}"></title>
+    <div th:insert="blocks/css_and_js :: all_css_and_js"/>
+</head>
+<body>
+<script type="text/javascript" th:src="@{/js/report_util.js}" defer></script>
+<script type="text/javascript" th:src="@{/js/report_buh_4_util.js}" defer></script>
+
+<header th:insert="blocks/header :: main_header"/>
+
+<input type="hidden" id="reportName" th:value="${reportName}"/>
+
+<div class="container">
+
+        <header th:include="blocks/filters :: filter_buh_4"/>
+
+    <table id="datatable" class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Дата спис-я</th>
+            <th>ФИО пациента</th>
+            <th>ФИО доктора</th>
+            <th>Дата начисл</th>
+            <th>Сумма начисл</th>
+            <th>Сумма спис-я</th>
+            <th>Закрытие З/Н</th>
+            <th>Коды и кол-во услуг</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+<footer th:insert="blocks/footer :: footer"/>
+</body>
+</html>

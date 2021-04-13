@@ -12,13 +12,13 @@ var ctx = {
         makeEditable({
             "columns": [
                 {
-
-                    "sType": "ruDate",
+                    type: 'de_date',
+                    // "sType": "ruDate",
                     "data": "dat",
                     "width": "10%",
-                    // "render": function (date, type, row) {
-                    //     return moment(date).format("DD.MM.YYYY");
-                    // },
+                    "render": function (date, type, row) {
+                        return moment(date).format("DD.MM.YYYY");
+                    },
 
                 },
                 {"data": "doc",

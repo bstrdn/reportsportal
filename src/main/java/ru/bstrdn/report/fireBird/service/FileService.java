@@ -38,12 +38,14 @@ public class FileService {
      */
     public String generateAktSverki(String startDate1, String endDate1, Integer legalEntitiesWithId, Integer userId) throws Exception {
         final MoneyToStr moneyToStr = new MoneyToStr(MoneyToStr.Currency.RUR, MoneyToStr.Language.RUS, MoneyToStr.Pennies.NUMBER);
-        final DateTimeFormatter DTF_TODAY = DateTimeFormatter.ofPattern("dd MMMM YYYY");
-        final DateTimeFormatter DTF_START_WITH_DAY = DateTimeFormatter.ofPattern("dd MMMM YYYY");
-        final DateTimeFormatter DTF_END_WITH_DAY = DateTimeFormatter.ofPattern("dd MMMM YYYY");
-        final DateTimeFormatter DTF_START = DateTimeFormatter.ofPattern("LLLL YYYY");
-        final DateTimeFormatter DTF_END = DateTimeFormatter.ofPattern("LLLL YYYY");
-        final DateTimeFormatter FOR_INFO = DateTimeFormatter.ofPattern("dd.MM.YYYY");
+        final DateTimeFormatter DTF_TODAY = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        final DateTimeFormatter DTF_START_WITH_DAY = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        final DateTimeFormatter DTF_END_WITH_DAY = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        final DateTimeFormatter DTF_START = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        final DateTimeFormatter DTF_END = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+//        final DateTimeFormatter DTF_START = DateTimeFormatter.ofPattern("LLLL YYYY");
+//        final DateTimeFormatter DTF_END = DateTimeFormatter.ofPattern("LLLL YYYY");
+        final DateTimeFormatter FOR_INFO = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
         LocalDate today = LocalDate.now();
         LocalDate sDate = LocalDate.parse(startDate1);
@@ -95,7 +97,7 @@ public class FileService {
         if (debt_after > 0) {
             line13 = String.format("долг %s в валюте RUB %s (%s);", org1, debt_after, debt_after_text);
         } else if (debt_after == 0) {
-            line13 = "задолженности нет.";
+            line13 = "Задолженность отсутствует.";
         } else {
             line13 = String.format("долг %s в валюте RUB %s (%s);", org2, Math.abs(debt_after), debt_after_text);
         }

@@ -2,15 +2,13 @@ package ru.bstrdn.report.fireBird.repository;
 
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.bstrdn.report.fireBird.model.Report_akt_sverki;
-import ru.bstrdn.report.fireBird.model.Report_akt_sverki_info;
-import ru.bstrdn.report.fireBird.model.Report_buh_1;
-import ru.bstrdn.report.fireBird.model.Report_buh_2;
+import ru.bstrdn.report.fireBird.model.*;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -21,6 +19,7 @@ import java.util.Map;
  * 1. Сертификаты по дате выдачи {@link #queryReport_buh_1}
  * 2. Сертификаты по дате оплаты {@link #queryReport_buh_3}
  * 3. Акт сверки {@link #queryReport_akt_sverki}
+ * 4. Списание {@link #queryReport_buh_4}
  */
 
 @Slf4j
@@ -31,6 +30,7 @@ public class JdbcBuhRepository {
     private final JdbcTemplate jdbcTemplate;
     private static final RowMapper<Report_buh_1> ROW_MAPPER_BUH_1 = BeanPropertyRowMapper.newInstance(Report_buh_1.class);
     private static final RowMapper<Report_buh_2> ROW_MAPPER_BUH_2 = BeanPropertyRowMapper.newInstance(Report_buh_2.class);
+    private static final RowMapper<Report_buh_4> ROW_MAPPER_BUH_4 = BeanPropertyRowMapper.newInstance(Report_buh_4.class);
     private static final RowMapper<Report_akt_sverki> ROW_MAPPER_AKT_SVERKI = BeanPropertyRowMapper.newInstance(Report_akt_sverki.class);
     private static final RowMapper<Report_akt_sverki_info> ROW_MAPPER_AKT_SVERKI_INFO = BeanPropertyRowMapper.newInstance(Report_akt_sverki_info.class);
 
@@ -228,6 +228,113 @@ public class JdbcBuhRepository {
 
 
     /**
+     * БУХГАЛТЕРСКИЙ ОТЧЕТ **
+     * 4. Списание
+     */
+    public List<Report_buh_4> queryReport_buh_4(Integer dcode, String startDate, String endDate) throws DataAccessException {
+        Timestamp start = Timestamp.valueOf(startDate);
+        Timestamp end = Timestamp.valueOf(endDate);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("""
+                SELECT
+                priem.data_spis,
+                priem.fio_pat,
+                priem.fio_doc,
+                priem.data_nachisl,
+                priem.sum_nachisl,
+                priem.sum_spis,
+                priem.data_zn,
+                LIST (priem.kod || ' - ' || CAST (priem.count_usl AS INTEGER) || ' шт', '
+                ') code
+                                 
+                FROM (SELECT
+                cred.lcdate data_spis,
+                cl.fullname fio_pat,
+                doc.ntuser fio_doc,
+                t.treatdate data_nachisl,
+                CAST ((t.amountcl_disc + t.amountjp_disc) AS INTEGER) sum_nachisl,
+                CAST (cred.amountrub AS INTEGER) sum_spis,
+                t.naradclose data_zn,
+                LIST (DISTINCT ws.kodoper, '
+                ') kod,
+                SUM  (od.schcount) count_usl
+                                 
+                FROM losecredit cred
+                LEFT JOIN doctor doc ON cred.dcode = doc.dcode
+                LEFT JOIN clients cl ON cred.pcode = cl.pcode
+                LEFT JOIN treat t ON cred.treatcode = t.treatcode
+                JOIN orderdet od ON t.orderno = od.orderno
+                JOIN wschema ws ON od.schcode = ws.schid
+                                 
+                WHERE
+                cred.paycode IN (11, 13, 14, 16) --Списания
+                AND t.doctype IN (1, 3)   --Только приемы, без З/Н
+                AND cred.lcdate BETWEEN ? AND ? --Фильтр по дате
+                """);
+//фильтр по доктору
+        if (dcode != 0) {
+            sb.append("AND cred.dcode = " + dcode);
+        }
+
+        sb.append("""
+                 GROUP BY t.orderno, cred.lcdate, cl.fullname, doc.ntuser, t.treatdate, sum_nachisl, sum_spis, t.naradclose, ws.kodoper) priem
+                 GROUP BY priem.data_spis, priem.fio_pat, priem.fio_doc, priem.data_nachisl, priem.sum_nachisl, priem.sum_spis, priem.data_zn
+                 
+                 
+                 UNION ALL
+                 
+                 SELECT
+                 zn_res.data_spis,
+                 zn_res.fio_pat,
+                 zn_res.fio_doc,
+                 zn_res.data_nachisl,
+                 zn_res.sum_nachisl,
+                 zn_res.sum_spis,
+                 zn_res.data_zn,
+                 LIST (zn_res.kod || ' - ' || CAST (zn_res.count_usl AS INTEGER) || ' шт', '
+                 ')
+                 
+                 FROM (SELECT
+                 cred.lcdate data_spis,
+                 cl.fullname fio_pat,
+                 doc.ntuser fio_doc,
+                 t.treatdate data_nachisl,
+                 CAST ((t.amountcl_disc + t.amountjp_disc) AS INTEGER) sum_nachisl,
+                 CAST (cred.amountrub AS INTEGER) sum_spis,
+                 t.naradclose data_zn,
+                 LIST (DISTINCT ws.kodoper, '
+                 ') kod,
+                 SUM  (od.schcount) count_usl
+                 
+                 FROM losecredit cred
+                 LEFT JOIN doctor doc ON cred.dcode = doc.dcode
+                 LEFT JOIN clients cl ON cred.pcode = cl.pcode
+                 LEFT JOIN treat t ON cred.treatcode = t.treatcode
+                 JOIN orderdet od ON t.orderno = od.orderno
+                 JOIN wschema ws ON od.schcode = ws.schid
+                 
+                 WHERE
+                 cred.paycode IN (11, 13, 14, 16) --Списания
+                 AND t.doctype IN (12)  -- З/Н зуботехнический и закрыт
+                 AND t.naradclose BETWEEN ? AND ? --Фильтр по дате
+                """);
+//фильтр по доктору
+        if (dcode != 0) {
+            sb.append("AND cred.dcode = " + dcode);
+        }
+
+        sb.append("""
+                GROUP BY t.orderno, cred.lcdate, cl.fullname, doc.ntuser, t.treatdate, sum_nachisl, sum_spis, t.naradclose, ws.kodoper) zn_res
+                GROUP BY zn_res.data_spis, zn_res.fio_pat, zn_res.fio_doc, zn_res.data_nachisl, zn_res.sum_nachisl, zn_res.sum_spis, zn_res.data_zn
+                ORDER BY 1
+                """);
+
+        return jdbcTemplate.query(sb.toString(), ROW_MAPPER_BUH_4, start, end, start, end);
+    }
+
+
+    /**
      * @return Список всех сертификатов с их id
      */
     public List<Map<String, Object>> getAllCertWithId() {
@@ -238,6 +345,24 @@ public class JdbcBuhRepository {
                 cname name
                 FROM clcertificateref
                 WHERE pcode NOT IN (10000999)
+                                """);
+        return map;
+    }
+
+    /**
+     * @return Список докторов с их id
+     */
+    public List<Map<String, Object>> getAllDocWithId() {
+        List<Map<String, Object>> map;
+        map = jdbcTemplate.queryForList("""
+                SELECT
+                doc.dcode,
+                doc.ntuser
+                FROM doctor doc
+                WHERE doc.stdtype IN (10000003, 10000006)
+                AND doc.locked != 1
+                AND doc.profid = 10000011
+                ORDER BY doc.ntuser
                                 """);
         return map;
     }
@@ -265,7 +390,7 @@ public class JdbcBuhRepository {
 //        Timestamp end = Timestamp.valueOf(endDate);
         List<Report_akt_sverki_info> akt_sverki_infos = jdbcTemplate.query("""
                 --Сальдо на начало и конец периода + обороты--
-                
+                                
                 SELECT
                 org.org1,
                 org.org1_full org1_full,
@@ -277,7 +402,7 @@ public class JdbcBuhRepository {
                 (COALESCE (start_per1.sum_uslug, 0) + COALESCE (end_per1.sum_uslug, 0)) debt_after,
                 COALESCE (end_per1.sum_uslug, 0) org1_oborot,
                 COALESCE (end_per2.debit_o, 0) org2_oborot
-                
+                                
                 FROM
                 --Таблица выбирает все лечения начисленные на организацию ДО даты выбранного периода акта сверки и суммирует оплаты
                 (SELECT
@@ -320,7 +445,7 @@ public class JdbcBuhRepository {
                 org_res1.org1_dir,
                 org_res2.org2,
                 org_res2.org2_full
-                
+                                
                 FROM (SELECT
                 pers.jname org1,
                 pers.jname ||', '||'ИНН '||
@@ -353,4 +478,4 @@ public class JdbcBuhRepository {
 //
 //    }
 
-    }
+}

@@ -2,7 +2,6 @@
 var ctx = {
     ajaxUrl: resturl,
     updateTable: function () {
-
         makeEditable({
             // "autoWidth": true,
 
@@ -12,15 +11,17 @@ var ctx = {
                     "width": "27%"
                 },
                 {
+                    // type: 'text',
                     "data": "createdate",
-                    "width": "18%"
+                    "width": "18%",
                     // "render": function (date, type, row) {
                     //     return moment(date).format("DD.MM.YYYY");
                     // }
                 },
                 {
+                    // type: 'text',
                     "data": "workdate",
-                    "width": "18%"
+                    "width": "18%",
                     // "render": function (date, type, row) {
                     //     return moment(date).format("DD.MM.YYYY");
                     // }

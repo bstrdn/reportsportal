@@ -273,6 +273,39 @@
     </form>
 </div>
 
+<!--Для бухгалтерии 4-->
+<div th:fragment="filter_buh_4" xmlns:th="http://www.w3.org/1999/xhtml">
+
+    <div class="filter_block_1">
+
+        <div class="filter_group">
+            <div th:insert="::changeDate"></div>
+        </div>
+
+        <div class="filter_group_2">
+            <label for="summNach">Всего начислено:</label>
+            <p id="summNach" style="display:inline-block"></p>
+            <br>
+            <label for="summSpis">Всего списано:</label>
+            <p id="summSpis" style="display:inline-block"></p>
+
+        </div>
+
+        <div class="filter_select">
+            <select id="allDocWithId" name="allDocWithId" required>
+                <option label="Все доктора" value="0"></option> -->
+                <option th:each="dep : ${allDocWithId}"
+                        th:value="${dep.get('dcode')}"
+                        th:utext="${dep.get('ntuser')}">
+                </option>
+            </select>
+        </div>
+
+        <div class="filter_select_button">
+            <a href="#" onclick="ctx.updateTable()" class="knopka">Сформировать</a>
+        </div>
+    </div>
+</div>
 
 <!--Для СКУД-->
 <div th:fragment="filter_skud_1" xmlns:th="http://www.w3.org/1999/xhtml">

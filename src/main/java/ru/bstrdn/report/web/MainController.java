@@ -80,6 +80,15 @@ public class MainController {
         return "report_buh_1";
     }
 
+    //Бухгалтерия 4
+    @GetMapping("/report_buh_4")
+    public String report_buh_4(Model model) {
+        model.addAttribute("allDocWithId", buhRepository.getAllDocWithId());
+        model.addAttribute("reportNameRu", "Списание");
+        model.addAttribute("reportName", "report_buh_4");
+        return "report_buh_4";
+    }
+
     //    @GetMapping("/report_skud/{groupNum}/{accessLevel}")
     //    public String report_skud_1(@PathVariable String groupNum, @PathVariable String accessLevel, Model model) {
     @GetMapping("/report_skud")

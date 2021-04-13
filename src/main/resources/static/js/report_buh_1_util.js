@@ -12,7 +12,13 @@ var ctx = {
             "columns": [
                 {"data": "number_cert",
                     "width": "6%"},
-                {"data": "given"},
+                {
+                    // type: 'de_date',
+                    data: 'given',
+                    // render: function (data, type, row) {
+                    //         return moment(data).format("DD.MM.YYYY");
+                    // },
+                },
                 {"data": "fullname"},
                 {"data": "summ"},
                 {"data": "rashod"},

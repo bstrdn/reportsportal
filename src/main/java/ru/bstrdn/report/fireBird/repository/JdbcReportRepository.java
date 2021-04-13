@@ -52,12 +52,10 @@ public class JdbcReportRepository {
                     SELECT
                     cl.fullname,
                     cl.phone1,
-                    IIF (EXTRACT (DAY FROM s.createdate) < 10, '0' || EXTRACT (DAY FROM s.createdate) || '.', EXTRACT (DAY FROM s.createdate) || '.') ||
-                    IIF (EXTRACT (MONTH FROM s.createdate) < 10, '0' || EXTRACT (MONTH FROM s.createdate) || '.', EXTRACT (MONTH FROM s.createdate) || '.') ||
-                    EXTRACT (YEAR FROM s.createdate) createdate,
-                    IIF (EXTRACT (DAY FROM s.workdate) < 10, '0' || EXTRACT (DAY FROM s.workdate) || '.', EXTRACT (DAY FROM s.workdate) || '.') ||
-                    IIF (EXTRACT (MONTH FROM s.workdate) < 10, '0' || EXTRACT (MONTH FROM s.workdate) || '.', EXTRACT (MONTH FROM s.workdate) || '.') ||
-                    EXTRACT (YEAR FROM s.workdate) workdate,
+                    
+                    s.createdate createdate,
+                    
+                    s.workdate workdate,
                     doc.ntuser docFullname
                     """);
         }
@@ -144,12 +142,8 @@ public class JdbcReportRepository {
                     SELECT
                     cl.fullname,
                     cl.phone1,
-                    IIF (EXTRACT (DAY FROM s.createdate) < 10, '0' || EXTRACT (DAY FROM s.createdate) || '.', EXTRACT (DAY FROM s.createdate) || '.') ||
-                    IIF (EXTRACT (MONTH FROM s.createdate) < 10, '0' || EXTRACT (MONTH FROM s.createdate) || '.', EXTRACT (MONTH FROM s.createdate) || '.') ||
-                    EXTRACT (YEAR FROM s.createdate) createdate,
-                    IIF (EXTRACT (DAY FROM s.workdate) < 10, '0' || EXTRACT (DAY FROM s.workdate) || '.', EXTRACT (DAY FROM s.workdate) || '.') ||
-                    IIF (EXTRACT (MONTH FROM s.workdate) < 10, '0' || EXTRACT (MONTH FROM s.workdate) || '.', EXTRACT (MONTH FROM s.workdate) || '.') ||
-                    EXTRACT (YEAR FROM s.workdate) workdate,
+                    s.createdate createdate,
+                    s.workdate workdate,
                     doc.NTUSER docFullname
                     FROM schedule s
                     JOIN clients cl ON s.pcode = cl.pcode

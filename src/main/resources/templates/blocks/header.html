@@ -31,7 +31,8 @@
                         <li><a href="/report_buh_1">Сертификаты по дате выдачи</a></li>
                         <li><a href="/report_cert">Сертификаты по дате оплаты</a></li>
                         <li><a href="/akt_sverki">Акт сверки</a></li>
-<!--                        <li><a href="#">Отчет</a></li>-->
+                        <li><a href="/report_buh_4">Списание</a></li>
+                        <!--                        <li><a href="#">Отчет</a></li>-->
                     </ul>
                 </li>
                 <li class="drop" sec:authorize="hasAnyAuthority('1', '4')"><a href="#">План-Факт</a>
@@ -113,6 +114,16 @@
                 <div style="float: left; width: 700px; color: #000000;">
                     <br>
                     В отчет попадают сертификаты, за счет которых были выполнены лечения в выбранном периоде.
+                </div>
+            </div>
+
+            <div th:case="'report_buh_4'">
+                <div style="float: left; width: 400px;"><p class="h3">
+                    Списание</p>
+                </div>
+                <div style="float: left; width: 700px; color: #000000;">
+                    <br>
+
                 </div>
             </div>
 
