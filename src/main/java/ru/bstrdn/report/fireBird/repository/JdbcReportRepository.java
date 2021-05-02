@@ -52,10 +52,12 @@ public class JdbcReportRepository {
                     SELECT
                     cl.fullname,
                     cl.phone1,
-                    
-                    s.createdate createdate,
-                    
-                    s.workdate workdate,
+                    IIF (EXTRACT (DAY FROM s.createdate) < 10, '0' || EXTRACT (DAY FROM s.createdate) || '.', EXTRACT (DAY FROM s.createdate) || '.') ||
+                    IIF (EXTRACT (MONTH FROM s.createdate) < 10, '0' || EXTRACT (MONTH FROM s.createdate) || '.', EXTRACT (MONTH FROM s.createdate) || '.') ||
+                    EXTRACT (YEAR FROM s.createdate) createdate,
+                    IIF (EXTRACT (DAY FROM s.workdate) < 10, '0' || EXTRACT (DAY FROM s.workdate) || '.', EXTRACT (DAY FROM s.workdate) || '.') ||
+                    IIF (EXTRACT (MONTH FROM s.workdate) < 10, '0' || EXTRACT (MONTH FROM s.workdate) || '.', EXTRACT (MONTH FROM s.workdate) || '.') ||
+                    EXTRACT (YEAR FROM s.workdate) workdate,
                     doc.ntuser docFullname
                     """);
         }
@@ -142,8 +144,12 @@ public class JdbcReportRepository {
                     SELECT
                     cl.fullname,
                     cl.phone1,
-                    s.createdate createdate,
-                    s.workdate workdate,
+                    IIF (EXTRACT (DAY FROM s.createdate) < 10, '0' || EXTRACT (DAY FROM s.createdate) || '.', EXTRACT (DAY FROM s.createdate) || '.') ||
+                    IIF (EXTRACT (MONTH FROM s.createdate) < 10, '0' || EXTRACT (MONTH FROM s.createdate) || '.', EXTRACT (MONTH FROM s.createdate) || '.') ||
+                    EXTRACT (YEAR FROM s.createdate) createdate,
+                    IIF (EXTRACT (DAY FROM s.workdate) < 10, '0' || EXTRACT (DAY FROM s.workdate) || '.', EXTRACT (DAY FROM s.workdate) || '.') ||
+                    IIF (EXTRACT (MONTH FROM s.workdate) < 10, '0' || EXTRACT (MONTH FROM s.workdate) || '.', EXTRACT (MONTH FROM s.workdate) || '.') ||
+                    EXTRACT (YEAR FROM s.workdate) workdate,
                     doc.NTUSER docFullname
                     FROM schedule s
                     JOIN clients cl ON s.pcode = cl.pcode
@@ -447,9 +453,8 @@ public class JdbcReportRepository {
     /**
      * ОТЧЕТ ДЛЯ СТОМАТОЛОГИИ **
      * 3. Первичные пациенты по звонкам (список по всем регистраторам)
-     *
      */
-    public List<Report_call_1> report_call_1 (String startDate, String endDate) {
+    public List<Report_call_1> report_call_1(String startDate, String endDate) {
         List<Report_call_1> report_call_1 = new ArrayList<>();
         List<Map<String, Object>> caller = getAllCallRegistrarWithId();
 
@@ -458,14 +463,14 @@ public class JdbcReportRepository {
             String dname = map.get("dname").toString();
 
             List<Report_call_1> calls = report_call_1(startDate, endDate, dcod);
-            if(calls.size() != 0) {
+            if (calls.size() != 0) {
                 Report_call_1 call = calls.get(0);
                 call.setName(dname);
                 report_call_1.add(call);
             }
         }
 
-return report_call_1;
+        return report_call_1;
     }
 
 
@@ -482,7 +487,7 @@ return report_call_1;
                 SELECT
                 IIF (MIN (res_call.call) = MAX (res_call.call), 0, MIN (res_call.call)) call_out,
                 MAX (res_call.call)call_in,
-                
+                                
                 all_calltabl.all_call all_call,
                 zapisalis.in_sched in_sched,
                 all_calltabl.all_call  -
@@ -501,9 +506,9 @@ return report_call_1;
                 AND clog.calldate BETWEEN ? AND ?  --Фильтр по дате
                 AND clog.uid = ? --ФИЛЬТР по сотруднику
                 GROUP BY call, clog.phone) tmp GROUP BY tmp.call) res_call
-                
+                                
                 JOIN
-                
+                                
                 (SELECT COUNT (phone_call) all_call
                 FROM (
                 SELECT     --Таблица исходящих номеров
@@ -527,7 +532,7 @@ return report_call_1;
                 AND clog.uid = ? --ФИЛЬТР по сотруднику
                 AND clog.calltype = 2
                 GROUP BY  clog.phone)) all_calltabl  ON 1=1
-                
+                                
                 JOIN
                 --Кол-во записавшихся, из тех, кто звонил (первичные звонки)
                 (SELECT COUNT (result.call_1) in_sched
