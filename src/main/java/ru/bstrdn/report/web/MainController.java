@@ -89,6 +89,14 @@ public class MainController {
         return "report_buh_4";
     }
 
+    //Бухгалтерия 5
+    @GetMapping("/report_buh_5")
+    public String report_buh_5(Model model) {
+        model.addAttribute("reportNameRu", "Долги и авансы");
+        model.addAttribute("reportName", "report_buh_5");
+        return "report_buh_5";
+    }
+
     //    @GetMapping("/report_skud/{groupNum}/{accessLevel}")
     //    public String report_skud_1(@PathVariable String groupNum, @PathVariable String accessLevel, Model model) {
     @GetMapping("/report_skud")

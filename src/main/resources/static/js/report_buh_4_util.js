@@ -18,9 +18,9 @@ var ctx = {
                     // type: 'de_date',
                     "data": "data_spis",
                     "width": "6%",
-                    "render": function (data, type, row) {
-                        return moment(data).format("DD.MM.YYYY");
-                    },
+                    // "render": function (data, type, row) {
+                    //     return moment(data).format("DD.MM.YYYY");
+                    // },
 
                 },
                 {
@@ -34,9 +34,9 @@ var ctx = {
                 {
                     "data": "data_nachisl",
                     "width": "6%",
-                    "render": function (data, type, row) {
-                        return moment(data).format("DD.MM.YYYY");
-                    },
+                    // "render": function (data, type, row) {
+                    //     return moment(data).format("DD.MM.YYYY");
+                    // },
                 },
                 {
                     "data": "sum_nachisl",
@@ -57,7 +57,8 @@ var ctx = {
                     "data": "data_zn",
                     "render": function (data, type, row) {
                         if (data !== null) {
-                            return moment(data).format("DD.MM.YYYY");
+                            return data;
+                            // return moment(data).format("DD.MM.YYYY");
                         } else {
                             return "";
                         }

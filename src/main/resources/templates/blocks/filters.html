@@ -11,13 +11,13 @@
             <div class="filter_group">
                 <div th:insert="::changeDate"></div>
             </div>
-<!--            <div class="filter_group">-->
-<!--                <label for="startDate">Начало обращения:</label>-->
-<!--                <input type="date" id="startDate" name="startDate">-->
-<!--                <br><br>-->
-<!--                <label for="endDate">Конец обращения:&nbsp&nbsp</label>-->
-<!--                <input type="date" id="endDate" name="endDate">-->
-<!--            </div>-->
+            <!--            <div class="filter_group">-->
+            <!--                <label for="startDate">Начало обращения:</label>-->
+            <!--                <input type="date" id="startDate" name="startDate">-->
+            <!--                <br><br>-->
+            <!--                <label for="endDate">Конец обращения:&nbsp&nbsp</label>-->
+            <!--                <input type="date" id="endDate" name="endDate">-->
+            <!--            </div>-->
 
             <div class="filter_group_2">
                 <label for="allDepartmentWithId">Отделение:</label>
@@ -74,13 +74,13 @@
             <div class="filter_group">
                 <div th:insert="::changeDate"></div>
             </div>
-<!--            <div class="filter_group">-->
-<!--                <label for="startDate">Начало записи в расписании:</label>-->
-<!--                <input type="date" id="startDate" name="startDate">-->
-<!--                <br><br>-->
-<!--                <label for="endDate">Конец записи в расписании:&nbsp&nbsp</label>-->
-<!--                <input type="date" id="endDate" name="endDate">-->
-<!--            </div>-->
+            <!--            <div class="filter_group">-->
+            <!--                <label for="startDate">Начало записи в расписании:</label>-->
+            <!--                <input type="date" id="startDate" name="startDate">-->
+            <!--                <br><br>-->
+            <!--                <label for="endDate">Конец записи в расписании:&nbsp&nbsp</label>-->
+            <!--                <input type="date" id="endDate" name="endDate">-->
+            <!--            </div>-->
 
             <div class="filter_group_2">
                 <label for="allDepartmentWithId">Отделение:</label>
@@ -140,16 +140,16 @@
         </div>
 
         <div class="filter_group_2">
-                        <label for="select1">Сотрудник:</label>
-                        <select id="select1" name="select1">
-                            <option value="0"> Все</option>
-                            <option th:each="user : ${select1}"
-                                    th:value="${user.get('dcode')}"
-                                    th:utext="${user.get('dname')}">
-                            </option>
-                            <br>
+            <label for="select1">Сотрудник:</label>
+            <select id="select1" name="select1">
+                <option value="0"> Все</option>
+                <option th:each="user : ${select1}"
+                        th:value="${user.get('dcode')}"
+                        th:utext="${user.get('dname')}">
+                </option>
+                <br>
 
-                        </select>
+            </select>
             <br><br>
 
         </div>
@@ -176,7 +176,7 @@
         <div class="filter_group_2">
             <label for="allCertificate">Тип сертификата:</label>
             <select id="allCertificate" name="allCertificate">
-<!--                <option value="0"> Выберите:</option>-->
+                <!--                <option value="0"> Выберите:</option>-->
                 <option th:each="dep : ${allCertificate}"
                         th:value="${dep.get('id')}"
                         th:utext="${dep.get('name')}">
@@ -199,9 +199,6 @@
         </div>
     </div>
 </div>
-
-
-
 
 
 <!--Для бухгалтерии 2-->
@@ -243,33 +240,33 @@
 <div th:fragment="akt_sverki" xmlns:th="http://www.w3.org/1999/xhtml">
     <form th:action="@{/download}" method="POST">
 
-    <div class="filter_block_1">
-        <div class="filter_group">
-            <div th:insert="::changeDate"></div>
-        </div>
+        <div class="filter_block_1">
+            <div class="filter_group">
+                <div th:insert="::changeDate"></div>
+            </div>
 
-        <div class="filter_group_2">
-            <label for="legalEntitiesWithId">Юридическое лицо:</label>
-            <select  id="legalEntitiesWithId" name="legalEntitiesWithId"   required>
-                <option value=""> Выберите:</option>
-                <option th:each="entity : ${legalEntitiesWithId}"
-                        th:value="${entity.get('jid')}"
-                        th:utext="${entity.get('jname')}">
-                </option>
-                <br>
-            </select>
-            <br><br>
-        </div>
+            <div class="filter_group_2">
+                <label for="legalEntitiesWithId">Юридическое лицо:</label>
+                <select id="legalEntitiesWithId" name="legalEntitiesWithId" required>
+                    <option value=""> Выберите:</option>
+                    <option th:each="entity : ${legalEntitiesWithId}"
+                            th:value="${entity.get('jid')}"
+                            th:utext="${entity.get('jname')}">
+                    </option>
+                    <br>
+                </select>
+                <br><br>
+            </div>
 
-        <div class="filter_select">
-        </div>
+            <div class="filter_select">
+            </div>
 
-        <div class="filter_select_button">
-            <a href="#" onclick="ctx.updateTable()" class="knopka">Сформировать</a>
-            <br><br>
-            <input type="submit" class="button_act" value="Cформировать в EXCEL">
+            <div class="filter_select_button">
+                <a href="#" onclick="ctx.updateTable()" class="knopka">Сформировать</a>
+                <br><br>
+                <input type="submit" class="button_act" value="Cформировать в EXCEL">
+            </div>
         </div>
-    </div>
     </form>
 </div>
 
@@ -293,12 +290,51 @@
 
         <div class="filter_select">
             <select id="allDocWithId" name="allDocWithId" required>
-                <option label="Все доктора" value="0"></option> -->
+                <option label="Все доктора" value="0"></option>
+                -->
                 <option th:each="dep : ${allDocWithId}"
                         th:value="${dep.get('dcode')}"
                         th:utext="${dep.get('ntuser')}">
                 </option>
             </select>
+        </div>
+
+        <div class="filter_select_button">
+            <a href="#" onclick="ctx.updateTable()" class="knopka">Сформировать</a>
+        </div>
+    </div>
+</div>
+
+<!--Для бухгалтерии 5-->
+<div th:fragment="filter_buh_5" xmlns:th="http://www.w3.org/1999/xhtml">
+
+    <div class="filter_block_1">
+
+        <div class="filter_group">
+
+                <label for="startDate">Начало периода: 01.01.2019</label>
+                <!--                <input type="date" min="2019-01-01" max="2019-01-01" id="startDate" name="startDate">-->
+
+                <br><br>
+                <label for="endDate">Конец периода:&nbsp&nbsp</label>
+                <input type="date" id="endDate" name="endDate">&nbsp;<a href="#" id="previousMonth" onclick="previousMonth()" class="changeDate">←</a>&nbsp;&nbsp;<a href="#" id="nextMonth"
+                                                                              onclick="nextMonth()"
+                                                                              class="changeDate">→</a>
+        </div>
+
+        <div class="filter_group_2">
+                        <label for="summNach">Всего долг:</label>
+                        <p id="summNach" style="display:inline-block"></p>
+                        <br>
+                        <label for="summSpis">Всего аванс:</label>
+                        <p id="summSpis" style="display:inline-block"></p>
+
+        </div>
+
+        <div class="filter_select">
+        <span id="accountSearchDataTableLoader" style="font-size: 40px; color: red">
+    ЗАГРУЗКА
+    </span>
         </div>
 
         <div class="filter_select_button">
@@ -318,7 +354,7 @@
 
         <div class="filter_group_2">
             <label for="allSkudUsers">Сотрудник:</label>
-            <select id="allSkudUsers" name="allSkudUsers" >
+            <select id="allSkudUsers" name="allSkudUsers">
                 <option value="0"> Выберите:</option>
                 <option th:each="user : ${allSkudUsers}"
                         th:value="${user.get('userptr')}"
@@ -342,15 +378,12 @@
 </div>
 
 
-
-
-
-
-
 <div th:fragment="changeDate">
     <label for="startDate">Начало периода:</label>
-    <input type="date" id="startDate" name="startDate">&nbsp;&nbsp;<a href="#" id="previousMonth" onclick="previousMonth()" class="changeDate">←</a>
+    <input type="date" id="startDate" name="startDate">&nbsp;&nbsp;<a href="#" id="previousMonth"
+                                                                      onclick="previousMonth()" class="changeDate">←</a>
     <br><br>
     <label for="endDate">Конец периода:&nbsp&nbsp</label>
-    <input type="date" id="endDate" name="endDate">&nbsp;&nbsp;<a href="#" id="nextMonth" onclick="nextMonth()" class="changeDate">→</a>
+    <input type="date" id="endDate" name="endDate">&nbsp;&nbsp;<a href="#" id="nextMonth" onclick="nextMonth()"
+                                                                  class="changeDate">→</a>
 </div>

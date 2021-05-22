@@ -5,6 +5,10 @@ function makeEditable(datatableOpts) {
         $.extend(true, datatableOpts,
             {
                 "deferRender": true,
+                // "processing": true,
+                // "serverSide": true,
+                // "bProcessing": true,
+                // "sProcessing": true,
                 stateSave: true,
                 retrieve: true,
                 destroy: true,
@@ -36,8 +40,9 @@ function makeEditable(datatableOpts) {
                     }
                 ],
                 language: {
-                    "sProcessing": "loading data...",
+                    // "sProcessing": "loading data...",
                     "processing": "Подождите...",
+                    // "processing": "<i class='fa fa-refresh fa-spin'></i>",
                     "search": "Поиск:",
                     "lengthMenu": "Показать _MENU_ записей",
                     "info": "Всего _TOTAL_ записей",
@@ -62,6 +67,8 @@ function makeEditable(datatableOpts) {
             }
         ));
 }
+
+
 
 
 
